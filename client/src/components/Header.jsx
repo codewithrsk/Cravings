@@ -1,11 +1,18 @@
-import React from 'react'
+import React from "react";
 
 const Header = () => {
   return (
-   <>
-    <div>Header</div>
+    <>
+      <div className="w-full bg-(--primary) ">
+        {/* <div>Craving</div>
+        <div>
+          {/* <Link to={"/login"} className="hover:underline">
+            Login
+          </Link> 
+        </div> */}
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
