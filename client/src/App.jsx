@@ -9,8 +9,8 @@ import Contactus from "./pages/ContactUs"
 const App = () => {
   return (
     <>
-    <div>hello world</div>
-      {/* <BrowserRouter>
+    
+      <BrowserRouter>
         <Header/>
         <Routes>
           <Route path={"/"} element={<Home />} />
@@ -18,7 +18,7 @@ const App = () => {
           <Route path={"/register"} element={<Register />} />
           <Route path={"/contact-us"} element={<Contactus />} />
         </Routes>
-      </BrowserRouter> */}
+      </BrowserRouter>
     </>
   );
 };
