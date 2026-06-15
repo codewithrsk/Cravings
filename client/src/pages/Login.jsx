@@ -33,7 +33,9 @@ const Login = () => {
     };
   };
 
-  const isshowPassword = () => {showPassword?setShowPassword(false):setShowPassword(true)};
+  const isshowPassword = () => {
+    showPassword ? setShowPassword(false) : setShowPassword(true);
+  };
 
   return (
     <>
@@ -64,13 +66,12 @@ const Login = () => {
 
               <div className="flex items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
                 <input
-                  type={showPassword?"text":"password"}
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   placeholder="Enter your password"
                   value={loginData.password}
                   onChange={handleChange}
-                  
                   className="flex-1 outline-none bg-transparent"
                 />
 
@@ -80,7 +81,7 @@ const Login = () => {
                   onClick={isshowPassword}
                 >
                   {/* <BsEye onClick={isshowPassword} /> */}
-                  {showPassword?<BsEyeSlash/>:<BsEye/>}
+                  {showPassword ? <BsEyeSlash /> : <BsEye />}
                 </button>
               </div>
             </div>
