@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import deliveryboy from "../assets/deliberyboy.png";
 import { Link } from "react-router-dom";
 import { BsEye } from "react-icons/bs";
+import { BsEyeSlash } from "react-icons/bs";
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -10,6 +11,7 @@ const Login = () => {
   });
 
   const [validateError, setValidateError] = useState();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -30,6 +32,8 @@ const Login = () => {
       password: loginData.password,
     };
   };
+
+  const isshowPassword = () => {showPassword?setShowPassword(false):setShowPassword(true)};
 
   return (
     <>
@@ -60,20 +64,23 @@ const Login = () => {
 
               <div className="flex items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
                 <input
-                  type="password"
+                  type={showPassword?"text":"password"}
                   id="password"
                   name="password"
                   placeholder="Enter your password"
                   value={loginData.password}
                   onChange={handleChange}
+                  
                   className="flex-1 outline-none bg-transparent"
                 />
 
                 <button
                   type="button"
                   className="ml-2 text-gray-500 cursor-pointer"
+                  onClick={isshowPassword}
                 >
-                  <BsEye />
+                  {/* <BsEye onClick={isshowPassword} /> */}
+                  {showPassword?<BsEyeSlash/>:<BsEye/>}
                 </button>
               </div>
             </div>

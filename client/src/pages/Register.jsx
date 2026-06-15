@@ -26,15 +26,17 @@ const Register = () => {
               <div className="flex  gap-2 ">
                 <input
                   type="radio"
-                  id="email"
-                  className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-(--accent)"
+                  id="customer"
+                  name="userType"
+                  className="border p-2 rounded focus:outline-none "
                 />
                 <label htmlFor="email">Customer</label>
               </div>
               <div className="flex  gap-2 ">
                 <input
                   type="radio"
-                  id="email"
+                  id="restaurant"
+                   name="userType"
                   className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-(--accent)"
                 />
                 <label htmlFor="email">restaurant</label>
@@ -42,7 +44,8 @@ const Register = () => {
               <div className="flex  gap-2 ">
                 <input
                   type="radio"
-                  id="email"
+                  id="rider"
+                   name="userType"
                   className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-(--accent)"
                 />
                 <label htmlFor="email">rider</label>
@@ -54,6 +57,7 @@ const Register = () => {
                   type="text"
                   id="userName"
                   name="userName"
+                  autoComplete="name"
                   placeholder="Enter Your Name"
                   className="flex-1 outline-none bg-transparent"
                 />
@@ -64,6 +68,7 @@ const Register = () => {
                 type="email"
                 id="userEmail"
                 name="userEmail"
+                autoComplete="email"
                 placeholder="Enter Your Email"
                 className="flex-1 outline-none bg-transparent"
               />
@@ -73,6 +78,7 @@ const Register = () => {
                 type="tel"
                 id="userPhone"
                 name="userPhone"
+                autoComplete="tel"
                 placeholder="Enter Your Phone Number"
                 className="flex-1 outline-none bg-transparent"
               />
