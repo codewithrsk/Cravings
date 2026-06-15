@@ -10,54 +10,97 @@ const Register = () => {
         <div className="hidden md:block">
           <img src={deliveryboy} alt="" className="rotate-y-180" />
         </div>
-        <div className="w-[60%] h-[80%] bg-white rounded shadow  p-10 flex flex-col justify-center ml-12">
-          <div className="flex justify-center text-4xl text-(--primary) mt-3">
-            Welcome Back
+        <div className="w-[60%] h-[90%] bg-white rounded shadow  p-10 flex flex-col justify-center ml-12">
+          <div className="flex justify-center text-4xl text-(--primary) mt-3 font-bold">
+            Create Account
           </div>
           <span className="flex justify-center text-gray-500 mb-5">
-            Login to your Cravings account
+           Join us as a Customer, Restaurant, or Rider
           </span>
 
           <form>
             <label htmlFor="email" className="block font-medium  text-gray-700">
               Register as:
             </label>
-            <div className="flex  gap-2 ">
-              
-              <input
-                type="radio"
-                id="email"
-                className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-(--accent)"
-              />
-                <label htmlFor="email">Customer</label>
-            </div>
-            <div className="flex flex-col gap-2 mt-4 font-medium">
-              <label htmlFor="password">Password</label>
-
-              <div className="flex items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+            <div className="flex justify-between">
+              <div className="flex  gap-2 ">
                 <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  placeholder="Enter your password"
-                  className="flex-1 outline-none bg-transparent"
+                  type="radio"
+                  id="email"
+                  className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-(--accent)"
                 />
-
-                <button
-                  type="button"
-                  className="ml-2 text-gray-500 cursor-pointer"
-                >
-                  <BsEye />
-                </button>
+                <label htmlFor="email">Customer</label>
+              </div>
+              <div className="flex  gap-2 ">
+                <input
+                  type="radio"
+                  id="email"
+                  className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-(--accent)"
+                />
+                <label htmlFor="email">restaurant</label>
+              </div>
+              <div className="flex  gap-2 ">
+                <input
+                  type="radio"
+                  id="email"
+                  className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-(--accent)"
+                />
+                <label htmlFor="email">rider</label>
               </div>
             </div>
-            <div className=" flex justify-between">
-              <span>
+            <div className="flex flex-col gap-2 mt-4 font-medium">
+              <div className="flex items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+                <input
+                  type="text"
+                  id="userName"
+                  name="userName"
+                  placeholder="Enter Your Name"
+                  className="flex-1 outline-none bg-transparent"
+                />
+              </div>
+            </div>
+            <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+              <input
+                type="email"
+                id="userEmail"
+                name="userEmail"
+                placeholder="Enter Your Email"
+                className="flex-1 outline-none bg-transparent"
+              />
+            </div>
+            <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+              <input
+                type="tel"
+                id="userPhone"
+                name="userPhone"
+                placeholder="Enter Your Phone Number"
+                className="flex-1 outline-none bg-transparent"
+              />
+            </div>
+            <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+              <input
+                type="password"
+                id="userPass"
+                name="userPass"
+                placeholder="Enter Your Password"
+                className="flex-1 outline-none bg-transparent"
+              />
+            </div><div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+              <input
+                type="password"
+                id="userConfPass"
+                name="userConfPass"
+                placeholder="Confirm Your Password"
+                className="flex-1 outline-none bg-transparent"
+              />
+            </div>
+            <div className=" flex gap-1">
+              <span className="flex gap-1">
                 <input type="checkbox" />
-                <label htmlFor="rember">Remember me</label>
+                <label htmlFor="rember">I agree to the </label>
               </span>
-              <Link to={"/register"} className="text-(--secondary)">
-                Forgot Password?
+              <Link to={"/register"} className="text-(--secondary) hover:underline hover:text-(--primary)">
+                 terms and conditions.
               </Link>
             </div>
             <button
@@ -84,10 +127,8 @@ const Register = () => {
             </Link>
           </div>
         </div>
-        
       </div>
     </>
-  
   );
 };
 

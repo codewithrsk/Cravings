@@ -16,7 +16,7 @@ const Header = () => {
               />
             </Link>
           </div>
-          <div className="flex gap-4 justify-center ">
+          <div className="flex gap-4 justify-center text-(--primary-text)">
             <Link to={"/"} className="hover:text-(--accent)">
               Home{" "}
             </Link>
