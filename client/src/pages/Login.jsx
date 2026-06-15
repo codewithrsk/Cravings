@@ -80,7 +80,6 @@ const Login = () => {
                   className="ml-2 text-gray-500 cursor-pointer"
                   onClick={isshowPassword}
                 >
-                  {/* <BsEye onClick={isshowPassword} /> */}
                   {showPassword ? <BsEyeSlash /> : <BsEye />}
                 </button>
               </div>

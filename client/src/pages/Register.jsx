@@ -15,7 +15,7 @@ const Register = () => {
             Create Account
           </div>
           <span className="flex justify-center text-gray-500 mb-5">
-           Join us as a Customer, Restaurant, or Rider
+            Join us as a Customer, Restaurant, or Rider
           </span>
 
           <form>
@@ -36,7 +36,7 @@ const Register = () => {
                 <input
                   type="radio"
                   id="restaurant"
-                   name="userType"
+                  name="userType"
                   className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-(--accent)"
                 />
                 <label htmlFor="email">restaurant</label>
@@ -45,7 +45,7 @@ const Register = () => {
                 <input
                   type="radio"
                   id="rider"
-                   name="userType"
+                  name="userType"
                   className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-(--accent)"
                 />
                 <label htmlFor="email">rider</label>
@@ -91,7 +91,8 @@ const Register = () => {
                 placeholder="Enter Your Password"
                 className="flex-1 outline-none bg-transparent"
               />
-            </div><div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+            </div>
+            <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
               <input
                 type="password"
                 id="userConfPass"
@@ -100,13 +101,16 @@ const Register = () => {
                 className="flex-1 outline-none bg-transparent"
               />
             </div>
-            <div className=" flex gap-1">
+            <div className=" flex gap-1 mt-3">
               <span className="flex gap-1">
                 <input type="checkbox" />
                 <label htmlFor="rember">I agree to the </label>
               </span>
-              <Link to={"/register"} className="text-(--secondary) hover:underline hover:text-(--primary)">
-                 terms and conditions.
+              <Link
+                to={"/register"}
+                className="text-(--secondary) hover:underline hover:text-(--primary)"
+              >
+                terms and conditions.
               </Link>
             </div>
             <button
@@ -117,20 +121,17 @@ const Register = () => {
             </button>
           </form>
           <div className="relative mb-6 mt-4">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-
             <div className="relative flex justify-center text-sm">
               <span className="bg-white px-2 text-gray-500">
-                Don't have an account?
+                Already registered?
               </span>
+              <Link
+                to={"/register"}
+                className="text-(--primary) hover:underline"
+              >
+                Login here
+              </Link>
             </div>
-          </div>
-          <div className="flex justify-center">
-            <Link to={"/register"} className="text-(--primary) hover:underline">
-              create a acount
-            </Link>
           </div>
         </div>
       </div>
