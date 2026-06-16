@@ -16,20 +16,20 @@ const Header = () => {
               />
             </Link>
           </div>
-          <div className="flex gap-4 justify-center text-(--primary-text)">
-            <Link to={"/"} className="hover:text-(--accent)">
+          <div className="flex gap-4 justify-center text-(--primary-text) decoration-(--success) decoration-3">
+            <Link to={"/"} className="hover:text-(--accent) hover:underline">
               Home{" "}
             </Link>
-            <Link to={"/about"} className="hover:text-(--accent)">
+            <Link to={"/about"} className="hover:text-(--accent) hover:underline ">
               About{" "}
             </Link>
-            <Link to={"/contact-us"} className="hover:text-(--accent)">
+            <Link to={"/contact-us"} className="hover:text-(--accent) hover:underline">
               ContactUs{" "}
             </Link>
-            <Link to={"/login"} className="hover:text-(--accent)">
+            <Link to={"/login"} className="hover:text-(--accent) hover:underline">
               Login{" "}
             </Link>
-            <Link to={"/register"} className="hover:text-(--accent)">
+            <Link to={"/register"} className="hover:text-(--accent) hover:underline">
               Register{" "}
             </Link>
           </div>

@@ -89,7 +89,7 @@ const Login = () => {
                 <input type="checkbox" />
                 <label htmlFor="rember">Remember me</label>
               </span>
-              <Link to={"/register"} className="text-(--secondary)">
+              <Link to={"/register"} className="text-(--secondary) hover:text-(--accent) hover:underline decoration-(--secondary)">
                 Forgot Password?
               </Link>
             </div>
