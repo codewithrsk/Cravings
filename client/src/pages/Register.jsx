@@ -133,7 +133,7 @@ const Register = () => {
                 Already registered?
               </span>
               <Link
-                to={"/register"}
+                to={"/login"}
                 className="text-(--primary) hover:underline"
               >
                 Login here
