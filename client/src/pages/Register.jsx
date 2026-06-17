@@ -3,6 +3,11 @@ import deliveryboy from "../assets/deliberyboy.png";
 import { Link } from "react-router-dom";
 import { BsEye } from "react-icons/bs";
 
+const datapacket = (e)=>{
+    console.log(e.email);
+    
+}
+
 const Register = () => {
   return (
     <>
@@ -18,7 +23,7 @@ const Register = () => {
             Join us as a Customer, Restaurant, or Rider
           </span>
 
-          <form>
+          <form onSubmit={datapacket}>
             <label htmlFor="email" className="block font-medium  text-gray-700">
               Register as:
             </label>
@@ -37,7 +42,7 @@ const Register = () => {
                   type="radio"
                   id="restaurant"
                   name="userType"
-                  className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-(--accent)"
+                  className="border p-2 rounded focus:outline-none "
                 />
                 <label htmlFor="email">restaurant</label>
               </div>
@@ -46,7 +51,7 @@ const Register = () => {
                   type="radio"
                   id="rider"
                   name="userType"
-                  className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-(--accent)"
+                  className="border p-2 rounded focus:outline-none "
                 />
                 <label htmlFor="email">rider</label>
               </div>
@@ -90,6 +95,7 @@ const Register = () => {
                 name="userPass"
                 placeholder="Enter Your Password"
                 className="flex-1 outline-none bg-transparent"
+                autoComplete="new-password"
               />
             </div>
             <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
@@ -99,6 +105,7 @@ const Register = () => {
                 name="userConfPass"
                 placeholder="Confirm Your Password"
                 className="flex-1 outline-none bg-transparent"
+                autoComplete="new-password webauthn"
               />
             </div>
             <div className=" flex gap-1 mt-3">
@@ -117,7 +124,7 @@ const Register = () => {
               type="submit"
               className="mt-6 w-full bg-(--primary) text-white py-2 px-4 rounded hover:bg-(--accent) "
             >
-              Login
+              Register
             </button>
           </form>
           <div className="relative mb-6 mt-4">
