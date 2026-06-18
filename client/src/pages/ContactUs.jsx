@@ -3,7 +3,7 @@ import React from 'react'
 const ContactUs = () => {
   return (
    <>
-    <div>ContactUs</div>
+    <div className='w-full bg-(--primary)'>ContactUs</div>
     </>
   )
 }
