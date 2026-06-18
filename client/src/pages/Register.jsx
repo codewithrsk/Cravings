@@ -5,6 +5,7 @@ import { BsEye } from "react-icons/bs";
 
 const datapacket = (e)=>{
   e.preventDefault();
+  
     console.log(e.email);
 
     
