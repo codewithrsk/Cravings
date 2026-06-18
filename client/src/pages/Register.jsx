@@ -5,7 +5,7 @@ import { BsEye } from "react-icons/bs";
 
 const datapacket = (e)=>{
   e.preventDefault();
-  
+
     console.log(e.email);
 
     
@@ -47,7 +47,7 @@ const Register = () => {
                   name="userType"
                   className="border p-2 rounded focus:outline-none "
                 />
-                <label htmlFor="email">restaurant</label>
+                <label htmlFor="email">Restaurant</label>
               </div>
               <div className="flex  gap-2 ">
                 <input
@@ -56,7 +56,7 @@ const Register = () => {
                   name="userType"
                   className="border p-2 rounded focus:outline-none "
                 />
-                <label htmlFor="email">rider</label>
+                <label htmlFor="email">Rider</label>
               </div>
             </div>
             <div className="flex flex-col gap-2 mt-4 font-medium">
