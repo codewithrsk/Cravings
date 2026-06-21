@@ -117,7 +117,7 @@ const Register = () => {
                 <label htmlFor="rember">I agree to the </label>
               </span>
               <Link
-                to={"/register"}
+                to={"/terms_and_conditions"}
                 className="text-(--secondary) hover:underline hover:text-(--primary)"
               >
                 terms and conditions.

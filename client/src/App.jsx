@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import About from "./pages/About";
 import Contactus from "./pages/ContactUs";
-import terms_and_conditions from "./pages/terms_and_conditions";
+import Terms_and_conditions from "./pages/Terms_and_conditions";
 const App = () => {
   return (
     <>
@@ -20,7 +20,7 @@ const App = () => {
 
           <Route
             path={"/terms_and_conditions"}
-            element={<terms_and_conditions />}
+            element={<Terms_and_conditions />}
           />
         </Routes>
       </BrowserRouter>
