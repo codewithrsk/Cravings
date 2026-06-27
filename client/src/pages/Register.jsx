@@ -92,6 +92,25 @@ const Register = () => {
               />
             </div>
             <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+              <select name="gender" id="gender" className=" w-full font-medium" >
+                <option value="" className="font-medium">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+              </div>
+            
+             <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+              <input
+                type="date"
+                id="dob"
+                name="dob"
+                autoComplete="dob"
+                className="flex-1 outline-none bg-transparent"
+              />
+            </div>
+
+            <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
               <input
                 type="password"
                 id="userPass"
