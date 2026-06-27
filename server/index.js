@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   console.log("Defult Get API Hit");
-  res.json({ massage: "Welcom to my fist backend project" });
+  res.json({ massage: "Welcom to my cracings project" });
 });
 
 // Defult Error Handling
@@ -26,4 +26,5 @@ const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log("Server Start on Port ", port);
+  conssectDB;
 });

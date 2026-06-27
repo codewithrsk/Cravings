@@ -27,10 +27,10 @@ const Register = () => {
           </span>
 
           <form onSubmit={datapacket}>
-            <label htmlFor="email" className="block font-medium  text-gray-700">
+            <label htmlFor="email" className=" font-medium  text-gray-700 hidden">
               Register as:
             </label>
-            <div className="flex justify-between">
+            <div className="flex justify-between hidden">
               <div className="flex  gap-2 ">
                 <input
                   type="radio"
@@ -80,7 +80,7 @@ const Register = () => {
                 placeholder="Enter Your Email"
                 className="flex-1 outline-none bg-transparent"
               />
-            </div>
+            </div >
             <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
               <input
                 type="tel"
@@ -91,6 +91,7 @@ const Register = () => {
                 className="flex-1 outline-none bg-transparent"
               />
             </div>
+            <div className="flex align-middle justify-center gap-2">
             <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
               <select name="gender" id="gender" className=" w-full font-medium" >
                 <option value="" className="font-medium">Select gender</option>
@@ -108,6 +109,7 @@ const Register = () => {
                 autoComplete="dob"
                 className="flex-1 outline-none bg-transparent"
               />
+            </div>
             </div>
 
             <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
