@@ -1,6 +1,5 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
-const SALLT =bcrypt.genSalt(10);
 
 export const RegisterUser = async (req, res, next) => {
   try {
@@ -27,12 +26,12 @@ export const RegisterUser = async (req, res, next) => {
     };
 
     const SALLT = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, SALLT)
+    const hashedPassword = await bcrypt.hash(password, SALLT);
 
     const newUser = await User.create({
       fullName,
       email,
-      password : hashedPassword,
+      password: hashedPassword,
       phone,
       gender,
       dob,
@@ -46,32 +45,39 @@ export const RegisterUser = async (req, res, next) => {
   }
 };
 
-
- 
-
-
 export const LoginUser = async (req, res, next) => {
   try {
+    console.log(1);
+
     const { email, password } = req.body;
     if (!email || !password) {
       const error = new Error("All fields Required");
       error.statusCode = 400;
       return next(error);
     }
+    console.log(2);
 
     const existingUser = await User.findOne({ email });
+    console.log(3);
 
     if (!existingUser) {
       const error = new Error("Not Rigester User");
       error.statusCode = 401;
       return next(error);
     }
+    console.log(4);
+    const SALLT = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, SALLT);
+    console.log(788)
 
-    if (password !== existingUser.password) {
-      const error = new error("Invalid password");
-      error.status(401);
+    if (hashedPassword != existingUser.password) {
+      const error = new Error("Invalid password");
+      error.statusCode = 401;
+      console.log(420);
+      
       return next(error);
     }
+    console.log(5);
 
     res.status(200).json({
       message: "login Succesfull",
@@ -79,6 +85,8 @@ export const LoginUser = async (req, res, next) => {
     });
     return;
   } catch (error) {
+    console.log(6);
+
     next();
     res.status(500).json({ message: "Interal Server Error" });
   }
