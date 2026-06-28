@@ -26,7 +26,6 @@ const Home = () => {
           </div>
           <div class="flex items-center bg-(--background) rounded-lg px-4 py-3 max-w-4xl mx-auto">
             <svg
-              
               viewBox="0 0 512 512"
               class="text-(--color-base-content) text-xl mr-3"
               height="1em"
@@ -44,30 +43,6 @@ const Home = () => {
           </div>
         </div>
       </main>
-      {/* <main className="min-h-screen bg-(--secondary)">
-        <div className=" justify-center items-center h-full font-bold text-5xl max-w-6xl mx-auto px-4 text-center">
-          <h1 className="mb-5">
-            Your Favorite Food, <br />
-            Delivered Fast
-          </h1>
-          <p class="text-lg md:text-xl opacity-90 mb-8">
-            Order from thousands of restaurants and get it delivered to your
-            doorstep
-          </p>
-          <div class="flex gap-4 justify-center">
-            <button class="bg-(--color-primary) text-(--color-primary-content) px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition">
-              Sign Up
-            </button>
-            <button class="bg-(--color-base-100) text-(--color-base-content) px-8 py-3 rounded-lg font-semibold hover:bg-(--color-base-200) transition">
-              Order Now
-            </button>
-          </div>
-
-          <div>
-            <button></button>
-          </div>
-        </div>
-      </main> */}
     </>
   );
 };
