@@ -26,9 +26,7 @@ const Home = () => {
           </div>
           <div class="flex items-center bg-(--background) rounded-lg px-4 py-3 max-w-4xl mx-auto">
             <svg
-              stroke="currentColor"
-              fill="currentColor"
-              stroke-width="0"
+              
               viewBox="0 0 512 512"
               class="text-(--color-base-content) text-xl mr-3"
               height="1em"
