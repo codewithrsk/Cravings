@@ -30,7 +30,7 @@ const Register = () => {
             <label htmlFor="email" className=" font-medium  text-gray-700 hidden">
               Register as:
             </label>
-            <div className="flex justify-between hidden">
+            <div className=" justify-between hidden">
               <div className="flex  gap-2 ">
                 <input
                   type="radio"
