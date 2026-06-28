@@ -1,168 +1,195 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import deliveryboy from "../assets/deliberyboy.png";
-import { Link } from "react-router-dom";
-import { BsEye } from "react-icons/bs";
-
-const datapacket = (e)=>{
-  e.preventDefault();
-
-    console.log(e.email);
-
-    
-}
+import api from "../config/api.config.js";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const [registerData, setRegisterData] = useState({
+    fullName: "",
+    email: "",
+    gender: "",
+    dob: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [validateError, setValidateError] = useState();
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setRegisterData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (registerData.password !== registerData.confirmPassword) {
+      setValidateError("Passwords do not match");
+      return;
+    }
+
+    setValidateError("");
+    console.log("Register data submitted:", registerData);
+
+    const payload = {
+      fullName: registerData.fullName,
+      email: registerData.email.toLowerCase(),
+      gender: registerData.gender,
+      dob: registerData.dob,
+      phone: registerData.phone,
+      password: registerData.password,
+    };
+
+    try {
+      const res = await api.post("/auth/register", payload);
+      alert(res.data.message);
+    } catch (error) {
+      console.log(res?.data?.message || error.message);
+    }
+  };
+
+  const inputClass =
+    "border p-2 rounded focus:outline-none focus:ring-2 focus:ring-(--accent)";
+
   return (
     <>
-      <div className="h-[90vh] bg-linear-to-r from-(--secondary) to-(--primary) grid grid-cols-2 p-10 ">
+      <div className="min-h-[90vh] bg-linear-to-r from-(--secondary) to-(--primary) grid grid-cols-2 p-10">
         <div className="hidden md:block">
           <img src={deliveryboy} alt="" className="rotate-y-180" />
         </div>
-        <div className="w-[60%] h-[90%] bg-white rounded shadow  p-10 flex flex-col justify-center ml-12">
-          <div className="flex justify-center text-4xl text-(--primary) mt-3 font-bold">
-            Create Account
-          </div>
-          <span className="flex justify-center text-gray-500 mb-5">
-            Join us as a Customer, Restaurant, or Rider
-          </span>
+        <div className="w-2xl bg-(--background) rounded shadow p-10 flex flex-col justify-center">
+          <div className="text-xl font-semibold mb-4">Create an Account</div>
 
-          <form onSubmit={datapacket}>
-            <label htmlFor="email" className=" font-medium  text-gray-700 hidden">
-              Register as:
-            </label>
-            <div className=" justify-between hidden">
-              <div className="flex  gap-2 ">
-                <input
-                  type="radio"
-                  id="customer"
-                  name="userType"
-                  className="border p-2 rounded focus:outline-none "
-                />
-                <label htmlFor="email">Customer</label>
-              </div>
-              <div className="flex  gap-2 ">
-                <input
-                  type="radio"
-                  id="restaurant"
-                  name="userType"
-                  className="border p-2 rounded focus:outline-none "
-                />
-                <label htmlFor="email">Restaurant</label>
-              </div>
-              <div className="flex  gap-2 ">
-                <input
-                  type="radio"
-                  id="rider"
-                  name="userType"
-                  className="border p-2 rounded focus:outline-none "
-                />
-                <label htmlFor="email">Rider</label>
-              </div>
+          <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
+            {/* Full Name */}
+            <div className="col-span-2 flex flex-col gap-2">
+              <label htmlFor="fullName">Full Name</label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                value={registerData.fullName}
+                onChange={handleChange}
+                className={inputClass}
+              />
             </div>
-            <div className="flex flex-col gap-2 mt-4 font-medium">
-              <div className="flex items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
-                <input
-                  type="text"
-                  id="userName"
-                  name="userName"
-                  autoComplete="name"
-                  placeholder="Enter Your Name"
-                  className="flex-1 outline-none bg-transparent"
-                />
-              </div>
-            </div>
-            <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+
+            {/* Email */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="email">Email</label>
               <input
                 type="email"
-                id="userEmail"
-                name="userEmail"
-                autoComplete="email"
-                placeholder="Enter Your Email"
-                className="flex-1 outline-none bg-transparent"
-              />
-            </div >
-            <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
-              <input
-                type="tel"
-                id="userPhone"
-                name="userPhone"
-                autoComplete="tel"
-                placeholder="Enter Your Phone Number"
-                className="flex-1 outline-none bg-transparent"
+                id="email"
+                name="email"
+                value={registerData.email}
+                onChange={handleChange}
+                className={inputClass}
               />
             </div>
-            <div className="flex align-middle justify-center gap-2">
-            <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
-              <select name="gender" id="gender" className=" w-full font-medium" >
-                <option value="" className="font-medium">Select gender</option>
+            {/* Phone */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="phone">Phone</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={registerData.phone}
+                onChange={handleChange}
+                className={inputClass}
+              />
+            </div>
+
+            {/* Gender */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="gender">Gender</label>
+              <select
+                id="gender"
+                name="gender"
+                value={registerData.gender}
+                onChange={handleChange}
+                className={inputClass}
+              >
+                <option value="">Select gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
               </select>
-              </div>
-            
-             <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+            </div>
+
+            {/* Date of Birth */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="dob">Date of Birth</label>
               <input
                 type="date"
                 id="dob"
                 name="dob"
-                autoComplete="dob"
-                className="flex-1 outline-none bg-transparent"
+                value={registerData.dob}
+                onChange={handleChange}
+                className={inputClass}
               />
-            </div>
             </div>
 
-            <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+            {/* Password */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="password">Password</label>
               <input
                 type="password"
-                id="userPass"
-                name="userPass"
-                placeholder="Enter Your Password"
-                className="flex-1 outline-none bg-transparent"
-                autoComplete="new-password"
+                id="password"
+                name="password"
+                value={registerData.password}
+                onChange={handleChange}
+                className={inputClass}
               />
             </div>
-            <div className="flex  mt-4 font-medium  items-center w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-(--accent)">
+
+            {/* Confirm Password */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="confirmPassword">Confirm Password</label>
               <input
                 type="password"
-                id="userConfPass"
-                name="userConfPass"
-                placeholder="Confirm Your Password"
-                className="flex-1 outline-none bg-transparent"
-                autoComplete="new-password webauthn"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={registerData.confirmPassword}
+                onChange={handleChange}
+                className={inputClass}
               />
             </div>
-            <div className=" flex gap-1 mt-3">
-              <span className="flex gap-1">
-                <input type="checkbox" />
-                <label htmlFor="rember">I agree to the </label>
-              </span>
-              <Link
-                to={"/terms_and_conditions"}
-                className="text-(--secondary) hover:underline hover:text-(--primary)"
-              >
-                terms and conditions.
-              </Link>
-            </div>
+
+            {validateError && (
+              <p className="text-red-500 text-sm col-span-2">{validateError}</p>
+            )}
+
             <button
               type="submit"
-              className="mt-6 w-full bg-(--primary) text-white py-2 px-4 rounded hover:bg-(--accent) "
+              className="col-span-2 mt-2 bg-(--primary) text-white py-2 px-4 rounded hover:bg-(--accent)"
             >
               Register
             </button>
           </form>
-          <div className="relative mb-6 mt-4">
-            <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-gray-500">
-                Already registered?
-              </span>
-              <Link
-                to={"/login"}
-                className="text-(--primary) hover:underline"
+
+          <div className="mt-6 text-center space-y-2">
+            <p className="text-sm">
+              Already have an account?{" "}
+              <button
+                onClick={() => navigate("/login")}
+                className="text-(--primary) hover:underline font-semibold"
               >
                 Login here
-              </Link>
-            </div>
+              </button>
+            </p>
+            <p className="text-sm">
+              Having Trouble?{" "}
+              <button
+                onClick={() => navigate("/contact")}
+                className="text-(--primary) hover:underline font-semibold"
+              >
+                Contact Us
+              </button>
+            </p>
           </div>
         </div>
       </div>
