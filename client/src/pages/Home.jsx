@@ -1,6 +1,13 @@
 import React from "react";
+import api from "../config/api.config";
 
 const Home = () => {
+  const defaultAPI = async () => {
+    console.log("default API");
+    
+    const res = await api.get("/");
+    alert(res.data.message);
+  };
   return (
     <>
       <main className="min-h-screen bg-(--secondary) flex justify-center items-center">
@@ -19,7 +26,10 @@ const Home = () => {
               <button class="bg-(--accent) text-(--color-primary-content) px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition">
                 Sign Up
               </button>
-              <button class="bg-(--background) text-(--color-base-content) px-8 py-3 rounded-lg font-semibold hover:bg-(--accent) transition">
+              <button
+                onClick={defaultAPI}
+                class="bg-(--background) text-(--color-base-content) px-8 py-3 rounded-lg font-semibold hover:bg-(--accent) transition"
+              >
                 Order Now
               </button>
             </div>

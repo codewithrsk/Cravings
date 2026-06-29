@@ -21,7 +21,7 @@ app.use("/public", PublicRouter);
 
 app.get("/", (req, res) => {
   console.log("Defult Get API Hit");
-  res.json({ massage: "Welcom to my cracings project" });
+  res.json({ message: "Welcom to my cracings project" });
 });
 
 // Defult Error Handling
