@@ -4,7 +4,7 @@ import api from "../config/api.config";
 const Home = () => {
   const defaultAPI = async () => {
     console.log("default API");
-    
+
     const res = await api.get("/");
     alert(res.data.message);
   };
