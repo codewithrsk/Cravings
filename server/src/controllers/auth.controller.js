@@ -67,14 +67,12 @@ export const LoginUser = async (req, res, next) => {
       error.statusCode = 401;
       return next(error);
     }
-    console.log(4);
     const isVerified = await bcrypt.compare(password, existingUser.password);
     if (!isVerified) {
       const error = new Error("Incorrect Password");
       error.statusCode = 401;
       return next(error);
     }
-    console.log(5);
 
     res.status(200).json({
       message: "login Succesfull",
@@ -82,8 +80,7 @@ export const LoginUser = async (req, res, next) => {
     });
     return;
   } catch (error) {
-    console.log(6);
-
+   
     next();
     res.status(500).json({ message: "Interal Server Error" });
   }

@@ -35,15 +35,12 @@ const Login = () => {
     };
 
     try {
-      console.log(11);
-
-      const res = await api.post("/auth/login", payload);
-      console.log(33);
-
+     const res = await api.post("/auth/login", payload);
       toast.success(res.data.message);
+      
     } catch (error) {
       toast.error(
-        error.responce.status + "|" + error.responce?.data?.message ||
+        error.response.status + "|" + error.response?.data?.message ||
           error.message,
       );
     }
