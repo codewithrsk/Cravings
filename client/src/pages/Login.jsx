@@ -3,10 +3,13 @@ import deliveryboy from "../assets/deliberyboy.png";
 import { Link } from "react-router-dom";
 import { BsEye } from "react-icons/bs";
 import { BsEyeSlash } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import api from "../config/api.config";
 import toast from "react-hot-toast";
 
+
 const Login = () => {
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -37,7 +40,9 @@ const Login = () => {
     try {
      const res = await api.post("/auth/login", payload);
       toast.success(res.data.message);
-      
+      sessionStorage.setItem("UserData", JSON.stringify(res.data.data));
+      navigate("/user/dashboard");
+
     } catch (error) {
       toast.error(
         error.response.status + "|" + error.response?.data?.message ||

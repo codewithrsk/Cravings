@@ -86,5 +86,6 @@ export const LoginUser = async (req, res, next) => {
   }
 };
 export const Logout = (req, res) => {
+
   res.json({ massage: "logout successfull" });
 };

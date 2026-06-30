@@ -7,6 +7,7 @@ import About from "./pages/About";
 import Contactus from "./pages/ContactUs";
 import Terms_and_conditions from "./pages/Terms_and_conditions";
 import { Toaster } from "react-hot-toast";
+import UsearDashboard from "./pages/dashboard/UsearDashboard"
 const App = () => {
   return (
     <>
@@ -24,6 +25,8 @@ const App = () => {
             path={"/terms_and_conditions"}
             element={<Terms_and_conditions />}
           />
+          <Route path={"/user/dashboard"} element={<UsearDashboard />} />
+
         </Routes>
       </BrowserRouter>
     </>
