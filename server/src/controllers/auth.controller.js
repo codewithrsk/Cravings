@@ -58,7 +58,9 @@ export const LoginUser = async (req, res, next) => {
     console.log(2);
 
     const existingUser = await User.findOne({ email });
-    console.log(3);
+    console.log(existingUser);
+    
+    
 
     if (!existingUser) {
       const error = new Error("Not Rigester User");
@@ -66,15 +68,10 @@ export const LoginUser = async (req, res, next) => {
       return next(error);
     }
     console.log(4);
-    const SALLT = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, SALLT);
-    console.log(788)
-
-    if (hashedPassword != existingUser.password) {
-      const error = new Error("Invalid password");
+    const isVerified = await bcrypt.compare(password, existingUser.password);
+    if (!isVerified) {
+      const error = new Error("Incorrect Password");
       error.statusCode = 401;
-      console.log(420);
-      
       return next(error);
     }
     console.log(5);

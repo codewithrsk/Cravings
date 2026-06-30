@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { BsEye } from "react-icons/bs";
 import { BsEyeSlash } from "react-icons/bs";
 import api from "../config/api.config";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -32,17 +33,19 @@ const Login = () => {
       email: loginData.email.toLowerCase(),
       password: loginData.password,
     };
+
     try {
       console.log(11);
-      
+
       const res = await api.post("/auth/login", payload);
       console.log(33);
-      
-      alert(res.data.message);
+
+      toast.success(res.data.message);
     } catch (error) {
-      console.log(22);
-      
-      alert(res?.data?.message || error.message)
+      toast.error(
+        error.responce.status + "|" + error.responce?.data?.message ||
+          error.message,
+      );
     }
   };
 

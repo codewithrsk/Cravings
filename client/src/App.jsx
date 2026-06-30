@@ -6,10 +6,12 @@ import Register from "./pages/Register";
 import About from "./pages/About";
 import Contactus from "./pages/ContactUs";
 import Terms_and_conditions from "./pages/Terms_and_conditions";
+import { Toaster } from "react-hot-toast";
 const App = () => {
   return (
     <>
       <BrowserRouter>
+        <Toaster/>
         <Header />
         <Routes>
           <Route path={"/"} element={<Home />} />
