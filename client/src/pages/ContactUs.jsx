@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import deliveryboy from "../assets/deliberyboy.png";
+import toast from "react-hot-toast";
 
 const ContactUs = () => {
   const navigate = useNavigate();
@@ -49,6 +50,18 @@ const ContactUs = () => {
       subject: contactData.subject,
       message: contactData.message,
     };
+
+    try {
+      const res = await api.post("/public/contact-us", payload)
+      toast.success(res.data.message)
+      
+    } catch (error) {
+      toast.error(
+        error.response.status + "|" + error.response?.data?.message ||
+          error.message,
+      );
+      
+    }
 
     // Reset form after submission
     setTimeout(() => {

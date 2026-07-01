@@ -189,7 +189,7 @@ const Register = () => {
             <p className="text-sm">
               Having Trouble?{" "}
               <button
-                onClick={() => navigate("/contact")}
+                onClick={() => navigate("/contact-us")}
                 className="text-(--primary) hover:underline font-semibold"
               >
                 Contact Us
