@@ -6,9 +6,10 @@ import { BsEyeSlash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import api from "../config/api.config";
 import toast from "react-hot-toast";
-
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
+  const { setUser, setIsLogin } = useAuth();
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: "",
@@ -38,11 +39,12 @@ const Login = () => {
     };
 
     try {
-     const res = await api.post("/auth/login", payload);
+      const res = await api.post("/auth/login", payload);
       toast.success(res.data.message);
       sessionStorage.setItem("UserData", JSON.stringify(res.data.data));
+      setUser(res.data.data)
+      setIsLogin(true)
       navigate("/user/dashboard");
-
     } catch (error) {
       toast.error(
         error.response.status + "|" + error.response?.data?.message ||
