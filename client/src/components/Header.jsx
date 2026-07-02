@@ -25,24 +25,25 @@ const Header = () => {
               />
             </Link>
           </div>
-          <div className="flex gap-4 justify-center text-(--primary-text) decoration-(--success) decoration-3">
+          <div className="flex gap-4 justify-center text-(--primary-text) decoration-(--success) decoration-3 items-center ">
             <Link to={"/"} className="hover:text-(--accent) hover:underline">
-              Home{" "}
+              Home
             </Link>
             <Link
               to={"/about"}
               className="hover:text-(--accent) hover:underline "
             >
-              About{" "}
+              About
             </Link>
             <Link
               to={"/contact-us"}
               className="hover:text-(--accent) hover:underline"
             >
-              ContactUs{" "}
+              ContactUs
             </Link>
             {isLogin ? (
               <>
+              <div className="flex gap-4 justify-center text-(--primary-text) decoration-(--success) decoration-3 items-center" >
                 <div className="h-10 w-10 rounded-full overflow-hidden ">
                   <img
                     src={user.photo.url}
@@ -50,14 +51,15 @@ const Header = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div>{user.fullName}</div>
+                <div className="hover:text-(--accent) hover:underline ">{user.fullName}</div>
                 <button onClick={handallogout}>
                   <MdOutlineLogout />
                 </button>
+                </div>
               </>
             ) : (
               <>
-                {" "}
+                
                 <Link
                   to={"/login"}
                   className="hover:text-(--accent) hover:underline"
