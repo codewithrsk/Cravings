@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import api from "../config/api.config";
+import { useAuth } from "../context/AuthContext";
 
 const Home = () => {
+  const [search, setSearch] = useState("");
+  const { isLogin } = useAuth();
   const defaultAPI = async () => {
     console.log("default API");
 
@@ -23,17 +26,23 @@ const Home = () => {
                 Order from thousands of restaurants and get it delivered to your
                 doorstep
               </p>
-              <div class="flex gap-4 justify-center">
-                <button class="bg-(--accent) text-(--color-primary-content) px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition">
-                  Sign Up
-                </button>
-                <button
-                  onClick={defaultAPI}
-                  class="bg-(--background) text-(--color-base-content) px-8 py-3 rounded-lg font-semibold hover:bg-(--accent) transition"
-                >
-                  Order Now
-                </button>
-              </div>
+              {isLogin ? (
+                <></>
+              ) : (
+                <>
+                  <div class="flex gap-4 justify-center">
+                    <button class="bg-(--accent) text-(--color-primary-content) px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition">
+                      Sign Up
+                    </button>
+                    <button
+                      onClick={defaultAPI}
+                      class="bg-(--background) text-(--color-base-content) px-8 py-3 rounded-lg font-semibold hover:bg-(--accent) transition"
+                    >
+                      Order Now
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
             <div class="flex items-center bg-(--background) rounded-lg px-4 py-3 max-w-4xl mx-auto">
               <svg
@@ -49,7 +58,8 @@ const Home = () => {
                 placeholder="Search restaurants or dishes..."
                 class="bg-(--color-base-100) w-full outline-none text-(--color-primary)"
                 type="text"
-                value=""
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
           </div>
