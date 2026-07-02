@@ -51,7 +51,9 @@ const Header = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="hover:text-(--accent) hover:underline ">{user.fullName}</div>
+                <Link to={"/user/dashboard"} className="hover:text-(--accent) hover:underline">
+                {user.fullName}
+                </Link>
                 <button onClick={handallogout}>
                   <MdOutlineLogout />
                 </button>
