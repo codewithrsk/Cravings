@@ -9,7 +9,7 @@ const Settings = () => {
       <div className="bg-(--background) h-fit m-5 border rounded-2xl border-transparent p-3">
         <div className="flex items-center justify-between p-3 text-2xl">
           <span>Profile Information</span>
-          <button className="bg-(--primary) text-(--primary-text)  border rounded-xl px-4 flex items-center gap-2 p-1 text-sm">
+          <button className="bg-(--secondary) text-(--primary-text)  border rounded-xl px-4 flex items-center gap-2 p-1 text-sm">
             <MdModeEdit />
             Edit
           </button>
