@@ -5,11 +5,10 @@ import { useState } from "react";
 import api from "../../config/api.config";
 import toast from "react-hot-toast";
 
-const Settings =  () => {
+const Settings = () => {
   const { user } = useAuth();
   const [isEditable, setIsEditable] = useState(false);
   const [tempUser, setTempUser] = useState(user);
-
 
   const handlsave = async () => {
     setIsEditable(false);
@@ -20,13 +19,13 @@ const Settings =  () => {
       phone: tempUser.phone,
     };
     try {
-
-      const res = await api.put("/user/edit-profile", payload)
-      toast.success(res.data.message)
-
-      
+      const res = await api.put("/user/edit-profile", payload);
+      toast.success(res.data.message);
     } catch (error) {
-      
+      toast.error(
+        error.response.status + "|" + error.response?.data?.message ||
+          error.message,
+      );
     }
   };
   const handlechange = (e) => {
@@ -67,7 +66,7 @@ const Settings =  () => {
               <div className=" py-4 w-fit h-fit flex-col gap-y-6 space-y-4">
                 <div className="flex items-center gap-3 ">
                   <span className="font-light ">Name</span>
-                  <span className="font-medium">{tempUser.fullName}</span>
+                  <span className="font-medium">{user.fullName}</span>
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -76,7 +75,7 @@ const Settings =  () => {
                 </div>
                 <div className="flex gap-3 items-center ">
                   <span className="font-light">Phone</span>
-                  <span className="font-medium">{tempUser.phone}</span>
+                  <span className="font-medium">{user.phone}</span>
                 </div>
               </div>
             </>
@@ -97,14 +96,15 @@ const Settings =  () => {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className="font-light">Email</span>
+                  <span className="font-light">Email</span> 
                   <span className="font-medium">
                     <input
                       type="email"
-                      className="border hover:cursor-not-allowed"
+                      className="border disabled:cursor-not-allowed"
                       name="email"
                       id=""
                       value={tempUser.email}
+                      disabled
                     />
                   </span>
                 </div>

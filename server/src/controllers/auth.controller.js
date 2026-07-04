@@ -79,6 +79,9 @@ export const LoginUser = async (req, res, next) => {
     console.log(5);
 
     console.log(6);
+    await genToken(existingUser,res)
+    console.log(7);
+    
 
     res.status(200).json({
       message: "login Succesfull",
@@ -87,7 +90,6 @@ export const LoginUser = async (req, res, next) => {
     return;
   } catch (error) {
     next();
-    res.status(500).json({ message: "Interal Server Error" });
   }
 };
 export const Logout = (req, res) => {

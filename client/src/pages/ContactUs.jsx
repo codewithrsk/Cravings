@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import deliveryboy from "../assets/deliberyboy.png";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 const ContactUs = () => {
+  const { user, isLogin } = useAuth();
   const navigate = useNavigate();
   const [contactData, setContactData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
+    fullName: user.fullName || "",
+    email: user.email || "",
+    phone: user.phone || "",
     subject: "",
     message: "",
   });
@@ -52,15 +54,13 @@ const ContactUs = () => {
     };
 
     try {
-      const res = await api.post("/public/contact-us", payload)
-      toast.success(res.data.message)
-      
+      const res = await api.post("/public/contact-us", payload);
+      toast.success(res.data.message);
     } catch (error) {
       toast.error(
         error.response.status + "|" + error.response?.data?.message ||
           error.message,
       );
-      
     }
 
     // Reset form after submission

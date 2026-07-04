@@ -8,18 +8,19 @@ import edituser from "./src/routers/user.route.js";
 import conssectDB from "./src/config/dbConnection.config.js";
 import morgan from "morgan";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173" }));
-
+app.use(cors({ origin: "http://localhost:5173" , credentials: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(morgan("dev"));
 
 app.use("/auth", AuthRouter);
 app.use("/public", PublicRouter);
-app.use("/user", edituser)
+app.use("/user", edituser);
 
 app.get("/", (req, res) => {
   console.log("Defult Get API Hit");

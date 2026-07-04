@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-export const genToken = async (User) => {
+export const genToken = async (user, res) => {
   try {
-    const payload = { id: User._id };
+    const payload = { id: user._id };
 
     const token = await jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "1d",
@@ -13,7 +13,9 @@ export const genToken = async (User) => {
       secure: false,
       sameSite: "lax",
     });
+
+    console.log(token);
   } catch (error) {
-    throw next(error)
+    throw next();
   }
 };
