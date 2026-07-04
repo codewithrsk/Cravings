@@ -60,8 +60,8 @@ export const LoginUser = async (req, res, next) => {
 
     const existingUser = await User.findOne({ email });
     console.log(existingUser);
-    
-    
+
+    console.log(3);
 
     if (!existingUser) {
       const error = new Error("Not Rigester User");
@@ -69,13 +69,16 @@ export const LoginUser = async (req, res, next) => {
       return next(error);
     }
     const isVerified = await bcrypt.compare(password, existingUser.password);
+    console.log(4);
+
     if (!isVerified) {
       const error = new Error("Incorrect Password");
       error.statusCode = 401;
       return next(error);
     }
+    console.log(5);
 
-   await genToken(existingUser)
+    console.log(6);
 
     res.status(200).json({
       message: "login Succesfull",
@@ -83,12 +86,10 @@ export const LoginUser = async (req, res, next) => {
     });
     return;
   } catch (error) {
-   
     next();
     res.status(500).json({ message: "Interal Server Error" });
   }
 };
 export const Logout = (req, res) => {
-
   res.json({ massage: "logout successfull" });
 };

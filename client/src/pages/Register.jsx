@@ -155,7 +155,7 @@ const Register = () => {
             <div className="flex flex-col gap-2">
               <label htmlFor="confirmPassword">Confirm Password</label>
               <input
-                type="password"
+                type="text"
                 id="confirmPassword"
                 name="confirmPassword"
                 value={registerData.confirmPassword}

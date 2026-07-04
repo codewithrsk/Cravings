@@ -4,6 +4,7 @@ dotenv.config();
 import express from "express";
 import AuthRouter from "./src/routers/auth.route.js";
 import PublicRouter from "./src/routers/public.route.js";
+import edituser from "./src/routers/user.route.js";
 import conssectDB from "./src/config/dbConnection.config.js";
 import morgan from "morgan";
 import cors from "cors";
@@ -18,6 +19,7 @@ app.use(morgan("dev"));
 
 app.use("/auth", AuthRouter);
 app.use("/public", PublicRouter);
+app.use("/user", edituser)
 
 app.get("/", (req, res) => {
   console.log("Defult Get API Hit");
