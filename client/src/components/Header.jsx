@@ -43,28 +43,30 @@ const Header = () => {
             </Link>
             {isLogin ? (
               <>
-              <div className="flex gap-4 justify-center text-(--primary-text) decoration-(--success) decoration-3 items-center" >
-                <div className="h-10 w-10 rounded-full overflow-hidden ">
-                  <img
-                    src={user.photo.url}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <Link to={"/user/dashboard"} className="hover:text-(--accent) hover:underline">
-                {user.fullName}
-                </Link>
-                <button onClick={handallogout}>
-                  <MdOutlineLogout />
-                </button>
+                <div className="flex gap-4 justify-center text-(--primary-text) decoration-(--success) decoration-3 items-center">
+                  <div className="h-10 w-10 rounded-full overflow-hidden ">
+                    <img
+                      src={user.photo.url}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <Link
+                    to={"/user/dashboard"}
+                    className="hover:text-(--accent) hover:underline"
+                  >
+                    {user.fullName}
+                  </Link>
+                  <button onClick={handallogout}>
+                    <MdOutlineLogout />
+                  </button>
                 </div>
               </>
             ) : (
               <>
-                
                 <Link
                   to={"/login"}
-                  className="hover:text-(--accent) hover:underline"
+                  className="hover:text-(--secondary) hover:bg-(--primary) border  border-transparent px-3 bg-(--accent) rounded-2xl hover:transform-content"
                 >
                   Login{" "}
                 </Link>

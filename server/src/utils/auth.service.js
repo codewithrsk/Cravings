@@ -14,7 +14,6 @@ export const genToken = async (user, res) => {
       sameSite: "lax",
     });
 
-    console.log(token);
   } catch (error) {
     throw next();
   }

@@ -48,47 +48,36 @@ export const RegisterUser = async (req, res, next) => {
 
 export const LoginUser = async (req, res, next) => {
   try {
-    console.log(1);
-
     const { email, password } = req.body;
+
     if (!email || !password) {
       const error = new Error("All fields Required");
       error.statusCode = 400;
       return next(error);
     }
-    console.log(2);
 
     const existingUser = await User.findOne({ email });
-    console.log(existingUser);
-
-    console.log(3);
-
     if (!existingUser) {
-      const error = new Error("Not Rigester User");
-      error.statusCode = 401;
+      const error = new Error("Email not registred");
+      error.statusCode = 404;
       return next(error);
     }
-    const isVerified = await bcrypt.compare(password, existingUser.password);
-    console.log(4);
 
+    const isVerified = await bcrypt.compare(password, existingUser.password);
     if (!isVerified) {
       const error = new Error("Incorrect Password");
       error.statusCode = 401;
       return next(error);
     }
-    console.log(5);
 
-    console.log(6);
-    await genToken(existingUser,res)
-    console.log(7);
-    
+    await genToken(existingUser, res);
 
     res.status(200).json({
-      message: "login Succesfull",
+      message: "Welcome Back",
       data: existingUser,
     });
-    return;
   } catch (error) {
+    console.log(error.message);
     next();
   }
 };

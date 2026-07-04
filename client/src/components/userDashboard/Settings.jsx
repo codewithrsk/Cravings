@@ -81,7 +81,7 @@ const Settings = () => {
             </>
           ) : (
             <>
-              <div className=" py-4 w-full h-fit flex-col gap-y-6 space-y-4">
+              <div className=" py-4 w-fit h-fit flex-col gap-y-6 space-y-4">
                 <div className="flex items-center gap-3 ">
                   <span className="font-light ">Name</span>
                   <span className="font-medium">
