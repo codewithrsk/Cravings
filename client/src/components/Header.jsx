@@ -12,6 +12,7 @@ const Header = () => {
 
 
   const handleNavigate = () => {
+    navigate("/user/dashboard")
     //console.log("Handle Navigate", role);
   }
     const handleLogout = async () => { 

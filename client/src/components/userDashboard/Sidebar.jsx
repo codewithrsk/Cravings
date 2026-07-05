@@ -20,7 +20,7 @@ const Sidebar = ({ active, setActive }) => {
           {MenuItems.map((item, idx) => (
             <button
               key={idx}
-              className={`flex gap-3 font-semibold items-center border border-transparent hover:border-(--primary) w-full p-3 rounded-lg ${active===item.name && "bg-(--secondary) text-(--primary-text)"}`}
+              className={`flex gap-3 font-semibold items-center border border-transparent hover:border-(--color-primary) active:bg-(--color-primary) w-full p-3 rounded-lg ${active === item.name && "bg-(--color-primary) text-(--color-primary-content)"}`}
               onClick={() => setActive(item.name)}
             >
               {item.icon}
