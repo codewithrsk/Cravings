@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Header from "./components/Header";
+import Footer from "./components/Footer"
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import About from "./pages/About";
@@ -28,6 +29,7 @@ const App = () => {
           <Route path={"/user/dashboard"} element={<UsearDashboard />} />
 
         </Routes>
+        <Footer/>
       </BrowserRouter>
     </>
   );

@@ -1,88 +1,92 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import logoLight from "../assets/transparentLogoLight.png"
 import { useAuth } from "../context/AuthContext";
-import { MdOutlineLogout } from "react-icons/md";
+import { FaPowerOff } from "react-icons/fa";
+import toast from "react-hot-toast";
+import api from "../config/api.config";
 
 const Header = () => {
+  const { user, isLogin, setUser, setIsLogin } = useAuth();
   const navigate = useNavigate();
-  const { user, isLogin, setIsLogin } = useAuth();
-  const handallogout = () => {
-    sessionStorage.clear();
-    navigate("/");
-    setIsLogin(false);
+
+
+  const handleNavigate = () => {
+    //console.log("Handle Navigate", role);
+  }
+    const handleLogout = async () => { 
+      try {
+        const res = await api.get("/auth/logout");
+        toast.success(res.data.message);
+
+        sessionStorage.removeItem("cravingUser");
+        setUser(null);
+        setIsLogin(false);
+        navigate("/");
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message ||
+            "Unknown error occurred during registration. Please try again.",
+        );
+      }
+    };
+
+    return (
+      <>
+        <div className="sticky top-0 z-99 flex items-center justify-between px-12 py-1 bg-(--color-primary) text-white w-full h-16 shadow-md">
+          <div className="h-full">
+            <Link to="/">
+              <img src={logoLight} alt="Logo" className="w-fit h-full" />{" "}
+            </Link>
+          </div>
+
+          {isLogin ? (
+            <div className="flex items-center gap-2">
+              <button
+                className="flex gap-2 items-center text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content)  px-3 py-1 rounded"
+                title="Go to Dashboard"
+                onClick={handleNavigate}
+              >
+                <img
+                  src={user?.photo?.url}
+                  alt={user?.fullName}
+                  className="w-12 h-12 rounded-full object-cover object-top"
+                />
+                <div className="flex flex-col items-start">
+                  <span className="text-base">{user?.fullName}</span>
+                  <span className="text-xs text-(--color-primary-content)/80">
+                    Customer
+                  </span>
+                </div>
+              </button>
+              <button
+                onClick={handleLogout}
+                className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) hover:bg-(--color-error) px-3 py-3 rounded"
+                title="Logout"
+              >
+                <FaPowerOff />
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                to="/login"
+                className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) px-3 py-1 rounded"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="bg-(--color-primary-content) text-(--color-primary) hover:bg-(--color-primary) hover:text-(--color-primary-content) border px-3 py-1 rounded"
+              >
+                Register
+              </Link>
+            </div>
+          )}
+        </div>
+      </>
+    );
   };
 
-  return (
-    <>
-      <div className="w-full bg-(--primary) ">
-        <div className="w-[90%] mx-auto flex items-center justify-between h-[10vh]">
-          <div>
-            <Link to="/" className="navbar-brand text-white m-0 p-0">
-              <img
-                src="https://cravings.ricr.in/assets/transparentLogoLight-De2Z7I01.png"
-                alt="Cravings Logo"
-                width="100"
-              />
-            </Link>
-          </div>
-          <div className="flex gap-4 justify-center text-(--primary-text) decoration-(--success) decoration-3 items-center ">
-            <Link to={"/"} className="hover:text-(--accent) hover:underline">
-              Home
-            </Link>
-            <Link
-              to={"/about"}
-              className="hover:text-(--accent) hover:underline "
-            >
-              About
-            </Link>
-            <Link
-              to={"/contact-us"}
-              className="hover:text-(--accent) hover:underline"
-            >
-              ContactUs
-            </Link>
-            {isLogin ? (
-              <>
-                <div className="flex gap-4 justify-center text-(--primary-text) decoration-(--success) decoration-3 items-center">
-                  <div className="h-10 w-10 rounded-full overflow-hidden ">
-                    <img
-                      src={user.photo.url}
-                      alt=""
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <Link
-                    to={"/user/dashboard"}
-                    className="hover:text-(--accent) hover:underline"
-                  >
-                    {user.fullName}
-                  </Link>
-                  <button onClick={handallogout}>
-                    <MdOutlineLogout />
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link
-                  to={"/login"}
-                  className="hover:text-(--secondary) hover:bg-(--primary) border  border-transparent px-3 bg-(--accent) rounded-2xl hover:transform-content"
-                >
-                  Login{" "}
-                </Link>
-                <Link
-                  to={"/register"}
-                  className="hover:text-(--accent) hover:underline"
-                >
-                  Register{" "}
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
 
 export default Header;

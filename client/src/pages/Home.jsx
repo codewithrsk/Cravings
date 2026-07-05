@@ -14,14 +14,14 @@ const Home = () => {
   return (
     <>
       <div className="bg-cover bg-center bg-no-repeat bg-imge flex justify-center items-center">
-        <div class="relative z-20 flex-col justify-center items-center  p-20 sm:px-6 lg:px-8 object-cover backdrop-blur-[2px] text-amber-50">
-          <div class="text-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+        <div className="relative z-20 flex-col justify-center items-center  p-20 sm:px-6 lg:px-8 object-cover backdrop-blur-[2px] text-amber-50">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Your Favorite Food,
               <br />
               Delivered Fast
             </h1>
-            <p class="text-lg md:text-xl opacity-90 mb-8">
+            <p className="text-lg md:text-xl opacity-90 mb-8">
               Order from thousands of restaurants and get it delivered to your
               doorstep
             </p>
@@ -29,13 +29,13 @@ const Home = () => {
               <></>
             ) : (
               <>
-                <div class="flex gap-4 justify-center">
-                  <button class="bg-(--accent) text-(--color-primary-content) px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition">
+                <div className="flex gap-4 justify-center">
+                  <button className="bg-(--accent) text-(--color-primary-content) px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition">
                     Sign Up
                   </button>
                   <button
                     onClick={defaultAPI}
-                    class="bg-(--background) text-(--color-base-content) px-8 py-3 rounded-lg font-semibold hover:bg-(--accent) transition"
+                    className="bg-(--background) text-(--color-base-content) px-8 py-3 rounded-lg font-semibold hover:bg-(--accent) transition"
                   >
                     Order Now
                   </button>
@@ -43,10 +43,10 @@ const Home = () => {
               </>
             )}
           </div>
-          <div class="flex items-center bg-(--background) rounded-lg px-4 py-3 max-w-4xl mx-auto">
+          <div className="flex items-center bg-(--background) rounded-lg px-4 py-3 max-w-4xl mx-auto">
             <svg
               viewBox="0 0 512 512"
-              class="text-(--background) text-xl mr-3"
+              className="text-(--background) text-xl mr-3"
               height="1em"
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ const Home = () => {
             </svg>
             <input
               placeholder="Search restaurants or dishes..."
-              class="bg-(--color-base-100) w-full outline-none text-(--color-primary)"
+              className="bg-(--color-base-100) w-full outline-none text-(--color-primary)"
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}

@@ -7,9 +7,9 @@ export const AuthProvider = ({ children }) => {
     JSON.parse(sessionStorage.getItem("UserData")) || "",
   );
   const [isLogin, setIsLogin] = useState(!!user);
+  const [role, setRole] = useState("admin");
 
   useEffect(() => {
-    
     setIsLogin(!!user);
   }, [user]);
 
