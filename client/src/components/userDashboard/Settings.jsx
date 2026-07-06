@@ -17,6 +17,7 @@ const Setting = () => {
   });
 
   const [editingProfile, setEditingProfile] = useState(false);
+  const [profilePic, setProfilePic] = useState(null);
   const [profilePicPreview, setProfilePicPreview] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -41,7 +42,7 @@ const Setting = () => {
         phone: user.phone || "",
       });
     }
-  }, [user?.fullName, user?.email, user?.phone, user?.photo]);
+  }, [user?.fullName, user?.email, user?.phone, user?.photo.url]);
 
   // Profile handlers
   const handleProfileChange = (e) => {
@@ -96,6 +97,7 @@ const Setting = () => {
     console.log(fileURL);
 
     setProfilePicPreview(fileURL);
+    setProfilePic(file)
   };
 
   return (
@@ -136,28 +138,30 @@ const Setting = () => {
             <div className="relative">
               <div className="w-36 h-36">
                 <img
-                  src={ profileData.photo.url}
+                  src={profileData.photo}
                   alt="Profile"
                   className="w-full h-full rounded-full object-cover border-2 border-(--color-primary)"
-                />          
-              </div>
-
-              <div
-                className="absolute cursor-pointer bottom-1 right-1 border p-2 rounded-full w-fit bg-(--color-base-200)"
-                title="Change Photo"
-              >
-                <label htmlFor="profilePic" className="cursor-pointer">
-                  <MdOutlineAddAPhoto className="text-xl" />
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="profilePic"
-                  id="profilePic"
-                  className="hidden"
-                  onChange={handleProfilePicChange}
                 />
               </div>
+
+              {editingProfile && (
+                <div
+                  className="absolute cursor-pointer bottom-1 right-1 border p-2 rounded-full w-fit bg-(--color-base-200)"
+                  title="Change Photo"
+                >
+                  <label htmlFor="profilePic" className="cursor-pointer">
+                    <MdOutlineAddAPhoto className="text-xl" />
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="profilePic"
+                    id="profilePic"
+                    className="hidden"
+                    onChange={handleProfilePicChange}
+                  />
+                </div>
+              )}
             </div>
 
             <div className="space-y-4 w-full">
