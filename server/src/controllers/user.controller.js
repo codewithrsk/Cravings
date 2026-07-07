@@ -22,6 +22,8 @@ export const updateUser = async (req, res, next) => {
     }
 
     if (newPhoto) {
+      existingUser?.photo.publicId &&
+        (await cloudinary.uploader.destroy(existingUser.photo));
       const b64 = Buffer.from(newPhoto.buffer).toString("base64");
       const dataURI = `data:${newPhoto.mimetype};base64,${b64}`;
       // console.log(dataURI.slice(0, 100));
