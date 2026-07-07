@@ -42,6 +42,7 @@ const Register = () => {
     if (!data.fullName.trim()) newErrors.fullName = "Full name is required";
     if (!data.email.trim()) newErrors.email = "Email is required";
     if (!data.phone.trim()) newErrors.phone = "Phone number is required";
+    if (!String(data.phone).length === 10) newErrors.phone ="Enter valid Phone number";
     if (!data.gender) newErrors.gender = "Gender is required";
     if (!data.dob) newErrors.dob = "Date of birth is required";
     if (!data.password || data.password.length < 6)
@@ -175,6 +176,7 @@ const Register = () => {
               type="number"
               name="phone"
               value={formData.phone}
+              maxLength={10}
               onChange={handleInputChange}
               placeholder="Enter your phone number"
               className={`w-full px-3 py-2 border rounded-md text-sm text-(--color-neutral) placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-(--color-primary) ${
