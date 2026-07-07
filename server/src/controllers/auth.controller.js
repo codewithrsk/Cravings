@@ -82,5 +82,13 @@ export const LoginUser = async (req, res, next) => {
   }
 };
 export const Logout = (req, res) => {
-  res.json({ massage: "logout successfull" });
+    try {
+    res.clearCookie("Oreo", { maxAge: 0 });
+
+    res.status(200).json({ message: "Logout Sucessfully" });
+  } catch (error) {
+    console.log(error.message);
+    next();
+  }
+
 };

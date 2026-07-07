@@ -4,7 +4,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import api from "../config/api.config";
 
 const Register = () => {
-  const userType = useParams().userType; // Get userType from URL params (if needed)
+  const userType = useParams().userType;
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     userType: userType || "customer",
