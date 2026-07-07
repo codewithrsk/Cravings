@@ -49,7 +49,7 @@ const Header = () => {
                 onClick={handleNavigate}
               >
                 <img
-                  src={user?.photo?.url}
+                  src={user?.photo.url}
                   alt={user?.fullName}
                   className="w-12 h-12 rounded-full object-cover object-top"
                 />

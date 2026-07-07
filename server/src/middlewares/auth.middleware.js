@@ -19,6 +19,8 @@ export const AuthProtect = async (req, res, next) => {
       return next(error);
     }
 
+    console.log("Decode:", decode);
+
     const verifiedUser = await User.findById(decode.id);
     console.log("VerifiedUser:", verifiedUser);
     if (!verifiedUser) {

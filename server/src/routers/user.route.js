@@ -3,8 +3,8 @@ import multer from "multer";
 import { updateUser } from "../controllers/user.controller.js";
 import { AuthProtect } from "../middlewares/auth.middleware.js";
 
-const router = express.Router();
 const Upload = multer();
+const router = express.Router();
 
 router.put(
   "/edit-profile",
