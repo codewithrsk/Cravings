@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import api from "../config/api.config";
 
 const Header = () => {
-  const { user, isLogin, setUser, setIsLogin } = useAuth();
+  const { user, isLogin, setUser, setIsLogin,role } = useAuth();
   const navigate = useNavigate();
 
 
@@ -56,7 +56,7 @@ const Header = () => {
                 <div className="flex flex-col items-start">
                   <span className="text-base">{user?.fullName}</span>
                   <span className="text-xs text-(--color-primary-content)/80">
-                    Customer
+                    {user?.userType}
                   </span>
                 </div>
               </button>

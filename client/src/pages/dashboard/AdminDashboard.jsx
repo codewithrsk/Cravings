@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [active, setActive] = useState("Overview");
-  const { User, islogin, role } = useAuth;
-  const navigate = useNavigate()
+  const { user, isLogin, role } = useAuth();
+  const navigate = useNavigate();
 
-  if (!User || !islogin || role !== "admin") {
+  if (!isLogin || role !== "admin") {
     return (
       <div className="h-[92vh] bg-[url('/foodTable.webp')]  bg-cover bg-center">
         <div className="h-full backdrop-blur-lg flex flex-col items-center justify-center ">
@@ -36,7 +36,9 @@ const AdminDashboard = () => {
         <div className="w-1/6 border border-red-500 h-full shadow shadow-gray-500">
           <AdminSidebar active={active} setActive={setActive} />
         </div>
-        <div className="w-5/6 border border-green-500 h-full">
+        <div
+          className="w-5/6 border border-green-500 h-full"
+        >
           {active === "Overview" && <AdminOverview />}
           {active === "Orders" && <AdminOrders />}
           {active === "WishList" && <AdminWishList />}

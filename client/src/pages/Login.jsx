@@ -7,14 +7,19 @@ import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUser, setIsLogin, isLogin } = useAuth();
+  const { setUser, setIsLogin, isLogin, role } = useAuth();
   useEffect(() => {
     if (isLogin) {
       toast.error("You Are already logded in");
     }
   }, [isLogin]);
-  if (isLogin) {
-    navigate("//user/dashboard");
+  if (isLogin && role === "customer") {
+    navigate("/user/dashboard");
+    return;
+  }
+
+  if (isLogin || role === "admin") {
+    navigate("/admin/dashboard");
     return;
   }
 
