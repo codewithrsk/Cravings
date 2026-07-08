@@ -5,7 +5,7 @@ import api from "../../config/api.config";
 import toast from "react-hot-toast";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 
-const Setting = () => {
+const RiderSettings = () => {
   const { user, setUser } = useAuth();
   const [editingProfile, setEditingProfile] = useState(false);
   const [profilePic, setProfilePic] = useState(null);
@@ -174,4 +174,4 @@ const Setting = () => {
   );
 };
 
-export default Setting;
+export default RiderSettings;

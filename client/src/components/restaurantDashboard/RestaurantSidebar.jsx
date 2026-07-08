@@ -10,7 +10,7 @@ const MenuItems = [
   { name: "Settings", icon: <BsPersonGear /> },
 ];
 
-const Sidebar = ({ active, setActive }) => {
+const RestaurantSidebar = ({ active, setActive }) => {
   return (
     <>
       <div className="p-3">
@@ -33,4 +33,4 @@ const Sidebar = ({ active, setActive }) => {
   );
 };
 
-export default Sidebar;
+export default RestaurantSidebar;
