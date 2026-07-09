@@ -23,6 +23,15 @@ const Login = () => {
     return;
   }
 
+  if (isLogin && role === "rider") {
+    navigate("/rider/dashboard");
+    return;
+  }
+  if (isLogin || role === "restauant") {
+    navigate("/restauant/dashboard");
+    return;
+  }
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
