@@ -69,9 +69,9 @@ const AdminSettings = () => {
 
   return (
     <>
-      <div className="overflow-y-auto h-full p-6 space-y-6">
+      <div className="overflow-y-auto h-full p-6 space-y-6 rounded-lg shadow-md">
         {/* User Profile Section */}
-        <div className="bg-(--color-base-200) rounded-lg p-6">
+        <div className="bg-(--color-base-200) rounded-lg p-6 shadow-md">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold">Profile Information</h3>
             {!editingProfile ? (
@@ -184,7 +184,7 @@ const AdminSettings = () => {
       </div>
       {isPasswordChange && (
         <div>
-          <PasswordChangeModal />
+          <PasswordChangeModal open={isPasswordChange} onClose={() => setIsPassworddChange(false)} />
         </div>
       )}
     </>
