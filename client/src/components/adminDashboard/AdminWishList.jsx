@@ -3,7 +3,6 @@ import React from "react";
 const AdminWishList = () => {
   return (
     <>
-      <div>WishList</div>
       <div className="bg-amber-50 w-fit m-7 text-2xl underline p-3">Admin WishList</div>
       <div className="grid grid-cols-2 gap-4 m-7">
         <div className="bg-amber-100 p-4 rounded-lg shadow-md"> 

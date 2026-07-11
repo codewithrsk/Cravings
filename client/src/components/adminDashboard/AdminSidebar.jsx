@@ -1,11 +1,12 @@
 import React from "react";
-import { MdOutlineDashboard, MdOutlineFastfood } from "react-icons/md";
+import { MdOutlineDashboard } from "react-icons/md";
 import { PiListHeartLight } from "react-icons/pi";
 import { BsPersonGear } from "react-icons/bs";
+import { FaUsers } from "react-icons/fa6";
 
 const MenuItems = [
   { name: "Overview", icon: <MdOutlineDashboard /> },
-  { name: "Orders", icon: <MdOutlineFastfood /> },
+  { name: "All Users", icon: <FaUsers /> },
   { name: "WishList", icon: <PiListHeartLight /> },
   { name: "Settings", icon: <BsPersonGear /> },
 ];

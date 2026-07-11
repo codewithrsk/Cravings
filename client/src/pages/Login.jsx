@@ -4,9 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import api from "../config/api.config";
 import { useAuth } from "../context/AuthContext";
+import ForgotPasswordModal from "../components/commonModals/ForgotPasswordModal";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [forgotPasswordModalOpen, setForgotPasswordModalOpen] = useState(false);
   const { setUser, setIsLogin, isLogin, role } = useAuth();
   useEffect(() => {
     if (isLogin) {
@@ -92,135 +94,141 @@ const Login = () => {
   };
 
   return (
-    <div className="h-[90vh] bg-[url('/foodTable.webp')] flex items-center justify-start bg-cover bg-center p-10 md:ps-30">
-      <div className="bg-white rounded-lg shadow-md px-10 py-6 max-w-md w-full">
-        <h1 className="text-3xl font-bold text-(--color-primary) mb-2 text-center">
-          Welcome Back
-        </h1>
-        <p className="text-(--color-secondary) text-center mb-6">
-          Login to your Cravings account
-        </p>
+    <>
+      <div className="h-[90vh] bg-[url('/foodTable.webp')] flex items-center justify-start bg-cover bg-center p-10 md:ps-30">
+        <div className="bg-white rounded-lg shadow-md px-10 py-6 max-w-md w-full">
+          <h1 className="text-3xl font-bold text-(--color-primary) mb-2 text-center">
+            Welcome Back
+          </h1>
+          <p className="text-(--color-secondary) text-center mb-6">
+            Login to your Cravings account
+          </p>
 
-        {/* Login Form */}
-        <form onSubmit={handleSubmit}>
-          {/* Email */}
-          <div className="mb-4">
-            <label className="block text-(--color-neutral) font-semibold mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="Enter your email"
-              className={`w-full px-3 py-2 border rounded-md text-sm text-(--color-neutral) placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-(--color-primary) ${
-                errors.email
-                  ? "border-(--color-error) border-2"
-                  : "border-(--color-base-300)"
-              }`}
-            />
-            {errors.email && (
-              <span className="text-(--color-error) text-xs mt-1 block">
-                {errors.email}
-              </span>
-            )}
-          </div>
-
-          {/* Password */}
-          <div className="mb-4">
-            <label className="block text-(--color-neutral) font-semibold mb-2">
-              Password
-            </label>
-            <div className="relative">
+          {/* Login Form */}
+          <form onSubmit={handleSubmit}>
+            {/* Email */}
+            <div className="mb-4">
+              <label className="block text-(--color-neutral) font-semibold mb-2">
+                Email
+              </label>
               <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
+                type="email"
+                name="email"
+                value={formData.email}
                 onChange={handleInputChange}
-                placeholder="Enter your password"
+                placeholder="Enter your email"
                 className={`w-full px-3 py-2 border rounded-md text-sm text-(--color-neutral) placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-(--color-primary) ${
-                  errors.password
+                  errors.email
                     ? "border-(--color-error) border-2"
                     : "border-(--color-base-300)"
                 }`}
               />
-              {showPassword ? (
-                <button
-                  className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer"
-                  onClick={() => setShowPassword(false)}
-                >
-                  <FaEyeSlash className="text-sm" />
-                </button>
-              ) : (
-                <button
-                  className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer"
-                  onClick={() => setShowPassword(true)}
-                >
-                  <FaEye className="text-sm" />
-                </button>
+              {errors.email && (
+                <span className="text-(--color-error) text-xs mt-1 block">
+                  {errors.email}
+                </span>
               )}
             </div>
-            {errors.password && (
-              <span className="text-(--color-error) text-xs mt-1 block">
-                {errors.password}
-              </span>
-            )}
-          </div>
 
-          {/* Remember Me & Forgot Password */}
-          <div className="flex items-center justify-between mb-6">
-            <label className="flex items-center gap-2 cursor-pointer text-(--color-secondary)">
-              <input
-                type="checkbox"
-                name="rememberMe"
-                checked={formData.rememberMe}
-                onChange={handleInputChange}
-                className="cursor-pointer"
-              />
-              <span className="text-sm">Remember me</span>
-            </label>
-            <Link
-              to="/forgot-password"
-              className="text-sm text-(--color-primary) hover:underline transition-colors"
+            {/* Password */}
+            <div className="mb-4">
+              <label className="block text-(--color-neutral) font-semibold mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Enter your password"
+                  className={`w-full px-3 py-2 border rounded-md text-sm text-(--color-neutral) placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-(--color-primary) ${
+                    errors.password
+                      ? "border-(--color-error) border-2"
+                      : "border-(--color-base-300)"
+                  }`}
+                />
+                {showPassword ? (
+                  <button
+                    className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer"
+                    onClick={() => setShowPassword(false)}
+                  >
+                    <FaEyeSlash className="text-sm" />
+                  </button>
+                ) : (
+                  <button
+                    className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer"
+                    onClick={() => setShowPassword(true)}
+                  >
+                    <FaEye className="text-sm" />
+                  </button>
+                )}
+              </div>
+              {errors.password && (
+                <span className="text-(--color-error) text-xs mt-1 block">
+                  {errors.password}
+                </span>
+              )}
+            </div>
+
+            {/* Remember Me & Forgot Password */}
+            <div className="flex items-center justify-between mb-6">
+              <label className="flex items-center gap-2 cursor-pointer text-(--color-secondary)">
+                <input
+                  type="checkbox"
+                  name="rememberMe"
+                  checked={formData.rememberMe}
+                  onChange={handleInputChange}
+                  className="cursor-pointer"
+                />
+                <span className="text-sm">Remember me</span>
+              </label>
+              <div
+                onClick={() => setForgotPasswordModalOpen(true)}
+                className="text-sm text-(--color-primary) hover:underline transition-colors cursor-pointer"
+              >
+                Forgot Password?
+              </div>
+            </div>
+
+            {/* Login Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 bg-(--color-primary) text-white font-semibold rounded-md hover:bg-orange-500 transition-colors duration-300 mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Forgot Password?
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">
+                Don't have an account?
+              </span>
+            </div>
+          </div>
+
+          {/* Register Link */}
+          <p className="text-center text-(--color-secondary) text-sm">
+            <Link
+              to="/register"
+              className="text-(--color-primary) font-semibold hover:underline transition-colors"
+            >
+              Create an account
             </Link>
-          </div>
-
-          {/* Login Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-(--color-primary) text-white font-semibold rounded-md hover:bg-orange-500 transition-colors duration-300 mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
-
-        {/* Divider */}
-        <div className="relative mb-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">
-              Don't have an account?
-            </span>
-          </div>
+          </p>
         </div>
-
-        {/* Register Link */}
-        <p className="text-center text-(--color-secondary) text-sm">
-          <Link
-            to="/register"
-            className="text-(--color-primary) font-semibold hover:underline transition-colors"
-          >
-            Create an account
-          </Link>
-        </p>
       </div>
-    </div>
+      <ForgotPasswordModal
+        open={forgotPasswordModalOpen}
+        onClose={() => setForgotPasswordModalOpen(false)}
+      />
+    </>
   );
 };
 

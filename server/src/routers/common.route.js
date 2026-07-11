@@ -1,7 +1,11 @@
 import express from "express";
 import multer from "multer";
-import { updateUser } from "../controllers/common.controller.js";
+import {
+  updateUser,
+  UpdateUserPassword,
+} from "../controllers/common.controller.js";
 import { AuthProtect } from "../middlewares/auth.middleware.js";
+import { GetAllUsers } from "../controllers/admin.controller.js";
 
 const Upload = multer();
 const router = express.Router();
@@ -13,6 +17,8 @@ router.put(
   updateUser,
 );
 
-// router.patch("/change-password", AuthProtect, UpdateUserPassword);
+router.patch("/change-password", AuthProtect, UpdateUserPassword);
+
+router.get("/users", GetAllUsers);
 
 export default router;

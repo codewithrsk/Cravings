@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AdminSidebar from "../../components/adminDashboard/AdminSidebar";
-import AdminOrders from "../../components/adminDashboard/AdminOrders";
+import AdminUser from "../../components/adminDashboard/AdminUser";
 import AdminOverview from "../../components/adminDashboard/AdminOverview";
 import AdminWishList from "../../components/adminDashboard/AdminWishList";
 import AdminSettings from "../../components/adminDashboard/AdminSettings";
@@ -32,7 +32,7 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <div className="flex h-[92vh]">
+      <div className="flex h-[91vh]">
         <div className="w-1/6 border border-red-500 h-full shadow shadow-gray-500">
           <AdminSidebar active={active} setActive={setActive} />
         </div>
@@ -40,7 +40,7 @@ const AdminDashboard = () => {
           className="w-5/6 border border-green-500 h-full"
         >
           {active === "Overview" && <AdminOverview />}
-          {active === "Orders" && <AdminOrders />}
+          {active === "All Users" && <AdminUser />}
           {active === "WishList" && <AdminWishList />}
           {active === "Settings" && <AdminSettings />}
         </div>

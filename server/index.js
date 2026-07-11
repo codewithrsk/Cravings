@@ -19,6 +19,7 @@ app.use(morgan("dev"));
 app.use("/auth", AuthRouter);
 app.use("/public", PublicRouter);
 app.use("/common", CommonRouter);
+app.use("/admin", CommonRouter);
 
 //Default API
 app.get("/", (req, res) => {
