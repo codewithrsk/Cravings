@@ -1,10 +1,12 @@
-import User from "../models/user.model.js";
+import CommonRouter from "../routers/common.route.js";
 import cloudinary from "../config/cloudinary.config.js";
+import User from "../models/user.model.js";
 
 export const updateUser = async (req, res, next) => {
   try {
     const { email, fullName, phone } = req.body;
     const newPhoto = req.file;
+    console.log("error from controller");
 
     console.log("Req Body :", req.body);
     console.log("Req File :", req.file);
@@ -13,20 +15,21 @@ export const updateUser = async (req, res, next) => {
       error.statusCode = 400;
       return next(error);
     }
-
-    const existingUser = await User.findOne({ email });
+    
+    const existingUser = await User.findOne({ email });    
     if (!existingUser) {
       const error = new Error("Email not registred");
       error.statusCode = 404;
       return next(error);
     }
+    
 
     if (newPhoto) {
       existingUser?.photo.publicId &&
         (await cloudinary.uploader.destroy(existingUser.photo));
       const b64 = Buffer.from(newPhoto.buffer).toString("base64");
       const dataURI = `data:${newPhoto.mimetype};base64,${b64}`;
-      // console.log(dataURI.slice(0, 100));
+    
 
       const result = await cloudinary.uploader.upload(dataURI, {
         folder: "Cravings678/profile",
@@ -34,6 +37,7 @@ export const updateUser = async (req, res, next) => {
         height: 500,
         crop: "fill",
       });
+      
 
       console.log(result);
       existingUser.photo.url = result.secure_url;

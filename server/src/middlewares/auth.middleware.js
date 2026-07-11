@@ -9,6 +9,7 @@ export const AuthProtect = async (req, res, next) => {
       error.statusCode = 401;
       return next(error);
     }
+    console.log("AuthProtect Middleware Hit");
 
     console.log("Token From MiddleWare : ", token);
 
@@ -30,6 +31,8 @@ export const AuthProtect = async (req, res, next) => {
     }
 
     req.user = verifiedUser;
+    console.log("AuthProtect pass");
+    
     next();
   } catch (error) {
     console.log(error.message);
