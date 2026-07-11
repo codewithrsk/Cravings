@@ -1,38 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import api from "../config/api.config";
+import api from "../config/api.config.js";
 import { useAuth } from "../context/AuthContext";
 import ForgotPasswordModal from "../components/commonModals/ForgotPasswordModal";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [forgotPasswordModalOpen, setForgotPasswordModalOpen] = useState(false);
-  const { setUser, setIsLogin, isLogin, role } = useAuth();
-  useEffect(() => {
-    if (isLogin) {
-      toast.error("You Are already logded in");
-    }
-  }, [isLogin]);
-  if (isLogin && role === "customer") {
-    navigate("/user/dashboard");
-    return;
-  }
-
-  if (isLogin || role === "admin") {
-    navigate("/admin/dashboard");
-    return;
-  }
-
-  if (isLogin && role === "rider") {
-    navigate("/rider/dashboard");
-    return;
-  }
-  if (isLogin || role === "restauant") {
-    navigate("/restauant/dashboard");
-    return;
-  }
+  const { setUser, setIsLogin, setRole } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -43,6 +19,8 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
+    useState(false);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -83,6 +61,16 @@ const Login = () => {
       setUser(res.data.data);
       setIsLogin(true);
       //console.log(res.data.data.userType);
+      setRole(res.data.data.userType);
+
+      res.data.data.userType === "restaurant" &&
+        navigate("/restaurant-dashboard");
+
+      res.data.data.userType === "rider" && navigate("/rider-dashboard");
+
+      res.data.data.userType === "admin" && navigate("/admin-dashboard");
+
+      res.data.data.userType === "customer" && navigate("/customer-dashboard");
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
@@ -148,21 +136,17 @@ const Login = () => {
                       : "border-(--color-base-300)"
                   }`}
                 />
-                {showPassword ? (
-                  <button
-                    className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer"
-                    onClick={() => setShowPassword(false)}
-                  >
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-2.5 text-(--color-secondary) hover:text-(--color-primary) transition-colors"
+                >
+                  {showPassword ? (
                     <FaEyeSlash className="text-sm" />
-                  </button>
-                ) : (
-                  <button
-                    className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer"
-                    onClick={() => setShowPassword(true)}
-                  >
+                  ) : (
                     <FaEye className="text-sm" />
-                  </button>
-                )}
+                  )}
+                </button>
               </div>
               {errors.password && (
                 <span className="text-(--color-error) text-xs mt-1 block">
@@ -183,19 +167,19 @@ const Login = () => {
                 />
                 <span className="text-sm">Remember me</span>
               </label>
-              <div
-                onClick={() => setForgotPasswordModalOpen(true)}
-                className="text-sm text-(--color-primary) hover:underline transition-colors cursor-pointer"
+              <button
+                onClick={() => setIsForgotPasswordModalOpen(true)}
+                className="text-sm text-(--color-primary) hover:underline transition-colors"
               >
                 Forgot Password?
-              </div>
+              </button>
             </div>
 
             {/* Login Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-(--color-primary) text-white font-semibold rounded-md hover:bg-orange-500 transition-colors duration-300 mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 bg-(--color-primary) text-white font-semibold rounded-md hover:bg-orange-700 transition-colors duration-300 mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Logging in..." : "Login"}
             </button>
@@ -224,10 +208,13 @@ const Login = () => {
           </p>
         </div>
       </div>
-      <ForgotPasswordModal
-        open={forgotPasswordModalOpen}
-        onClose={() => setForgotPasswordModalOpen(false)}
-      />
+
+      {isForgotPasswordModalOpen && (
+        <ForgotPasswordModal
+          open={isForgotPasswordModalOpen}
+          onClose={() => setIsForgotPasswordModalOpen(false)}
+        />
+      )}
     </>
   );
 };

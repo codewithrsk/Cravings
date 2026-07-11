@@ -9,7 +9,7 @@ const sendEmail = async (to, subject, message) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.GMAIL_USER,
+        user: process.env.GMAIL_USERNAME,
         pass: process.env.GMAIL_PASSCODE,
       },
     });
@@ -36,7 +36,7 @@ const sendEmail = async (to, subject, message) => {
 export default sendEmail;
 
 // sendEmail(
-//   "rajvardhan@ricr.in",
+//   "rsk800001@gmail.com",
 //   "test Email",
 //   "<p style='color:red;'> Test Message</p>",
 // );
