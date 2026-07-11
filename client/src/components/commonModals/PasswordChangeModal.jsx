@@ -1,69 +1,152 @@
 import React from "react";
-import { IoMdCloseCircle } from "react-icons/io";
+import { useState } from "react";
+import { IoIosCloseCircleOutline } from "react-icons/io";
+import { LuLoaderCircle } from "react-icons/lu";
+import api from "../../config/api.config";
+import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const PasswordChangeModal = ({ open, onClose }) => {
+  const [formData, setFormData] = useState({
+    oldPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [showPassword, setShowPassword] = React.useState(false);
- const handleChangePassword = () => {
-    // Implement password change logic here
-    onClose(); // Close the modal after changing the password
-  } 
+  const handleCloseModal = () => {
+    setFormData({
+      oldPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
+    });
+    onClose();
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleChangePassword = async () => {
+    setIsLoading(true);
+    try {
+      if (formData.newPassword !== formData.confirmNewPassword) {
+        toast.error("New password and confirm password do not match.");
+        setIsLoading(false);
+        return;
+      }
+      const res = await api.patch("/common/change-password", formData);
+      toast.success("Password changed successfully!");
+      handleCloseModal();
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Unknown error occurred during password change. Please try again.",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (!open) return null;
-
   return (
     <>
-      <div className="fixed inset-0 bg-black/10 backdrop-blur-xs z-999 flex justify-center items-center ">
+      <div
+        className="fixed inset-0 z-999 bg-black/60 backdrop-blur-xs flex justify-center items-center"
+        // onClick={handleCloseModal}
+      >
         <div className="bg-white w-xl rounded shadow max-h-[80vh] overflow-y-auto relative">
-          <header className="flex justify-between p-4 border-b border-gray-200">
-            <div className="text-lg font-semibold text-gray-900">Change Password</div>
-            < button className="text-gray-500 hover:text-gray-700"
-            onClick={()=>{onClose()}}  >
-              <IoMdCloseCircle />
+          <header className="flex justify-between p-4 border-b border-(--color-secondary)">
+            <div className="font-bold text-xl text-(--color-primary)">
+              Change Password
+            </div>
+            <button onClick={handleCloseModal}>
+              <IoIosCloseCircleOutline className="text-red-400 hover:text-red-700 text-2xl" />
             </button>
           </header>
-          <main className="p-4">
-            <div className="mb-4">
-              <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700">
-                Current Password
-              </label>
-              <input
-                type="password"
-                id="currentPassword"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
-                New Password
-              </label>
-              <input
-                type="password"
-                id="newPassword"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                Confirm New Password
-              </label>
-              <input
-                type="text"
-                id="confirmPassword"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-        />
+          <main>
+            <div className="p-6 space-y-4">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="oldPassword" className="font-semibold">
+                  Current Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="oldPassword"
+                    name="oldPassword"
+                    value={formData.oldPassword}
+                    onChange={handleChange}
+                    className="w-full border border-(--color-secondary) rounded px-3 py-2 disabled:bg-(--color-secondary) disabled:text-(--color-secondary-content)"
+                    disabled={isLoading}
+                  />
+                  {showPassword ? (
+                    <FaEye
+                      className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer"
+                      onClick={() => setShowPassword(false)}
+                    />
+                  ) : (
+                    <FaEyeSlash
+                      className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer"
+                      onClick={() => setShowPassword(true)}
+                    />
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="newPassword" className="font-semibold">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  id="newPassword"
+                  name="newPassword"
+                  value={formData.newPassword}
+                  onChange={handleChange}
+                  className="border border-(--color-secondary) rounded px-3 py-2 disabled:bg-(--color-secondary) disabled:text-(--color-secondary-content)"
+                  disabled={isLoading}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="confirmNewPassword" className="font-semibold">
+                  Confirm New Password
+                </label>
+                <input
+                  type="text"
+                  id="confirmNewPassword"
+                  name="confirmNewPassword"
+                  value={formData.confirmNewPassword}
+                  onChange={handleChange}
+                  className="border border-(--color-secondary) rounded px-3 py-2 disabled:bg-(--color-secondary) disabled:text-(--color-secondary-content)"
+                  disabled={isLoading}
+                />
+              </div>
             </div>
           </main>
-          <footer className="p-4 bg-gray-100 flex justify-end">
-            <button className="bg-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-400 mr-2"
-            onClick={handleChangePassword}
+          <footer className="w-full p-4 border-t border-(--color-secondary) flex justify-end gap-3">
+            <button
+              onClick={handleCloseModal}
+              className="flex items-center gap-2 bg-(--color-secondary) text-(--color-secondary-content) px-3 py-1 rounded text-sm"
+              disabled={isLoading}
             >
               Cancel
             </button>
-            <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-              Change Password
+            <button
+              className="flex items-center gap-2 bg-(--color-primary) text-(--color-primary-content) px-3 py-1 rounded text-sm"
+              onClick={handleChangePassword}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <LuLoaderCircle className="animate-spin" /> Changing...
+                </>
+              ) : (
+                "Change Password"
+              )}
             </button>
-            </footer>
+          </footer>
         </div>
       </div>
     </>

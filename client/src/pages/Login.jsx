@@ -145,17 +145,21 @@ const Login = () => {
                     : "border-(--color-base-300)"
                 }`}
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-2.5 text-(--color-secondary) hover:text-(--color-primary) transition-colors"
-              >
-                {showPassword ? (
+              {showPassword ? (
+                <button
+                  className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer"
+                  onClick={() => setShowPassword(false)}
+                >
                   <FaEyeSlash className="text-sm" />
-                ) : (
+                </button>
+              ) : (
+                <button
+                  className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer"
+                  onClick={() => setShowPassword(true)}
+                >
                   <FaEye className="text-sm" />
-                )}
-              </button>
+                </button>
+              )}
             </div>
             {errors.password && (
               <span className="text-(--color-error) text-xs mt-1 block">
