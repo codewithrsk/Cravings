@@ -17,14 +17,14 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
-        <Toaster/>
+        <Toaster />
         <Header />
         <Routes>
           <Route path={"/"} element={<Home />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/register"} element={<Register />} />
           <Route path={"/about"} element={<About />} />
-          <Route path={"/contact-us"} element={<Contactus />} />
+          <Route path={"/contact"} element={<Contactus />} />
 
           <Route
             path={"/terms_and_conditions"}

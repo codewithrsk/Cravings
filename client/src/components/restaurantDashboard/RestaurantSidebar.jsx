@@ -14,7 +14,7 @@ const RestaurantSidebar = ({ active, setActive }) => {
   return (
     <>
       <div className="p-3">
-        <div className="border-b-2 text-center text-xl">User Dashboard</div>
+        <div className="border-b-2 text-center text-xl">Restaurant Dashboard</div>
 
         <div className="space-y-1 p-4 mt-4">
           {MenuItems.map((item, idx) => (

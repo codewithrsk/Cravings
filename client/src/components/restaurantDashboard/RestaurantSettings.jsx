@@ -11,6 +11,7 @@ const RestaurantSettings = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [profilePicPreview, setProfilePicPreview] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [coverPhoto, setCoverPhoto] = useState(user?.photo.url);
 
   const [formData, setFormData] = useState({
     fullName: user?.fullName || "",
@@ -58,6 +59,10 @@ const RestaurantSettings = () => {
     setProfilePicPreview(null);
     setEditingProfile(false);
   };
+  const handaleCoverPhoto = (e) => {
+    const file = e.target.files[0];
+    setCoverPhoto(URL.createObjectURL(file));
+  };
 
   const handleProfilePicChange = (e) => {
     const file = e.target.files[0];
@@ -66,7 +71,7 @@ const RestaurantSettings = () => {
   };
 
   return (
-    <div className="overflow-y-auto h-full p-6 space-y-6">
+    <div className=" overflow-y-auto h-full p-6 space-y-6">
       {/* User Profile Section */}
       <div className="bg-(--color-base-200) rounded-lg p-6">
         <div className="flex justify-between items-center mb-4">
@@ -170,12 +175,32 @@ const RestaurantSettings = () => {
           </div>
         </div>
       </div>
+      {/* Restauant formData */}
       <div>
-        <div className="h-full bg-(--color-base-200) rounded-lg p-6">
+        <div className="max-h-full bg-(--color-base-200) rounded-lg p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-2xl mb-4 font-semibold">
               Add Restaurant Details
             </h3>
+          </div>
+          <div className=" w-full h-60 relative bg-amber-300">
+            {coverPhoto && (
+              <>
+                <img src={coverPhoto} alt="" className="w-full h-full" />
+                <div className="absolute cursor-pointer bottom-1 right-1 border p-2 rounded-full w-fit bg-(--color-base-200)">
+                  <label htmlFor="coverphoto" className="">
+                    <MdOutlineAddAPhoto />
+                  </label>
+                  <input
+                    type="file"
+                    id="coverphoto"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handaleCoverPhoto}
+                  />
+                </div>
+              </>
+            )}
           </div>
           <h3 className="text-md font-medium my-4">
             Complete Address of your restaurant:
@@ -475,7 +500,9 @@ const RestaurantSettings = () => {
                 className="border border-(--color-secondary) rounded px-3 py-2 "
               >
                 <option value="">Select Platform</option>
-                <option value="facebook">Facebook</option>
+                <option value="facebook" className="bg-black text-amber-50">
+                  Facebook
+                </option>
                 <option value="instagram">Instagram</option>
                 <option value="twitter">Twitter</option>
                 <option value="linkedin">LinkedIn</option>
@@ -489,11 +516,6 @@ const RestaurantSettings = () => {
                 placeholder="Social Media Link"
                 className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
               />
-            </div>
-            <h3 className="text-md font-medium my-4">Restaurant Image:</h3>
-            <div>
-              <label htmlFor="coverPhoto">Cover Image</label>
-              <input/>
             </div>
           </div>
           <div className="flex justify-end mt-6">

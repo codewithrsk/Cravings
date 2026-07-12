@@ -28,7 +28,7 @@ const RestauantDashboard = () => {
   return (
     <>
       <div className="flex h-[92vh]">
-        <div className="w-1/6 border border-red-500 h-full shadow shadow-gray-500">
+        <div className="w-1/5 border border-red-500 h-full shadow shadow-gray-500">
           <RestaurantSidebar active={active} setActive={setActive} />
         </div>
         <div className="w-5/6 border border-green-500 h-full">
