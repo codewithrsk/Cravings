@@ -20,8 +20,8 @@ const Header = () => {
     if (role === "rider") {
       navigate("/rider/dashboard");
     }
-    if (role === "restauant") {
-      navigate("/restauant/dashboard");
+    if (role === "restaurant") {
+      navigate("/restaurant/dashboard");
     }
 
     //console.log("Handle Navigate", role);
@@ -45,7 +45,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="sticky top-0 z-99 flex items-center justify-between px-12 py-1 bg-(--color-primary) text-white w-full h-16 shadow-md">
+      <div className="sticky top-0 z-99 flex items-center justify-between px-12 py-1 bg-(--color-primary) text-white w-full h-[8vh] shadow-md">
         <div className="h-full">
           <Link to="/">
             <img src={logoLight} alt="Logo" className="w-fit h-full" />{" "}

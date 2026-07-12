@@ -10,8 +10,9 @@ import Terms_and_conditions from "./pages/Terms_and_conditions";
 import { Toaster } from "react-hot-toast";
 import UsearDashboard from "./pages/dashboard/UsearDashboard"
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
-import RestauantDashboard from "./pages/dashboard/RestauantDashboard";
 import RiderDashboard from "./pages/dashboard/RiderDashboard";
+import RestauantDashboard from "./pages/dashboard/RestauantDashboard";
+
 const App = () => {
   return (
     <>
@@ -31,7 +32,7 @@ const App = () => {
           />
           <Route path={"/user/dashboard"} element={<UsearDashboard />} />
           <Route path={"/admin/dashboard"} element={<AdminDashboard />} />
-          <Route path={"/restauant/dashboard"} element={<RestauantDashboard />} />
+          <Route path={"/restaurant/dashboard"} element={<RestauantDashboard />} />
           <Route path={"/rider/dashboard"} element={<RiderDashboard />} />
           
 

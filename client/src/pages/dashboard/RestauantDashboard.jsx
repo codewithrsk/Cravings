@@ -1,34 +1,30 @@
 import React, { useState } from "react";
-import RestaurantOrders from "../../components/restaurantDashboard/RestaurantOrders";
 import RestaurantSidebar from "../../components/restaurantDashboard/RestaurantSidebar";
-import RestaurantWishList from "../../components/restaurantDashboard/RestaurantWishList";
+import RestantOverview from "../../components/restaurantDashboard/RestaurantOverview";
+import RestaurantOrders from "../../components/restaurantDashboard/RestaurantOrders";
 import RestaurantSettings from "../../components/restaurantDashboard/RestaurantSettings";
-import RestaurantOverview from "../../components/restaurantDashboard/RestaurantOverview";
+import RestaurantWishList from "../../components/restaurantDashboard/RestaurantWishList";
+
 import { useAuth } from "../../context/AuthContext";
 
 const RestauantDashboard = () => {
   const [active, setActive] = useState("Overview");
+
   const { isLogin, role } = useAuth();
-  if (!isLogin || role !== "restauant") {
+  if (!isLogin || role !== "restaurant") {
     return (
       <>
-        <div className="h-[92vh] bg-[url('/foodTable.webp')]  bg-cover bg-center">
+        <div className="h-[92vh] flex items-center justify-center">
           <div className="h-full backdrop-blur-lg flex flex-col items-center justify-center ">
             <h1 className="text-2xl font-bold text-(--color-neutral-content)">
-              Access Denied. Please log in as a Admin to view this page.
+              Access Denied. Please log in as a {role} to view this page.
             </h1>
-            <button
-              className="mt-4 px-4 py-2 bg-(--color-primary) text-white rounded-md"
-              onClick={() => navigate("/login")}
-            >
-              Go to Login
-            </button>
           </div>
         </div>
       </>
     );
   }
-
+  
   return (
     <>
       <div className="flex h-[92vh]">

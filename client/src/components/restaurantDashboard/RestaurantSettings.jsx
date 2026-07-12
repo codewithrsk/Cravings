@@ -170,6 +170,342 @@ const RestaurantSettings = () => {
           </div>
         </div>
       </div>
+      <div>
+        <div className="h-full bg-(--color-base-200) rounded-lg p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-2xl mb-4 font-semibold">
+              Add Restaurant Details
+            </h3>
+          </div>
+          <h3 className="text-md font-medium my-4">
+            Complete Address of your restaurant:
+          </h3>
+          <div className="flex-col gap-4 ">
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantname"
+                className="block text-sm font-semibold mb-2 "
+              >
+                Restaurant Name
+              </label>
+
+              <input
+                type="text"
+                name="restaurantname"
+                id="restaurantname"
+                placeholder="Restaurant Name"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantAddress"
+                className="block text-sm font-semibold mb-2"
+              >
+                Address
+              </label>
+              <input
+                type="text"
+                name="restaurantAddress"
+                id="restaurantAddress"
+                placeholder="Restaurant Address"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantDescription"
+                className="block text-sm font-semibold mb-2"
+              >
+                City
+              </label>
+              <input
+                type="text"
+                name="restaurantCity"
+                id="restaurantCity"
+                placeholder="City"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantState"
+                className="block text-sm font-semibold mb-2"
+              >
+                State
+              </label>
+              <input
+                type="text"
+                name="restaurantState"
+                id="restaurantState"
+                placeholder="State"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantZip"
+                className="block text-sm font-semibold mb-2"
+              >
+                Pin Code
+              </label>
+              <input
+                type="text"
+                name="restaurantZip"
+                id="restaurantZip"
+                placeholder="Pin Code"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantcountry"
+                className="block text-sm font-semibold mb-2"
+              >
+                Country
+              </label>
+              <input
+                type="text"
+                name="restaurantcountry"
+                id="restaurantcountry"
+                placeholder="Country"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <h3 className="text-md font-medium my-4">
+              Complete Documents of your restaurant:
+            </h3>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantlegalname"
+                className="block text-sm font-semibold mb-2"
+              >
+                Legal Name
+              </label>
+              <input
+                type="text"
+                name="restaurantlegalname"
+                id="restaurantlegalname"
+                placeholder="Legal Name"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantcompanyname"
+                className="block text-sm font-semibold mb-2"
+              >
+                Company Name
+              </label>
+              <input
+                type="text"
+                name="restaurantcompanyname"
+                id="restaurantcompanyname"
+                placeholder="Company Name"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantgstcertificate"
+                className="block text-sm font-semibold mb-2"
+              >
+                GST Certificate
+              </label>
+              <input
+                type="text"
+                name="restaurantgstcertificate"
+                id="restaurantgstcertificate"
+                placeholder="GST Certificate"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantfssailicense"
+                className="block text-sm font-semibold mb-2"
+              >
+                FSSAI License
+              </label>
+              <input
+                type="text"
+                name="restaurantfssailicense"
+                id="restaurantfssailicense"
+                placeholder="FSSAI License"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantpancard"
+                className="block text-sm font-semibold mb-2"
+              >
+                PAN Card
+              </label>
+              <input
+                type="text"
+                name="restaurantpancard"
+                id="restaurantpancard"
+                placeholder="PAN Card"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <h3 className="text-md font-medium my-4">
+              Complete Bank Details of your restaurant:
+            </h3>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantbankname"
+                className="block text-sm font-semibold mb-2"
+              >
+                Bank Name
+              </label>
+              <input
+                type="text"
+                name="restaurantbankname"
+                id="restaurantbankname"
+                placeholder="Bank Name"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantaccountnumber"
+                className="block text-sm font-semibold mb-2"
+              >
+                Account Number
+              </label>
+              <input
+                type="text"
+                name="restaurantaccountnumber"
+                id="restaurantaccountnumber"
+                placeholder="Account Number"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantifsccode"
+                className="block text-sm font-semibold mb-2"
+              >
+                IFSC Code
+              </label>
+              <input
+                type="text"
+                name="restaurantifsccode"
+                id="restaurantifsccode"
+                placeholder="IFSC Code"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <h3 className="text-md font-medium my-4">
+              Complete Contact Details of your restaurant:
+            </h3>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantcontactemail"
+                className="block text-sm font-semibold mb-2"
+              >
+                Contact Email
+              </label>
+              <input
+                type="email"
+                name="restaurantcontactemail"
+                id="restaurantcontactemail"
+                placeholder="Contact Email"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantcontactphone"
+                className="block text-sm font-semibold mb-2"
+              >
+                Contact Phone
+              </label>
+              <input
+                type="tel"
+                name="restaurantcontactphone"
+                id="restaurantcontactphone"
+                placeholder="Contact Phone"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <h3 className="text-md font-medium my-4">
+              Complete Serving Hours of your restaurant:
+            </h3>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantopeningtime"
+                className="block text-sm font-semibold mb-2"
+              >
+                Opening Time
+              </label>
+              <input
+                type="time"
+                name="restaurantopeningtime"
+                id="restaurantopeningtime"
+                placeholder="Opening Time"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <label
+                htmlFor="restaurantclosingtime"
+                className="block text-sm font-semibold mb-2"
+              >
+                Closing Time
+              </label>
+              <input
+                type="time"
+                name="restaurantclosingtime"
+                id="restaurantclosingtime"
+                placeholder="Closing Time"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <h3 className="text-md font-medium my-4">
+              Complete Social Media Links of your restaurant:
+            </h3>
+            <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
+              <select
+                name="socialMedia"
+                id="socialMedia"
+                className="border border-(--color-secondary) rounded px-3 py-2 "
+              >
+                <option value="">Select Platform</option>
+                <option value="facebook">Facebook</option>
+                <option value="instagram">Instagram</option>
+                <option value="twitter">Twitter</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="youtube">YouTube</option>
+              </select>
+
+              <input
+                type="url"
+                name="socialMediaLink"
+                id="socialMediaLink"
+                placeholder="Social Media Link"
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+              />
+            </div>
+            <h3 className="text-md font-medium my-4">Restaurant Image:</h3>
+            <div>
+              <label htmlFor="coverPhoto">Cover Image</label>
+              <input/>
+            </div>
+          </div>
+          <div className="flex justify-end mt-6">
+            <button
+              type="submit"
+              className="bg-(--color-primary)/90 hover:bg-(--color-primary) hover:animate-pulse text-(--color-primary-content) font-bold py-2 px-4 rounded"
+            >
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
