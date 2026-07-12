@@ -122,4 +122,3 @@ export const sendOTPEmail = async (to, otp) => {
 
   await sendEmail(to, subject, message);
 };
-
