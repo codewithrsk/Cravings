@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
-import { genToken } from "../utils/auth.service.js";
+import { genToken, genOTPToken } from "../utils/auth.service.js";
 import OTP from "../models/otp.model.js";
 
 import { sendOTPEmail } from "../utils/email.service.js";
@@ -170,14 +170,14 @@ export const VerifyOtp = async (req, res, next) => {
 
     await existingOTP.deleteOne();
 
-    // const existingUser = await User.findOne({ email });
-    // if (!existingUser) {
-    //   const error = new Error("Email not registered");
-    //   error.statusCode = 404;
-    //   return next(error);
-    // }
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      const error = new Error("Email not registered");
+      error.statusCode = 404;
+      return next(error);
+    }
 
-    // await genOTPToken(existingUser, res);
+    await genOTPToken(existingUser, res);
     res
       .status(200)
       .json({ message: "OTP verified. Create You New Password Now" });
@@ -190,13 +190,13 @@ export const ResetPassword = async (req, res, next) => {
   try {
     const { newPassword } = req.body;
 
-    // const currentUser = req.user;
+    const currentUser = req.user;
 
-    // const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // currentUser.password = hashedPassword;
+    currentUser.password = hashedPassword;
 
-    // await currentUser.save();
+    await currentUser.save();
 
     res.status(200).json({ message: "Password Changed" });
   } catch (error) {
