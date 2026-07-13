@@ -3,8 +3,8 @@ import {
   uploadMultipleImages,
   deleteMultipleImages,
   UploadSingleImage,
-  deleteSingleImage,
-} from "../utils/imageUpload.service.js";
+  deleteSingleImage
+} from "../utils/image.service.js";
 
 export const restaurantUpdateProfile = async (req, res, next) => {
   try {
@@ -90,3 +90,4 @@ export const restaurantUpdateProfile = async (req, res, next) => {
     next();
   }
 };
+

@@ -4,6 +4,7 @@ import connectDB from "./src/config/dbConnection.config.js";
 import AuthRouter from "./src/routers/auth.route.js";
 import PublicRouter from "./src/routers/public.route.js";
 import CommonRouter from "./src/routers/common.route.js";
+import RestaurentRouter from "./src/routers/restaurant.route.js"
 import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -20,6 +21,7 @@ app.use("/auth", AuthRouter);
 app.use("/public", PublicRouter);
 app.use("/common", CommonRouter);
 app.use("/admin", CommonRouter);
+app.use("/restauants",RestaurentRouter)
 
 //Default API
 app.get("/", (req, res) => {

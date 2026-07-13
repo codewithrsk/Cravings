@@ -209,7 +209,7 @@ const RestaurantSettings = () => {
             <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
               <label
                 htmlFor="restaurantname"
-                className="block text-sm font-semibold mb-2 "
+                className="block text-sm font-semibold mb-2 col-span-1"
               >
                 Restaurant Name
               </label>
@@ -219,13 +219,13 @@ const RestaurantSettings = () => {
                 name="restaurantname"
                 id="restaurantname"
                 placeholder="Restaurant Name"
-                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-7`}
               />
             </div>
             <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
               <label
                 htmlFor="restaurantAddress"
-                className="block text-sm font-semibold mb-2"
+                className="block text-sm font-semibold mb-2 col-span-1  "
               >
                 Address
               </label>
@@ -478,7 +478,7 @@ const RestaurantSettings = () => {
             <div className="grid grid-cols-8 gap-2 mt-4 justify-center items-center">
               <label
                 htmlFor="restaurantclosingtime"
-                className="block text-sm font-semibold mb-2"
+                className="block text-sm font-semibold mb-2 col-span-1"
               >
                 Closing Time
               </label>
@@ -487,7 +487,7 @@ const RestaurantSettings = () => {
                 name="restaurantclosingtime"
                 id="restaurantclosingtime"
                 placeholder="Closing Time"
-                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-4`}
+                className={`w-full px-3 py-2 border border-(--color-secondary) rounded col-span-7`}
               />
             </div>
             <h3 className="text-md font-medium my-4">
