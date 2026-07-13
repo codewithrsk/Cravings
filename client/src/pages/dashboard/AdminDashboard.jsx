@@ -14,7 +14,7 @@ const AdminDashboard = () => {
 
   if (!isLogin || role !== "admin") {
     return (
-      <div className="h-[92vh] bg-[url('/foodTable.webp')]  bg-cover bg-center">
+      <div className=" h-[9vh]">
         <div className="h-full backdrop-blur-lg flex flex-col items-center justify-center ">
           <h1 className="text-2xl font-bold text-(--color-neutral-content)">
             Access Denied. Please log in as a Admin to view this page.
@@ -32,7 +32,7 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <div className="flex h-[91vh]">
+      <div className="flex h-[92vh]">
         <div className="w-1/6 border border-red-500 h-full shadow shadow-gray-500">
           <AdminSidebar active={active} setActive={setActive} />
         </div>

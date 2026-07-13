@@ -15,6 +15,7 @@ const AdminSidebar = ({ active, setActive }) => {
 
   return (
     <>
+    <div className="h-[92vh] flex">
       <div className="p-3">
         <div className="border-b-2 text-center text-xl">Admin Dashboard</div>
 
@@ -30,6 +31,7 @@ const AdminSidebar = ({ active, setActive }) => {
             </button>
           ))}
         </div>
+      </div>
       </div>
     </>
   );

@@ -19,6 +19,5 @@ router.put(
 
 router.patch("/change-password", AuthProtect, UpdateUserPassword);
 
-router.get("/users", GetAllUsers);
 
 export default router;

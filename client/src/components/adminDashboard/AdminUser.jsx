@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import api from "../../config/api.config";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 const AdminUser = () => {
   const [showUsers, setShowUsers] = useState(false);
   const [users, setUsers] = useState([]);
+  const { user } = useAuth();
 
-  useEffect(() => {
+  
     const getUsers = async () => {
       try {
         // Simulate fetching user data from an API
@@ -14,20 +17,21 @@ const AdminUser = () => {
         // const users = response.data;
         const response = await api.get("/admin/users");
         setUsers(response.data.data);
-        console.log("user", users);
+        console.log(response.data.data);
+        setShowUsers(true)     
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
-    getUsers();
-  }, []);
+  
 
   return (
     <>
+      <div className="h-full overflow-y-auto">
       <div className="bg-amber-50 w-fit m-7 text-2xl underline p-3">
         Admin Users
       </div>
-      {showUsers === false && (
+      {!showUsers && (
         <>
           <div className="grid grid-cols-2 gap-4 m-7">
             <div className="bg-amber-100 p-4 rounded-lg shadow-md">
@@ -73,7 +77,8 @@ const AdminUser = () => {
         </div>
       )}
       {showUsers && (
-        <ol className="">
+        <div className="h-full">
+        <ol className="h-fit">
           {users.map((user, index) => (
             <li key={index} className="mb-2">
               <div className="flex bg-amber-100 p-4 rounded-lg shadow-md m-7 text-gray-700 items-center">
@@ -98,7 +103,9 @@ const AdminUser = () => {
             </li>
           ))}
         </ol>
+        </div>
       )}
+      </div>
     </>
   );
 };
