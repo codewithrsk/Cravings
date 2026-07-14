@@ -23,7 +23,7 @@ const RestaurantSetting = () => {
 
   return (
     <>
-      <div className=" h-full flex flex-col p-4">
+      <div className=" h-full  flex flex-col p-4 ">
         <div className="border-b border-(--color-secondary)/50 flex justify-between mb-2 w-full">
           <div className="flex gap-3 ">
             {Tabs.map((tab, idx) => (

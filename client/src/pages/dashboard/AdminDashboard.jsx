@@ -33,7 +33,7 @@ const AdminDashboard = () => {
   return (
     <>
       <div className="flex h-[92vh]">
-        <div className="w-1/6 border border-red-500 h-full shadow shadow-gray-500">
+        <div className=" border border-red-500 h-full shadow shadow-gray-500">
           <AdminSidebar active={active} setActive={setActive} />
         </div>
         <div
