@@ -150,7 +150,7 @@ const RestaurantInformation = () => {
         },
       };
 
-      await api.put(`/restaurant/update-data?id=${user._id}`, payload);
+      await api.put(`/restaurant/update-profile`, payload);
       toast.success("Restaurant information updated successfully!");
       setEditingRestaurant(false);
       fetchRestaurantData();
