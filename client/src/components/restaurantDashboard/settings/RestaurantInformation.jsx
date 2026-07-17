@@ -539,52 +539,53 @@ const RestaurantInformation = () => {
                   />
                 </div>
               </div>
+
+              <div className="bg-(--color-base-100) my-4 rounded-2xl shadow-sm border border-(--color-base-300) p-6">
+                <div className="mb-5 border-b border-(--color-base-300) pb-3 flex justify-between items-center">
+                  <h3 className="text-lg font-bold text-(--color-primary)">
+                    Legal Information
+                  </h3>
+                  {editingRestaurant && (
+                    <span className="text-xs font-medium bg-(--color-info) text-(--color-info-content) px-2 py-1 rounded-md">
+                      Currently Editing
+                    </span>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
+                  <div className="w-full space-y-1.5">
+                    <label className="text-sm font-semibold text-(--color-base-content)">
+                      Registered Legal Name
+                    </label>
+                    <input
+                      type="text"
+                      name="legalName"
+                      value={restaurantFormData.legalName}
+                      onChange={handleRestaurantChange}
+                      className={`${inputBaseClass} ${editingRestaurant ? inputEnabledClass : inputDisabledClass}`}
+                      disabled={!editingRestaurant}
+                    />
+                  </div>
+
+                  <div className="w-full space-y-1.5">
+                    <label className="text-sm font-semibold text-(--color-base-content)">
+                      Company Type
+                    </label>
+                    <input
+                      type="text"
+                      name="companyType"
+                      value={restaurantFormData.companyType}
+                      onChange={handleRestaurantChange}
+                      placeholder="e.g. LLC, Sole Proprietorship"
+                      className={`${inputBaseClass} ${editingRestaurant ? inputEnabledClass : inputDisabledClass}`}
+                      disabled={!editingRestaurant}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Legal Information Card */}
-            <div className="bg-(--color-base-100) mb-8 rounded-2xl shadow-sm border border-(--color-base-300) p-6">
-              <div className="mb-5 border-b border-(--color-base-300) pb-3 flex justify-between items-center">
-                <h3 className="text-lg font-bold text-(--color-primary)">
-                  Legal Information
-                </h3>
-                {editingRestaurant && (
-                  <span className="text-xs font-medium bg-(--color-info) text-(--color-info-content) px-2 py-1 rounded-md">
-                    Currently Editing
-                  </span>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
-                <div className="w-full space-y-1.5">
-                  <label className="text-sm font-semibold text-(--color-base-content)">
-                    Registered Legal Name
-                  </label>
-                  <input
-                    type="text"
-                    name="legalName"
-                    value={restaurantFormData.legalName}
-                    onChange={handleRestaurantChange}
-                    className={`${inputBaseClass} ${editingRestaurant ? inputEnabledClass : inputDisabledClass}`}
-                    disabled={!editingRestaurant}
-                  />
-                </div>
-
-                <div className="w-full space-y-1.5">
-                  <label className="text-sm font-semibold text-(--color-base-content)">
-                    Company Type
-                  </label>
-                  <input
-                    type="text"
-                    name="companyType"
-                    value={restaurantFormData.companyType}
-                    onChange={handleRestaurantChange}
-                    placeholder="e.g. LLC, Sole Proprietorship"
-                    className={`${inputBaseClass} ${editingRestaurant ? inputEnabledClass : inputDisabledClass}`}
-                    disabled={!editingRestaurant}
-                  />
-                </div>
-              </div>
-            </div>
           </div>
         )}
       </div>
