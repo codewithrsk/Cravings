@@ -26,6 +26,17 @@ const RestaurantOrders = () => {
       time: "7:45 PM",
     },
     {
+      id: "#ORD-420",
+      customer: "Ravi Shankar",
+      items: [
+        { qty: 1, name: "Veg Biryani" },
+        { qty: 2, name: "Raita" },
+      ],
+      total: 320,
+      status: "new",
+      time: "7:45 PM",
+    },
+    {
       id: "#ORD-090",
       customer: "Amit Singh",
       items: [
@@ -57,18 +68,14 @@ const RestaurantOrders = () => {
   const [activeTab, setActiveTab] = useState("new");
 
   // Filter orders
-  const filteredOrders = orders.filter(
-    (order) => order.status === activeTab
-  );
+  const filteredOrders = orders.filter((order) => order.status === activeTab);
 
   // Update order status
   const updateOrderStatus = (orderId, newStatus) => {
     setOrders((prevOrders) =>
       prevOrders.map((order) =>
-        order.id === orderId
-          ? { ...order, status: newStatus }
-          : order
-      )
+        order.id === orderId ? { ...order, status: newStatus } : order,
+      ),
     );
   };
 
@@ -114,9 +121,7 @@ const RestaurantOrders = () => {
         {/* Orders */}
         {filteredOrders.length === 0 ? (
           <div className="text-center py-16 bg-(--color-base-200) rounded-xl border border-(--color-base-300)">
-            <h3 className="text-xl font-medium">
-              No orders in this section.
-            </h3>
+            <h3 className="text-xl font-medium">No orders in this section.</h3>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -160,15 +165,11 @@ const RestaurantOrders = () => {
 
                 {/* Footer */}
                 <div className="mt-5 pt-4 border-t border-(--color-base-300) flex justify-between items-center">
-                  <h3 className="text-xl font-bold">
-                    ₹{order.total}
-                  </h3>
+                  <h3 className="text-xl font-bold">₹{order.total}</h3>
 
                   {order.status === "new" && (
                     <button
-                      onClick={() =>
-                        updateOrderStatus(order.id, "preparing")
-                      }
+                      onClick={() => updateOrderStatus(order.id, "preparing")}
                       className="px-4 py-2 rounded-lg font-semibold bg-(--color-primary) text-(--color-primary-content) hover:opacity-90 transition-all shadow-sm"
                     >
                       Accept & Prepare
@@ -177,9 +178,7 @@ const RestaurantOrders = () => {
 
                   {order.status === "preparing" && (
                     <button
-                      onClick={() =>
-                        updateOrderStatus(order.id, "ready")
-                      }
+                      onClick={() => updateOrderStatus(order.id, "ready")}
                       className="px-4 py-2 rounded-lg font-semibold bg-(--color-info) text-(--color-info-content) hover:opacity-90 transition-all shadow-sm"
                     >
                       Mark Ready
@@ -188,9 +187,7 @@ const RestaurantOrders = () => {
 
                   {order.status === "ready" && (
                     <button
-                      onClick={() =>
-                        updateOrderStatus(order.id, "completed")
-                      }
+                      onClick={() => updateOrderStatus(order.id, "completed")}
                       className="px-4 py-2 rounded-lg font-semibold bg-(--color-success) text-(--color-success-content) hover:opacity-90 transition-all shadow-sm"
                     >
                       Hand to Delivery
