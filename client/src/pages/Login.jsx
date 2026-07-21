@@ -71,7 +71,8 @@ const Login = () => {
       res.data.data.userType === "admin" && navigate("/admin-dashboard");
 
       res.data.data.userType === "customer" && navigate("/customer-dashboard");
-      res.data.data.userType === "restaurant"&& navigate("/restaurant-dashboard");
+      res.data.data.userType === "restaurant" &&
+        navigate("/restaurant-dashboard");
     } catch (error) {
       toast.error(
         error.response?.data?.message ||

@@ -122,6 +122,19 @@ const ResturantCoreDetails = () => {
     }
   };
 
+   const handleGetLocation = () => {
+    try {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position.coords.latitude, position.coords.longitude);
+        setRestaurantFormData((prev) => ({
+          ...prev,
+          geoLat: position.coords.latitude,
+          geoLon: position.coords.longitude,
+        }));
+      });
+    } catch (error) {}
+  };
+
   const handleCancelRestaurant = () => {
     if (restaurantData) {
       // Revert to original fetched data
@@ -238,9 +251,20 @@ const ResturantCoreDetails = () => {
              <div className="mb-5 border-b border-(--color-base-300) pb-3 flex justify-between items-center">
               <h3 className="text-lg font-bold text-(--color-primary)">Location & Address</h3>
               {editingRestaurant && (
+                <>
                 <span className="text-xs font-medium bg-(--color-info) text-(--color-info-content) px-2 py-1 rounded-md">
                   Editing mode
                 </span>
+                  <button
+                        onClick={handleGetLocation}
+                        className="flex items-center gap-2 bg-(--color-primary) text-(--color-primary-content) px-2 py-0.5 rounded text-xs"
+                        disabled={isLoading}
+                      >
+                        {isLoading
+                          ? "Getting Current Location..."
+                          : "Get Current Location"}
+                      </button>
+                </>
               )}
             </div>
 
