@@ -79,6 +79,8 @@ export const OTPAuthProtect = async (req, res, next) => {
 export const RestaurantAuthProtect = async (req, res, next) => {
   try {
     const token = req.cookies.Oreo;
+    console.log("tocken");
+    
     if (!token) {
       const error = new Error("Session Expired");
       error.statusCode = 401;
@@ -112,6 +114,7 @@ export const RestaurantAuthProtect = async (req, res, next) => {
 
     // Send the verified user to the Controller for further processing
     req.user = verifiedUser;
+    console.log("user verifide");
     next();
 
   } catch (error) {

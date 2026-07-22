@@ -22,7 +22,8 @@ app.use("/auth", AuthRouter);
 app.use("/public", PublicRouter);
 app.use("/common", CommonRouter);
 app.use("/admin", AdminRouter);
-app.use("/restauants",RestaurentRouter)
+app.use("/restaurant",RestaurentRouter)
+// /restaurant/update-restaurant-info
 
 //Default API
 app.get("/", (req, res) => {

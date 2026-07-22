@@ -10,6 +10,7 @@ export const RestaurantGetData = async (req, res, next) => {
   try {
     const currentUser = req.user;
     const managerId = req.query.id;
+    console.log("managerId = ", managerId);
 
     console.log("Current User:", currentUser);
     console.log("Manager ID:", managerId);
@@ -20,17 +21,18 @@ export const RestaurantGetData = async (req, res, next) => {
       return next(error);
     }
 
-    const restaurantData = await Restaurant.findone({ managerId });
+    const restaurantData = await Restaurant.findOne({ managerId });
+    console.log("restaurantData = ", restaurantData);
 
-    if (restaurantData) {
-      res.status(200).json({
-        message: "Restaurant Fetched Successfully",
-        data: restaurantData,
-      });
-    } else {
+    if (!restaurantData) {
       res.status(200).json({
         message: "No restaurant Data Found",
         data: {},
+      });
+    } else {
+      res.status(200).json({
+        message: "Restaurant Fetched Successfully",
+        data: restaurantData,
       });
     }
   } catch (error) {
@@ -125,8 +127,6 @@ export const RestaurantUpdateProfile = async (req, res, next) => {
 };
 
 export const RestaurantUpdateInfo = async (req, res, next) => {
-  console.log(req);
-  
   try {
     const currentUser = req.user;
     const {
@@ -142,6 +142,10 @@ export const RestaurantUpdateInfo = async (req, res, next) => {
       companyType,
     } = req.body;
 
+    console.log(req.body);
+
+    console.log("currentUser", currentUser);
+
     if (
       !restaurantName ||
       !description ||
@@ -151,11 +155,13 @@ export const RestaurantUpdateInfo = async (req, res, next) => {
       !contactPhone ||
       !openingTime ||
       !closingTime ||
-      !legalName||
+      !legalName ||
       !companyType
     ) {
       const error = new Error("All fields are required");
       error.statusCode = 400;
+      console.log("All filde are hit");
+
       return next(error);
     }
 
@@ -165,6 +171,8 @@ export const RestaurantUpdateInfo = async (req, res, next) => {
     const existingRestaurant = await Restaurant.findOne({
       managerId: currentUser._id,
     });
+    console.log("cant find user");
+
     if (!existingRestaurant) {
       const newRestaurant = await Restaurant.create({
         managerId: currentUser._id,

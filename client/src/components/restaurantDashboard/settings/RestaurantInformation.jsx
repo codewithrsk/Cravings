@@ -33,7 +33,9 @@ const RestaurantInformation = () => {
   // Restaurant handlers
   const [isLoadingRestaurant, setIsLoadingRestaurant] = useState(false);
   const [loadingRestaurantError, setLoadingRestaurantError] = useState(null);
-  const [restaurantData, setRestaurantData] = useState(null);
+  const [restaurantData, setRestaurantData] = useState(
+    sessionStorage.getItem("cravingRestaurant"),
+  );
   const [editingRestaurant, setEditingRestaurant] = useState(false);
 
   const [restaurantFormData, setRestaurantFormData] = useState({
@@ -41,7 +43,6 @@ const RestaurantInformation = () => {
     description: "",
     restaurantType: "",
     cuisineTypes: "",
-    isOpen: false,
     contactEmail: "",
     contactPhone: "",
     openingTime: "",
@@ -58,7 +59,6 @@ const RestaurantInformation = () => {
         description: restaurantData.description || "",
         restaurantType: restaurantData.restaurantType || "",
         cuisineTypes: restaurantData.cuisineTypes?.join(", ") || "",
-        isOpen: restaurantData.isOpen || false,
         contactEmail: restaurantData.contactDetails?.email || "",
         contactPhone: restaurantData.contactDetails?.phone || "",
         openingTime: restaurantData.servingHours?.openingTime || "",
@@ -128,8 +128,7 @@ const RestaurantInformation = () => {
   const handleSaveRestaurant = async () => {
     try {
       setIsLoading(true);
-      
-      
+
       const payload = {
         restaurantName: restaurantFormData.restaurantName,
         description: restaurantFormData.description,
@@ -152,11 +151,15 @@ const RestaurantInformation = () => {
         },
       };
       console.log(payload);
-       console.log(restaurantFormData);
-       
+      console.log(restaurantFormData);
 
-      await api.put(`/restaurant/update-restaurant-info`, payload);
+      const req = await api.put(
+        `/restaurant/update-restaurant-info`,
+        restaurantFormData,
+      );
       toast.success("Restaurant information updated successfully!");
+      setRestaurantFormData(req.data.data);
+      sessionStorage.setItem("cravingRestaurant", JSON.parse(req.data.data));
       setEditingRestaurant(false);
       fetchRestaurantData();
     } catch (error) {
@@ -192,8 +195,13 @@ const RestaurantInformation = () => {
     try {
       setIsLoadingRestaurant(true);
       setLoadingRestaurantError(null);
-      // const res = await api.get(`/restaurant/get-resturant-data?id=${user._id}`);
-      // setRestaurantData(res.data.data);
+      const res = await api.get(
+        `/restaurant/get-resturant-data?id=${user._id}`,
+      );
+      console.log(res.data.data);
+
+      sessionStorage.setItem("cravingRestaurant", JSON.parse(res.data.data));
+      setRestaurantData(res.data.data);
     } catch (error) {
       const errMsg =
         error.response?.data?.message ||
@@ -207,7 +215,7 @@ const RestaurantInformation = () => {
 
   useEffect(() => {
     fetchRestaurantData();
-  }, [user?._id]);
+  }, [user]);
 
   // Refactored UI Helper Classes using your CSS Variables
   const inputBaseClass =

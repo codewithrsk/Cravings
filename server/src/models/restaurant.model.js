@@ -28,9 +28,9 @@ const RestaurantSchema = mongoose.Schema(
       type: {
         legalName: { type: String, required: true },
         companyType: { type: String, required: true },
-        gstCertificate: { type: String, required: true },
-        fssaiCertificate: { type: String, required: true },
-        panCard: { type: String, required: true },
+        gstCertificate: { type: String, default:"" },
+        fssaiCertificate: { type: String, default:"" },
+        panCard: { type: String, default:"" },
       },
     },
     financialDetails: {
