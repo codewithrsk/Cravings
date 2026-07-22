@@ -128,6 +128,8 @@ const RestaurantInformation = () => {
   const handleSaveRestaurant = async () => {
     try {
       setIsLoading(true);
+      
+      
       const payload = {
         restaurantName: restaurantFormData.restaurantName,
         description: restaurantFormData.description,
@@ -149,8 +151,11 @@ const RestaurantInformation = () => {
           companyType: restaurantFormData.companyType,
         },
       };
+      console.log(payload);
+       console.log(restaurantFormData);
+       
 
-      await api.put(`/restaurant/update-profile`, payload);
+      await api.put(`/restaurant/update-restaurant-info`, payload);
       toast.success("Restaurant information updated successfully!");
       setEditingRestaurant(false);
       fetchRestaurantData();

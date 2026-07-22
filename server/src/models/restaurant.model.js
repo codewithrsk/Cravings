@@ -8,11 +8,11 @@ const RestaurantSchema = mongoose.Schema(
       required: true,
     },
     restaurantName: { type: String, required: true },
-    address: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String, required: true },
-    pinCode: { type: String, required: true },
-    country: { type: String, required: true },
+    address: { type: String,default: "" },
+    city: { type: String, default: "" },
+    state: { type: String, default: "" },
+    pinCode: { type: String, default: "" },
+    country: { type: String, default: "" },
     geoLocation: {
       type: {
         lat: {
@@ -70,14 +70,14 @@ const RestaurantSchema = mongoose.Schema(
           publicId: { type: String, required: true },
         },
       ],
-      required: true,
+     
     },
     coverImage: {
       type: {
         url: { type: String, required: true },
         publicId: { type: String, required: true },
       },
-      required: true,
+     
     },
     description: { type: String, required: true },
     restaurantType: {

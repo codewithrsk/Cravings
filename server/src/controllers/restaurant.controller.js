@@ -3,10 +3,43 @@ import {
   uploadMultipleImages,
   deleteMultipleImages,
   UploadSingleImage,
-  deleteSingleImage
+  deleteSingleImage,
 } from "../utils/image.service.js";
 
-export const restaurantUpdateProfile = async (req, res, next) => {
+export const RestaurantGetData = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const managerId = req.query.id;
+
+    console.log("Current User:", currentUser);
+    console.log("Manager ID:", managerId);
+
+    if (currentUser._id.toString() !== managerId) {
+      const error = new Error("Unauthorized Access");
+      error.statusCode = 401;
+      return next(error);
+    }
+
+    const restaurantData = await Restaurant.findone({ managerId });
+
+    if (restaurantData) {
+      res.status(200).json({
+        message: "Restaurant Fetched Successfully",
+        data: restaurantData,
+      });
+    } else {
+      res.status(200).json({
+        message: "No restaurant Data Found",
+        data: {},
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    next();
+  }
+};
+
+export const RestaurantUpdateProfile = async (req, res, next) => {
   try {
     const currentUser = req.user;
     const restaurantDataFromFE = req.body;
@@ -29,7 +62,7 @@ export const restaurantUpdateProfile = async (req, res, next) => {
 
     if (!existingRestaurant) {
       if (coverImageFromFE) {
-        const coverImage = await UploadSingleImage(
+        const coverImage = await uploadSingleImage(
           coverImageFromFE,
           `restaurant/${currentUser.phone}/coverPhoto`,
         );
@@ -58,7 +91,7 @@ export const restaurantUpdateProfile = async (req, res, next) => {
       if (coverImageFromFE) {
         await deleteSingleImage(existingRestaurant.coverImage);
 
-        const coverImage = await UploadSingleImage(
+        const coverImage = await uploadSingleImage(
           coverImageFromFE,
           `restaurant/${currentUser.phone}/coverPhoto`,
         );
@@ -91,6 +124,123 @@ export const restaurantUpdateProfile = async (req, res, next) => {
   }
 };
 
+export const RestaurantUpdateInfo = async (req, res, next) => {
+  console.log(req);
+  
+  try {
+    const currentUser = req.user;
+    const {
+      restaurantName,
+      description,
+      restaurantType,
+      cuisineTypes,
+      contactEmail,
+      contactPhone,
+      openingTime,
+      closingTime,
+      legalName,
+      companyType,
+    } = req.body;
 
+    if (
+      !restaurantName ||
+      !description ||
+      !restaurantType ||
+      !cuisineTypes ||
+      !contactEmail ||
+      !contactPhone ||
+      !openingTime ||
+      !closingTime ||
+      !legalName||
+      !companyType
+    ) {
+      const error = new Error("All fields are required");
+      error.statusCode = 400;
+      return next(error);
+    }
 
+    const cuisineTypesArray = cuisineTypes
+      .split(",")
+      .map((type) => type.trim());
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+    if (!existingRestaurant) {
+      const newRestaurant = await Restaurant.create({
+        managerId: currentUser._id,
+        restaurantName,
+        description,
+        restaurantType,
+        cuisineTypes: cuisineTypesArray,
+        contactDetails: {
+          email: contactEmail,
+          phone: contactPhone,
+        },
+        servingHours: {
+          openingTime,
+          closingTime,
+        },
+        documents: {
+          legalName,
+          companyType,
+        },
+      });
+      return res.status(201).json({
+        message: "Restaurant profile created successfully",
+        data: newRestaurant,
+      });
+    } else {
+      existingRestaurant.restaurantName = restaurantName;
+      existingRestaurant.description = description;
+      existingRestaurant.restaurantType = restaurantType;
+      existingRestaurant.cuisineTypes = cuisineTypesArray;
+      existingRestaurant.contactDetails.email = contactEmail;
+      existingRestaurant.contactDetails.phone = contactPhone;
+      existingRestaurant.servingHours.openingTime = openingTime;
+      existingRestaurant.servingHours.closingTime = closingTime;
+      existingRestaurant.documents.companyType = companyType;
+      existingRestaurant.documents.legalName = legalName;
 
+      await existingRestaurant.save();
+      return res.status(200).json({
+        message: "Restaurant profile updated successfully",
+        data: existingRestaurant,
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    next();
+  }
+};
+
+export const OpenRestaurant = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+
+    const OpenStatus = req.params.openStatus;
+
+    console.log("Open Status is", OpenStatus);
+
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+
+    if (!existingRestaurant) {
+      const error = new Error("Restaurant Not Found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    existingRestaurant.isOpen = OpenStatus;
+
+    await existingRestaurant.save();
+
+    return res.status(200).json({
+      message: `${OpenStatus ? "Restaurant is Live Now" : "Restaurant is Offline"}`,
+      data: existingRestaurant,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next();
+  }
+};
