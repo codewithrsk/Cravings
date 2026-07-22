@@ -159,7 +159,7 @@ const RestaurantInformation = () => {
       );
       toast.success("Restaurant information updated successfully!");
       setRestaurantFormData(req.data.data);
-      sessionStorage.setItem("cravingRestaurant", JSON.parse(req.data.data));
+      sessionStorage.setItem("cravingRestaurant", JSON.stringify(req.data.data));
       setEditingRestaurant(false);
       fetchRestaurantData();
     } catch (error) {
@@ -200,7 +200,7 @@ const RestaurantInformation = () => {
       );
       console.log(res.data.data);
 
-      sessionStorage.setItem("cravingRestaurant", JSON.parse(res.data.data));
+      sessionStorage.setItem("cravingRestaurant", JSON.stringify(res.data.data));
       setRestaurantData(res.data.data);
     } catch (error) {
       const errMsg =
