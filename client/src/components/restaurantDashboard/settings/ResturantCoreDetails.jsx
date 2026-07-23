@@ -246,9 +246,6 @@ const ResturantCoreDetails = () => {
               </h3>
               {editingRestaurant && (
                 <>
-                  <span className="text-xs font-medium bg-(--color-info) text-(--color-info-content) px-2 py-1 rounded-md">
-                    Editing mode
-                  </span>
                   <button
                     onClick={handleGetLocation}
                     className="flex items-center gap-2 bg-(--color-primary) text-(--color-primary-content) px-2 py-0.5 rounded text-xs"
