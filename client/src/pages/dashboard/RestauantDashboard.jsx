@@ -3,7 +3,8 @@ import RestaurantSidebar from "../../components/restaurantDashboard/RestaurantSi
 import RestantOverview from "../../components/restaurantDashboard/RestaurantOverview";
 import RestaurantOrders from "../../components/restaurantDashboard/RestaurantOrders";
 import RestaurantSettings from "../../components/restaurantDashboard/RestaurantSettings";
-import RestaurantWishList from "../../components/restaurantDashboard/RestaurantWishList";
+import Restaurantmenu from "../../components/restaurantDashboard/Restaurantmenu";
+
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -34,7 +35,7 @@ const RestauantDashboard = () => {
         <div className="w-5/6 border border-green-500 h-full">
           {active === "Overview" && <RestantOverview />}
           {active === "Orders" && <RestaurantOrders />}
-          {active === "WishList" && <RestaurantWishList />}
+          {active === "Menu" && <Restaurantmenu />}
           {active === "Settings" && <RestaurantSettings />}
         </div>
       </div>
