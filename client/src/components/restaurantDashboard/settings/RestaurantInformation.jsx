@@ -63,8 +63,8 @@ const RestaurantInformation = () => {
         contactPhone: restaurantData.contactDetails?.phone || "",
         openingTime: restaurantData.servingHours?.openingTime || "",
         closingTime: restaurantData.servingHours?.closingTime || "",
-        legalName: restaurantData.legalInformation?.legalName || "",
-        companyType: restaurantData.legalInformation?.companyType || "",
+        legalName: restaurantData.documents?.legalName || "",
+        companyType: restaurantData.documents?.companyType || "",
       });
     }
   }, [restaurantData]);
@@ -129,27 +129,27 @@ const RestaurantInformation = () => {
     try {
       setIsLoading(true);
 
-      const payload = {
-        restaurantName: restaurantFormData.restaurantName,
-        description: restaurantFormData.description,
-        restaurantType: restaurantFormData.restaurantType,
-        cuisineTypes: restaurantFormData.cuisineTypes
-          .split(",")
-          .map((c) => c.trim()),
-        isOpen: restaurantFormData.isOpen,
-        contactDetails: {
-          email: restaurantFormData.contactEmail,
-          phone: restaurantFormData.contactPhone,
-        },
-        servingHours: {
-          openingTime: restaurantFormData.openingTime,
-          closingTime: restaurantFormData.closingTime,
-        },
-        legalInformation: {
-          legalName: restaurantFormData.legalName,
-          companyType: restaurantFormData.companyType,
-        },
-      };
+      // const payload = {
+      //   restaurantName: restaurantFormData.restaurantName,
+      //   description: restaurantFormData.description,
+      //   restaurantType: restaurantFormData.restaurantType,
+      //   cuisineTypes: restaurantFormData.cuisineTypes
+      //     .split(",")
+      //     .map((c) => c.trim()),
+      //   isOpen: restaurantFormData.isOpen,
+      //   contactDetails: {
+      //     email: restaurantFormData.contactEmail,
+      //     phone: restaurantFormData.contactPhone,
+      //   },
+      //   servingHours: {
+      //     openingTime: restaurantFormData.openingTime,
+      //     closingTime: restaurantFormData.closingTime,
+      //   },
+      //   legalInformation: {
+      //     legalName: restaurantFormData.legalName,
+      //     companyType: restaurantFormData.companyType,
+      //   },
+      // };
       console.log(payload);
       console.log(restaurantFormData);
 

@@ -141,20 +141,11 @@ const ResturantCoreDetails = () => {
     if (restaurantData) {
       // Revert to original fetched data
       setRestaurantFormData({
-        restaurantName: restaurantData.restaurantName || "",
         address: restaurantData.address || "",
         city: restaurantData.city || "",
         state: restaurantData.state || "",
         pinCode: restaurantData.pinCode || "",
         country: restaurantData.country || "",
-        description: restaurantData.description || "",
-        restaurantType: restaurantData.restaurantType || "",
-        cuisineTypes: restaurantData.cuisineTypes?.join(", ") || "",
-        isOpen: restaurantData.isOpen || false,
-        contactEmail: restaurantData.contactDetails?.email || "",
-        contactPhone: restaurantData.contactDetails?.phone || "",
-        openingTime: restaurantData.servingHours?.openingTime || "",
-        closingTime: restaurantData.servingHours?.closingTime || "",
         geoLat: restaurantData.geoLocation?.lat || "",
         geoLon: restaurantData.geoLocation?.lon || "",
         bankName: restaurantData.bankingDetails?.bankName || "",
