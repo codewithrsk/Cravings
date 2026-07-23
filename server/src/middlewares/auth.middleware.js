@@ -86,6 +86,8 @@ export const RestaurantAuthProtect = async (req, res, next) => {
       error.statusCode = 401;
       return next(error);
     }
+    console.log("hit restaurant midle ware");
+    
 
     // console.log("Token From MiddleWare : ", token);
 
