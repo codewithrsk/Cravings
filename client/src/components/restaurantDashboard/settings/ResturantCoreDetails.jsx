@@ -18,20 +18,11 @@ const ResturantCoreDetails = () => {
   const [editingRestaurant, setEditingRestaurant] = useState(false);
 
   const [restaurantFormData, setRestaurantFormData] = useState({
-    restaurantName: "",
     address: "",
     city: "",
     state: "",
     pinCode: "",
     country: "",
-    description: "",
-    restaurantType: "",
-    cuisineTypes: "",
-    isOpen: false,
-    contactEmail: "",
-    contactPhone: "",
-    openingTime: "",
-    closingTime: "",
     geoLat: "",
     geoLon: "",
     bankName: "",
@@ -47,20 +38,11 @@ const ResturantCoreDetails = () => {
   useEffect(() => {
     if (restaurantData) {
       setRestaurantFormData({
-        restaurantName: restaurantData.restaurantName || "",
         address: restaurantData.address || "",
         city: restaurantData.city || "",
         state: restaurantData.state || "",
         pinCode: restaurantData.pinCode || "",
         country: restaurantData.country || "",
-        description: restaurantData.description || "",
-        restaurantType: restaurantData.restaurantType || "",
-        cuisineTypes: restaurantData.cuisineTypes?.join(", ") || "",
-        isOpen: restaurantData.isOpen || false,
-        contactEmail: restaurantData.contactDetails?.email || "",
-        contactPhone: restaurantData.contactDetails?.phone || "",
-        openingTime: restaurantData.servingHours?.openingTime || "",
-        closingTime: restaurantData.servingHours?.closingTime || "",
         geoLat: restaurantData.geoLocation?.lat || "",
         geoLon: restaurantData.geoLocation?.lon || "",
         bankName: restaurantData.bankingDetails?.bankName || "",

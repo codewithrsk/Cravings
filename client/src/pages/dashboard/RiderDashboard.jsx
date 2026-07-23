@@ -39,7 +39,7 @@ const RiderDashboard = () => {
         <div className="w-5/6 border border-green-500 h-full">
           {active === "Overview" && <RiderOverview />}
           {active === "Orders" && <RiderOrders />}
-          {active === "WishList" && <RiderWishList />}
+          {active === "Menu" && <RiderWishList />}
           {active === "Settings" && <RiderSettings />}
         </div>
       </div>

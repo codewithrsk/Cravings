@@ -7,7 +7,7 @@ import { useAuth } from "../../context/AuthContext";
 const MenuItems = [
   { name: "Overview", icon: <MdOutlineDashboard size={22} /> },
   { name: "Orders", icon: <MdOutlineFastfood size={22} /> },
-  { name: "WishList", icon: <PiListHeartLight size={22} /> },
+  { name: "Menu", icon: <PiListHeartLight size={22} /> },
   { name: "Settings", icon: <BsPersonGear size={22} /> },
 ];
 

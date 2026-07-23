@@ -215,7 +215,7 @@ const RestaurantInformation = () => {
 
   useEffect(() => {
     fetchRestaurantData();
-  }, [user]);
+  }, []);
 
   // Refactored UI Helper Classes using your CSS Variables
   const inputBaseClass =

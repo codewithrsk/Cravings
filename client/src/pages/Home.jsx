@@ -34,27 +34,27 @@ const Home = () => {
     const loadRestaurants = async () => {
       try {
         setLoading(true);
-        const response = await api.get("/public/restaurants");
+        // const response = await api.get("/public/restaurants");
 
-        // Map API response to match component's expected format
-        const formattedRestaurants = response.data.data.map((restaurant) => ({
-          id: restaurant._id,
-          name: restaurant.restaurantName,
-          description:
-            restaurant.description ||
-            `${restaurant.cuisineType} cuisine in ${restaurant.city}`,
-          rating: restaurant.rating || 0,
-          numReviews: restaurant.numReviews || 0,
-          image:
-            restaurant.images?.[0]?.URL ||
-            "https://placehold.co/300x200?text=Restaurant",
-          cuisines: restaurant.cuisineType,
-          geolocation: restaurant.geolocation,
-          city: restaurant.city,
-          address: restaurant.address,
-          openingHours: restaurant.openingHours,
-          closingHours: restaurant.closingHours,
-        }));
+        // // Map API response to match component's expected format
+        // const formattedRestaurants = response.data.data.map((restaurant) => ({
+        //   id: restaurant._id,
+        //   name: restaurant.restaurantName,
+        //   description:
+        //     restaurant.description ||
+        //     `${restaurant.cuisineType} cuisine in ${restaurant.city}`,
+        //   rating: restaurant.rating || 0,
+        //   numReviews: restaurant.numReviews || 0,
+        //   image:
+        //     restaurant.images?.[0]?.URL ||
+        //     "https://placehold.co/300x200?text=Restaurant",
+        //   cuisines: restaurant.cuisineType,
+        //   geolocation: restaurant.geolocation,
+        //   city: restaurant.city,
+        //   address: restaurant.address,
+        //   openingHours: restaurant.openingHours,
+        //   closingHours: restaurant.closingHours,
+        // }));
 
         setRestaurants(formattedRestaurants);
         setFilteredRestaurants(formattedRestaurants);
