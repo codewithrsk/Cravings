@@ -24,6 +24,7 @@ const Header = () => {
       navigate("/restaurant/dashboard");
     }
 
+    
     //console.log("Handle Navigate", role);
   };
   const handleLogout = async () => {

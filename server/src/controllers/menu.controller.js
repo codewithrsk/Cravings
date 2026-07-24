@@ -74,7 +74,9 @@ export const addMenuItem = async (req, res, next) => {
       category,
       foodType: foodType || "Veg",
       status: status || "available",
-      image: image || "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=400&h=300&fit=crop",
+      image:
+        image ||
+        "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=400&h=300&fit=crop",
     });
 
     await newMenuItem.save();
@@ -142,7 +144,7 @@ export const updateMenuItemStatus = async (req, res, next) => {
     const menuItem = await Menu.findByIdAndUpdate(
       menuId,
       { status },
-      { new: true }
+      { new: true },
     );
 
     if (!menuItem) {
@@ -185,7 +187,6 @@ export const deleteMenuItem = async (req, res, next) => {
     next(error);
   }
 };
-
 // Bulk update menu items status
 export const bulkUpdateMenuStatus = async (req, res, next) => {
   try {
@@ -201,7 +202,7 @@ export const bulkUpdateMenuStatus = async (req, res, next) => {
 
     const result = await Menu.updateMany(
       { _id: { $in: menuIds }, restaurantId },
-      { status }
+      { status },
     );
 
     res.status(200).json({
