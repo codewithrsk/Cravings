@@ -1,7 +1,11 @@
 import express from "express";
-import { MenuUpdateInfo } from "../controllers/menu.controller";
-const router = express.Router();
+import multer from "multer";
+import { MenuUpdateInfo } from "../controllers/menu.controller.js";
+import { RestaurantAuthProtect } from "../middlewares/auth.middleware.js";
 
-router.put("/update-menu-info",MenuUpdateInfo)
+const router = express.Router();
+const upload = multer();
+
+router.put("/update-menu-info", RestaurantAuthProtect,upload.single("coverImage") ,MenuUpdateInfo);
 
 export default router;
