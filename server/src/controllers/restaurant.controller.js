@@ -5,12 +5,12 @@ import {
   UploadSingleImage,
   deleteSingleImage,
 } from "../utils/image.service.js";
+import Menu from "../models/menu.model.js";
 
 export const RestaurantGetData = async (req, res, next) => {
   try {
     const currentUser = req.user;
     const managerId = req.query.id;
-    console.log("managerId = ", managerId);
 
     console.log("Current User:", currentUser);
     console.log("Manager ID:", managerId);
@@ -22,22 +22,21 @@ export const RestaurantGetData = async (req, res, next) => {
     }
 
     const restaurantData = await Restaurant.findOne({ managerId });
-    console.log("restaurantData = ", restaurantData);
 
-    if (!restaurantData) {
-      res.status(200).json({
-        message: "No restaurant Data Found",
-        data: {},
-      });
-    } else {
+    if (restaurantData) {
       res.status(200).json({
         message: "Restaurant Fetched Successfully",
         data: restaurantData,
       });
+    } else {
+      res.status(200).json({
+        message: "No restaurant Data Found",
+        data: {},
+      });
     }
   } catch (error) {
-    console.log(error.message);
-    next();
+    console.log("RestaurantAddMenuItem error:", error);
+    next(error);
   }
 };
 
@@ -138,13 +137,7 @@ export const RestaurantUpdateInfo = async (req, res, next) => {
       contactPhone,
       openingTime,
       closingTime,
-      legalName,
-      companyType,
     } = req.body;
-
-    console.log(req.body);
-
-    console.log("currentUser", currentUser);
 
     if (
       !restaurantName ||
@@ -154,14 +147,10 @@ export const RestaurantUpdateInfo = async (req, res, next) => {
       !contactEmail ||
       !contactPhone ||
       !openingTime ||
-      !closingTime ||
-      !legalName ||
-      !companyType
+      !closingTime
     ) {
       const error = new Error("All fields are required");
       error.statusCode = 400;
-      console.log("All filde are hit");
-
       return next(error);
     }
 
@@ -171,8 +160,6 @@ export const RestaurantUpdateInfo = async (req, res, next) => {
     const existingRestaurant = await Restaurant.findOne({
       managerId: currentUser._id,
     });
-    console.log("cant find user");
-
     if (!existingRestaurant) {
       const newRestaurant = await Restaurant.create({
         managerId: currentUser._id,
@@ -188,10 +175,6 @@ export const RestaurantUpdateInfo = async (req, res, next) => {
           openingTime,
           closingTime,
         },
-        documents: {
-          legalName,
-          companyType,
-        },
       });
       return res.status(201).json({
         message: "Restaurant profile created successfully",
@@ -206,9 +189,6 @@ export const RestaurantUpdateInfo = async (req, res, next) => {
       existingRestaurant.contactDetails.phone = contactPhone;
       existingRestaurant.servingHours.openingTime = openingTime;
       existingRestaurant.servingHours.closingTime = closingTime;
-      existingRestaurant.documents.companyType = companyType;
-      existingRestaurant.documents.legalName = legalName;
-
       await existingRestaurant.save();
       return res.status(200).json({
         message: "Restaurant profile updated successfully",
@@ -252,3 +232,175 @@ export const OpenRestaurant = async (req, res, next) => {
     next();
   }
 };
+
+export const RestaurantUpdateLegalInfo = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const { legalName, companyType } = req.body;
+
+    if (!legalName || !companyType) {
+      const error = new Error("All fields are required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+
+    if (!existingRestaurant) {
+      const error = new Error("Restaurant Not Found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    existingRestaurant.legal = {
+      legalName,
+      companyType,
+    };
+
+    await existingRestaurant.save();
+
+    return res.status(200).json({
+      message: "Legal information updated successfully",
+      data: existingRestaurant,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next();
+  }
+};
+
+export const RestaurantAddMenuItem = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const {
+      itemName,
+      description,
+      price,
+      category,
+      foodType,
+      status,
+      isTopRated,
+      isRecommended,
+      isNew,
+      isDeleted,
+    } = req.body;
+    const itemImageFromFE = req.file;
+
+    console.log("Received data:", {
+      itemName,
+      description,
+      price,
+      category,
+      foodType,
+      status,
+      isTopRated,
+      isRecommended,
+      isNew,
+      isDeleted,
+      itemImageFromFE,
+    });
+
+    if (
+      !itemName ||
+      !description ||
+      !price ||
+      !category ||
+      !foodType ||
+      !status
+    ) {
+      const error = new Error("All fields are required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    if (!itemImageFromFE) {
+      const error = new Error("Item image is required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+    if (!existingRestaurant) {
+      const error = new Error("Restaurant Not Found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    console.log("Lets UploadImage");
+
+    const itemImage = await UploadSingleImage(
+      itemImageFromFE,
+      `restaurant/${currentUser.phone}/menuItems`,
+    );
+
+    console.log("itemImage after upload:", itemImage);
+
+    const existingMenuItem = await Menu.findOne({
+      restaurantId: existingRestaurant._id,
+    });
+
+    console.log("Lets Add the Menu");
+
+    if (existingMenuItem) {
+      existingMenuItem.menuItems.push({
+        itemName,
+        description,
+        price,
+        category,
+        foodType,
+        status,
+        isTopRated,
+        isRecommended,
+        isNew,
+        isDeleted,
+        image: itemImage,
+      });
+
+      console.log("Existing Menu Item after push");
+      await existingMenuItem.save();
+      return res.status(200).json({
+        message: "Menu item added successfully",
+        data: existingMenuItem,
+      });
+    } else {
+      const newItem = {
+        itemName,
+        description,
+        price,
+        category,
+        foodType,
+        status,
+        isTopRated,
+        isRecommended,
+        isNew,
+        isDeleted,
+        image: itemImage,
+      };
+
+      console.log("New Item to be added");
+      const newMenuItem = await Menu.create({
+        restaurantId: existingRestaurant._id,
+        menuItems: [newItem],
+      });
+
+      return res.status(201).json({
+        message: "Menu item added successfully",
+        data: newMenuItem,
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    next();
+  }
+};
+
+
+export const GetAllItems = async(req,res,next)=>{
+
+  
+
+}
