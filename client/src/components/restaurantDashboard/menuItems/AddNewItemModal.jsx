@@ -305,7 +305,7 @@ const AddNewItemModal = ({ isOpen, onClose, onAddItem }) => {
               </div>
             ) : (
               <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-orange-200 p-6 transition hover:bg-opacity-50 bg-orange-100">
-                <div className="text-3xl mb-2 text-orange-700">
+                <div className="text-3xl mb-2 text-(--color-primary)">
                   📤
                 </div>
                 <p className="font-medium text-orange-950">
