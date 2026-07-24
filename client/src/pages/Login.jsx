@@ -8,7 +8,9 @@ import ForgotPasswordModal from "../components/commonModals/ForgotPasswordModal"
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUser, setIsLogin, setRole } = useAuth();
+  const { setUser, setIsLogin, setRole, isLogin } = useAuth();
+
+  isLogin && navigate("/");
 
   const [formData, setFormData] = useState({
     email: "",
@@ -64,15 +66,13 @@ const Login = () => {
       setRole(res.data.data.userType);
 
       res.data.data.userType === "restaurant" &&
-        navigate("/restaurant-dashboard");
+        navigate("/restaurant/dashboard");
 
-      res.data.data.userType === "rider" && navigate("/rider-dashboard");
+      res.data.data.userType === "rider" && navigate("/rider/dashboard");
 
-      res.data.data.userType === "admin" && navigate("/admin-dashboard");
+      res.data.data.userType === "admin" && navigate("/admin/dashboard");
 
-      res.data.data.userType === "customer" && navigate("/customer-dashboard");
-      res.data.data.userType === "restaurant" &&
-        navigate("/restaurant-dashboard");
+      res.data.data.userType === "customer" && navigate("/customer/dashboard");
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
