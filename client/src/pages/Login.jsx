@@ -8,9 +8,7 @@ import ForgotPasswordModal from "../components/commonModals/ForgotPasswordModal"
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUser, setIsLogin, setRole, isLogin } = useAuth();
-
-  isLogin && navigate("/");
+  const { setUser, setIsLogin, setRole } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
