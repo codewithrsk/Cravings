@@ -138,7 +138,7 @@ const AddNewItemModal = ({ isOpen, onClose, onAddItem }) => {
         </div>
 
         {/* Body - Scrollable */}
-        <form onSubmit={handleSubmit} className="flex-1 p-6 space-y-2">
+        <form onSubmit={handleSubmit} className="overflow-y-auto flex-1 p-6 space-y-2">
           {/* Item Name */}
           <div>
             <label className="mb-2 block text-sm font-semibold text-orange-950">
@@ -191,7 +191,7 @@ const AddNewItemModal = ({ isOpen, onClose, onAddItem }) => {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <label className="mb-2 block text-sm font-semibold text-orange-950">
-                Price ($) *
+                Price (₹) *
               </label>
               <input
                 type="number"
@@ -243,9 +243,10 @@ const AddNewItemModal = ({ isOpen, onClose, onAddItem }) => {
                 onChange={handleInputChange}
                 className="w-full rounded-lg border border-orange-200 px-4 py-2 outline-none transition focus:ring-2 focus:ring-orange-200 bg-orange-50 text-orange-950"
               >
-                <option>Veg 🟢</option>
-                <option>Non-Veg 🔴</option>
-                <option>Egg 🟡</option>
+                <option>Veg </option>
+                <option>Non-Veg </option>
+                <option>Egg </option>
+                <option>Jain</option>
               </select>
             </div>
 
