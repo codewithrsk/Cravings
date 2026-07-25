@@ -7,6 +7,8 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import ConfirmModal from "./menuItems/ConfirmModal";
 import AddNewItemModal from "./menuItems/AddNewItemModal";
 import api from "../../config/api.config";
+import { useAuth } from "../../context/AuthContext";
+import RunningLodader from "../../assets/runningLoader.gif";
 
 // const dummyMenu = [
 //   {
@@ -240,15 +242,26 @@ const statusLabels = {
 };
 
 const Restaurantmenu = () => {
-  const [menuItems, setMenuItems] = useState(dummyMenu);
+  const [menuItems, setMenuItems] = useState([]);
+  const { user } = useAuth();
+  const [isLoding, setIsLoding] = useState(false);
 
   const menu = async () => {
-    const req = await api.get("/restaurant/allmenu");
-    setMenuItems(req.data.data);
+    try {
+      setIsLoding(true);
+      const req = await api.get("/restaurant/allmenu");
+      setMenuItems(req.data.data.menuItems);
+      setIsLoding(false);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Unknown error occurred during registration. Please try again.",
+      );
+    }
   };
   useEffect(() => {
-    menu;
-  }, []);
+    menu();
+  }, [user]);
 
   const [isAddNewItemModalOpen, setIsAddNewItemModalOpen] = useState(false);
   const [isEditViewItemModalOpen, setIsEditViewItemModalOpen] = useState(false);
@@ -258,174 +271,200 @@ const Restaurantmenu = () => {
 
   return (
     <>
-      <div className="overflow-y-auto h-full">
-        <div className="flex justify-between items-center px-1">
-          <h2 className="text-2xl font-bold mb-6">Menu Management</h2>
-          <div className="flex gap-4 items-center">
-            <button
-              className="hover:bg-(--color-primary) border border-(--color-primary) text-(--color-primary) hover:text-white px-4 py-2 rounded transition-colors flex items-center gap-2"
-              onClick={() => setIsAddNewItemModalOpen(true)}
-            >
-              <IoMdAddCircleOutline />
-              Add New Item
-            </button>
-            <input
-              type="text"
-              name="search"
-              id="search"
-              placeholder="Search menu..."
-              className="border border-(--color-primary) rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-(--color-primary) transition-colors"
-            />
+      {/* {isLoding && (
+        <>
+          <div className="bg-amber-500 h-50 w-100">
+            <loding />
           </div>
-        </div>
-        <div className="bg-(--color-base-200) p-4 rounded-lg">
-          <div className="text-(--color-primary) grid grid-cols-7 gap-4 font-bold border-b border-(--color-secondary) py-2">
-            <div className="col-span-2">Item Name & Description</div>
-            <div className="text-center">Price</div>
-            <div>Category & Type</div>
-            <div>Status</div>
-            <div>Controls</div>
-            <div>Actions</div>
-          </div>
-          <div className="overflow-y-auto max-h-[65vh]">
-            {menuItems.map((item, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-7 gap-4 border-b border-(--color-secondary) py-2 items-center"
-              >
-                <div className="col-span-2 flex items-center gap-4">
-                  <div>
-                    <img
-                      src={item.image.url}
-                      alt={item.itemName}
-                      className="w-16 h-16 object-cover rounded"
-                    />
-                  </div>
-                  <div className="w-full">
-                    <div>{item.itemName}</div>
-                    <div className="text-xs text-gray-500">
-                      {item.description}
+        </>
+      )} */}
+
+      <div className="overflow-y-auto h-full p-3">
+        {isLoding ? (
+          <>
+            <div className="bg-gray-50 h-full flex justify-center items-center">
+              <div className="h-100 w-100">
+              <img src={RunningLodader} alt="Loding..." className="w-full h-full mb-0 pb-0" />
+              <div className="flex justify-center">Loding...</div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex justify-between items-center px-1">
+              <h2 className="text-2xl font-bold mb-6">Menu Management</h2>
+              <div className="flex gap-4 items-center">
+                <button
+                  className="hover:bg-(--color-primary) border border-(--color-primary) text-(--color-primary) hover:text-white px-4 py-2 rounded transition-colors flex items-center gap-2"
+                  onClick={() => setIsAddNewItemModalOpen(true)}
+                >
+                  <IoMdAddCircleOutline />
+                  Add New Item
+                </button>
+                <input
+                  type="text"
+                  name="search"
+                  id="search"
+                  placeholder="Search menu..."
+                  className="border border-(--color-primary) rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-(--color-primary) transition-colors"
+                />
+              </div>
+            </div>
+
+            <div className="bg-(--color-base-200) p-4 rounded-lg">
+              <div className="text-(--color-primary) grid grid-cols-7 gap-4 font-bold border-b border-(--color-secondary) py-2">
+                <div className="col-span-2">Item Name & Description</div>
+                <div className="text-center">Price</div>
+                <div>Category & Type</div>
+                <div>Status</div>
+                <div>Controls</div>
+                <div>Actions</div>
+              </div>
+              <div className="overflow-y-auto max-h-[65vh]">
+                {menuItems.map((item, index) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-7 gap-4 border-b border-(--color-secondary) py-2 items-center"
+                  >
+                    <div className="col-span-2 flex items-center gap-4">
+                      <div>
+                        <img
+                          src={item.image.url}
+                          alt={item.itemName}
+                          className="w-16 h-16 object-cover rounded"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <div>{item.itemName}</div>
+                        <div className="text-xs text-gray-500">
+                          {item.description}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-center">₹ {item.price.toFixed(2)}</div>
+                    <div className="">
+                      <div>{item.category}</div>
+                      <div className="text-sm">{item.type}</div>
+                    </div>
+                    <div>
+                      <div className="relative inline-flex items-center">
+                        <select
+                          value={item.status}
+                          className={`appearance-none rounded-md pl-3 pr-8 py-1.5 text-xs font-semibold tracking-wide transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-(--color-primary) ${
+                            statusChipStyles[item.status]
+                          }`}
+                          onChange={(e) => {
+                            // Handle status change logic here
+                          }}
+                        >
+                          <option value="available">
+                            {statusLabels.available}
+                          </option>
+                          <option value="unavailable">
+                            {statusLabels.unavailable}
+                          </option>
+                          <option value="discontinued">
+                            {statusLabels.discontinued}
+                          </option>
+                        </select>
+                        <LuChevronDown className="pointer-events-none absolute right-2 text-xs opacity-70" />
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <button
+                        className={`rounded flex items-center justify-center ${
+                          item.isTopRated
+                            ? " text-(--color-primary)"
+                            : "text-(--color-secondary)"
+                        }`}
+                        title={
+                          item.isTopRated ? "Top Rated" : "Mark as Top Rated"
+                        }
+                        onClick={() => {
+                          setSelectedItem(item);
+                          setModalMode("topRated");
+                          setIsControlsModalOpen(true);
+                        }}
+                      >
+                        <FaAward className="" />
+                      </button>
+                      <button
+                        className={`rounded flex items-center justify-center ${
+                          item.isRecommended
+                            ? "text-(--color-primary)"
+                            : "text-(--color-secondary)"
+                        }`}
+                        onClick={() => {
+                          setSelectedItem(item);
+                          setModalMode("recommended");
+                          setIsControlsModalOpen(true);
+                        }}
+                        title={
+                          item.isRecommended
+                            ? "Recommended"
+                            : "Mark as Recommended"
+                        }
+                      >
+                        <AiTwotoneLike className="" />
+                      </button>
+                      <button
+                        className={`px-1 py-0.5 rounded flex items-center justify-center text-xs ${
+                          item.isNew
+                            ? "text-(--color-primary) border border-(--color-primary)"
+                            : "text-(--color-secondary) border border-(--color-secondary)"
+                        }`}
+                        onClick={() => {
+                          setSelectedItem(item);
+                          setModalMode("new");
+                          setIsControlsModalOpen(true);
+                        }}
+                        title={item.isNew ? "New Item" : "Mark as New"}
+                      >
+                        New
+                      </button>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        className="px-2 py-1 border border-(--color-primary) text-(--color-primary) hover:bg-(--color-primary) hover:text-white rounded"
+                        title="Edit Item"
+                        onClick={() => {
+                          setSelectedItem(item);
+                          setModalMode("edit");
+                          setIsEditViewItemModalOpen(true);
+                        }}
+                      >
+                        <LuPencilLine />
+                      </button>
+                      <button
+                        className="px-2 py-1 border border-(--color-primary) text-(--color-primary) hover:bg-(--color-primary) hover:text-white rounded"
+                        title="View Item Details"
+                        onClick={() => {
+                          setSelectedItem(item);
+                          setModalMode("view");
+                          setIsEditViewItemModalOpen(true);
+                        }}
+                      >
+                        <LuEye />
+                      </button>
+                      <button
+                        className="px-2 py-1 border border-(--color-primary) text-(--color-primary) hover:bg-(--color-primary) hover:text-white rounded"
+                        title="Delete Item"
+                        onClick={() => {
+                          setSelectedItem(item);
+                          setModalMode("delete");
+                          setIsControlsModalOpen(true);
+                        }}
+                      >
+                        <LuTrash2 />
+                      </button>
                     </div>
                   </div>
-                </div>
-                <div className="text-center">₹ {item.price.toFixed(2)}</div>
-                <div className="">
-                  <div>{item.category}</div>
-                  <div className="text-sm">{item.type}</div>
-                </div>
-                <div>
-                  <div className="relative inline-flex items-center">
-                    <select
-                      value={item.status}
-                      className={`appearance-none rounded-md pl-3 pr-8 py-1.5 text-xs font-semibold tracking-wide transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-(--color-primary) ${
-                        statusChipStyles[item.status]
-                      }`}
-                      onChange={(e) => {
-                        // Handle status change logic here
-                      }}
-                    >
-                      <option value="available">
-                        {statusLabels.available}
-                      </option>
-                      <option value="unavailable">
-                        {statusLabels.unavailable}
-                      </option>
-                      <option value="discontinued">
-                        {statusLabels.discontinued}
-                      </option>
-                    </select>
-                    <LuChevronDown className="pointer-events-none absolute right-2 text-xs opacity-70" />
-                  </div>
-                </div>
-
-                <div className="flex gap-2">
-                  <button
-                    className={`rounded flex items-center justify-center ${
-                      item.isTopRated
-                        ? " text-(--color-primary)"
-                        : "text-(--color-secondary)"
-                    }`}
-                    title={item.isTopRated ? "Top Rated" : "Mark as Top Rated"}
-                    onClick={() => {
-                      setSelectedItem(item);
-                      setModalMode("topRated");
-                      setIsControlsModalOpen(true);
-                    }}
-                  >
-                    <FaAward className="" />
-                  </button>
-                  <button
-                    className={`rounded flex items-center justify-center ${
-                      item.isRecommended
-                        ? "text-(--color-primary)"
-                        : "text-(--color-secondary)"
-                    }`}
-                    onClick={() => {
-                      setSelectedItem(item);
-                      setModalMode("recommended");
-                      setIsControlsModalOpen(true);
-                    }}
-                    title={
-                      item.isRecommended ? "Recommended" : "Mark as Recommended"
-                    }
-                  >
-                    <AiTwotoneLike className="" />
-                  </button>
-                  <button
-                    className={`px-1 py-0.5 rounded flex items-center justify-center text-xs ${
-                      item.isNew
-                        ? "text-(--color-primary) border border-(--color-primary)"
-                        : "text-(--color-secondary) border border-(--color-secondary)"
-                    }`}
-                    onClick={() => {
-                      setSelectedItem(item);
-                      setModalMode("new");
-                      setIsControlsModalOpen(true);
-                    }}
-                    title={item.isNew ? "New Item" : "Mark as New"}
-                  >
-                    New
-                  </button>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    className="px-2 py-1 border border-(--color-primary) text-(--color-primary) hover:bg-(--color-primary) hover:text-white rounded"
-                    title="Edit Item"
-                    onClick={() => {
-                      setSelectedItem(item);
-                      setModalMode("edit");
-                      setIsEditViewItemModalOpen(true);
-                    }}
-                  >
-                    <LuPencilLine />
-                  </button>
-                  <button
-                    className="px-2 py-1 border border-(--color-primary) text-(--color-primary) hover:bg-(--color-primary) hover:text-white rounded"
-                    title="View Item Details"
-                    onClick={() => {
-                      setSelectedItem(item);
-                      setModalMode("view");
-                      setIsEditViewItemModalOpen(true);
-                    }}
-                  >
-                    <LuEye />
-                  </button>
-                  <button
-                    className="px-2 py-1 border border-(--color-primary) text-(--color-primary) hover:bg-(--color-primary) hover:text-white rounded"
-                    title="Delete Item"
-                    onClick={() => {
-                      setSelectedItem(item);
-                      setModalMode("delete");
-                      setIsControlsModalOpen(true);
-                    }}
-                  >
-                    <LuTrash2 />
-                  </button>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          </>
+        )}
       </div>
 
       {isControlsModalOpen && (

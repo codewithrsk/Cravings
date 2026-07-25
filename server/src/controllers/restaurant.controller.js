@@ -398,9 +398,27 @@ export const RestaurantAddMenuItem = async (req, res, next) => {
   }
 };
 
+export const GetAllItems = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
 
-export const GetAllItems = async(req,res,next)=>{
+    console.log("curent user = ",currentUser);
+    
 
-  
 
-}
+    // Find the restaurant document for the current manager (user)
+    const existingRestaurant = await Restaurant.findOne({ managerId: currentUser._id });
+    if (!existingRestaurant) {
+      return res.status(404).json({ message: "Restaurant not found", data: [] });
+    }
+
+    const items = await Menu.findOne({ restaurantId: existingRestaurant._id });
+    console.log("items = ", items);
+
+    if (!items || !items.menuItems || items.menuItems.length === 0) {
+      return res.status(200).json({ message: "No items available", data: [] });
+    }
+
+    return res.status(200).json({ message: "All items", data: items });
+  } catch (error) {}
+};
