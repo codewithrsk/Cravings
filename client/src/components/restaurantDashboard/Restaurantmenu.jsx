@@ -29,7 +29,7 @@ const Restaurantmenu = () => {
   const { user } = useAuth();
   const [isLoding, setIsLoding] = useState(false);
 
-   const [isAddNewItemModalOpen, setIsAddNewItemModalOpen] = useState(false);
+  const [isAddNewItemModalOpen, setIsAddNewItemModalOpen] = useState(false);
   const [isEditViewItemModalOpen, setIsEditViewItemModalOpen] = useState(false);
   const [isControlsModalOpen, setIsControlsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState(null);
@@ -39,26 +39,27 @@ const Restaurantmenu = () => {
     try {
       setIsLoding(true);
       const req = await api.get("/restaurant/allmenu");
-      setMenuItems(req.data.data.menuItems);
+      setMenuItems(req.data.data?.menuItems);
       setIsLoding(false);
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
           "Unknown error occurred during registration. Please try again.",
       );
+    } finally {
+      setIsLoding(false);
     }
   };
   useEffect(() => {
     menu();
   }, [isAddNewItemModalOpen || isEditViewItemModalOpen || isControlsModalOpen]);
 
- 
-
   const handleUpdateMenuItem = async (menuItemId, payload) => {
     try {
-      const config = payload instanceof FormData
-        ? { headers: { "Content-Type": "multipart/form-data" } }
-        : {};
+      const config =
+        payload instanceof FormData
+          ? { headers: { "Content-Type": "multipart/form-data" } }
+          : {};
 
       const { data } = await api.put(
         `/restaurant/update-menu-item/${menuItemId}`,
@@ -68,17 +69,11 @@ const Restaurantmenu = () => {
 
       toast.success(data.message || "Menu item updated successfully");
 
-      setMenuItems((prevItems) => {
-        const updatedItems = prevItems.map((item) =>
+      setMenuItems((prevItems) =>
+        prevItems.map((item) =>
           item._id === menuItemId || item.id === menuItemId ? data.data : item,
-        );
-
-        return data.data.isDeleted
-          ? updatedItems.filter(
-              (item) => item._id !== menuItemId && item.id !== menuItemId,
-            )
-          : updatedItems;
-      });
+        ),
+      );
 
       return data.data;
     } catch (error) {
@@ -90,23 +85,52 @@ const Restaurantmenu = () => {
     }
   };
 
+  const handleDeleteMenuItem = async (menuItemId) => {
+    try {
+      const { data } = await api.delete(
+        `/restaurant/delete-menu-item/${menuItemId}`,
+      );
+
+      toast.success(data.message || "Menu item deleted successfully");
+
+      setMenuItems((prevItems) =>
+        prevItems.filter(
+          (item) => item._id !== menuItemId && item.id !== menuItemId,
+        ),
+      );
+
+      return data.data;
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to delete menu item. Please try again.",
+      );
+      throw error;
+    }
+  };
+
   const handleConfirmControlAction = async () => {
     if (!selectedItem) return;
 
-    const payload = {};
-
-    if (modalMode === "delete") {
-      payload.isDeleted = true;
-    } else if (modalMode === "topRated") {
-      payload.isTopRated = !selectedItem.isTopRated;
-    } else if (modalMode === "recommended") {
-      payload.isRecommended = !selectedItem.isRecommended;
-    } else if (modalMode === "new") {
-      payload.isNew = !selectedItem.isNew;
-    }
-
     try {
-      await handleUpdateMenuItem(selectedItem._id || selectedItem.id, payload);
+      if (modalMode === "delete") {
+        await handleDeleteMenuItem(selectedItem._id || selectedItem.id);
+      } else {
+        const payload = {};
+        if (modalMode === "topRated") {
+          payload.isTopRated = !selectedItem.isTopRated;
+        } else if (modalMode === "recommended") {
+          payload.isRecommended = !selectedItem.isRecommended;
+        } else if (modalMode === "new") {
+          payload.isNew = !selectedItem.isNew;
+        }
+
+        await handleUpdateMenuItem(
+          selectedItem._id || selectedItem.id,
+          payload,
+        );
+      }
+
       setIsControlsModalOpen(false);
     } catch (error) {
       console.error("Control action failed", error);
@@ -192,7 +216,9 @@ const Restaurantmenu = () => {
                     <div className="text-center">₹ {item.price.toFixed(2)}</div>
                     <div className="">
                       <div>{item.category}</div>
-                      <div className="text-sm">{item.type}</div>
+                      <div className="text-sm">
+                        {item.foodType || item.type || "-"}
+                      </div>
                     </div>
                     <div>
                       <div className="relative inline-flex items-center">

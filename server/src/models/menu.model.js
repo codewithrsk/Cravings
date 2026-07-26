@@ -14,6 +14,9 @@ const MenuSchema = mongoose.Schema(
           description: { type: String, required: true },
           price: { type: Number, required: true },
           category: { type: String, required: true },
+          foodType: { type: String, required: true },
+          status: { type: String, default: "available" },
+          isDeleted: { type: Boolean, default: false },
           image: {
             type: { url: { type: String }, publicId: { type: String } },
             required: true,

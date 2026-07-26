@@ -9,6 +9,7 @@ import {
   RestaurantAddMenuItem,
   GetAllItems,
   UpdateMenuItem,
+  DeleteMenuItem,
 } from "../controllers/restaurant.controller.js";
 import { RestaurantAuthProtect } from "../middlewares/auth.middleware.js";
 
@@ -59,6 +60,12 @@ router.put(
   UpdateMenuItem,
 );
 
-router.get("/allmenu",RestaurantAuthProtect,GetAllItems)
+router.delete(
+  "/delete-menu-item/:menuItemId",
+  RestaurantAuthProtect,
+  DeleteMenuItem,
+);
+
+router.get("/allmenu", RestaurantAuthProtect, GetAllItems);
 
 export default router;

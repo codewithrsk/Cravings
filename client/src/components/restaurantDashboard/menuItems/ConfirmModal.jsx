@@ -34,7 +34,7 @@ const ConfirmModal = ({ selectedItem, modalMode, isOpen, onClose, onConfirm }) =
               Cancel
             </button>
             <button
-              className="px-4 py-2 rounded bg-(--color-primary) text-white hover:bg-(--color-primary-dark)"
+              className="px-4 py-2 rounded bg-(--color-primary)/90 text-white hover:bg-(--color-primary)"
               onClick={onConfirm}
             >
               Confirm

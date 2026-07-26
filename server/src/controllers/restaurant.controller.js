@@ -418,10 +418,16 @@ export const GetAllItems = async (req, res, next) => {
     console.log("items = ", items);
 
     if (!items || !items.menuItems || items.menuItems.length === 0) {
-      return res.status(200).json({ message: "No items available", data: [] });
+      return res.status(200).json({
+        message: "No items available",
+        data: { menuItems: [] },
+      });
     }
 
-    return res.status(200).json({ message: "All items", data: items });
+    return res.status(200).json({
+      message: "All items",
+      data: { menuItems: items.menuItems },
+    });
   } catch (error) {
     console.log(error.message);
     next(error);
@@ -506,6 +512,62 @@ export const UpdateMenuItem = async (req, res, next) => {
     return res.status(200).json({
       message: "Menu item updated successfully",
       data: existingMenu.menuItems[itemIndex],
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
+};
+
+export const DeleteMenuItem = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const menuItemId = req.params.menuItemId;
+
+    if (!menuItemId) {
+      const error = new Error("Menu item id is required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+    if (!existingRestaurant) {
+      const error = new Error("Restaurant not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    const existingMenu = await Menu.findOne({
+      restaurantId: existingRestaurant._id,
+    });
+    if (!existingMenu) {
+      const error = new Error("Menu not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    const itemIndex = existingMenu.menuItems.findIndex(
+      (menuItem) => menuItem._id.toString() === menuItemId,
+    );
+    if (itemIndex === -1) {
+      const error = new Error("Menu item not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    const [deletedItem] = existingMenu.menuItems.splice(itemIndex, 1);
+
+    if (deletedItem?.image?.publicId) {
+      await deleteSingleImage(deletedItem.image);
+    }
+
+    await existingMenu.save();
+
+    return res.status(200).json({
+      message: "Menu item deleted successfully",
+      data: existingMenu.menuItems,
     });
   } catch (error) {
     console.log(error.message);
