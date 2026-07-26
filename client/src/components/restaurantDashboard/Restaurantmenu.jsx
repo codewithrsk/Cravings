@@ -4,6 +4,7 @@ import { BiSolidDish } from "react-icons/bi";
 import { LuPencilLine, LuTrash2, LuEye, LuChevronDown } from "react-icons/lu";
 import { AiTwotoneLike } from "react-icons/ai";
 import { IoMdAddCircleOutline } from "react-icons/io";
+import toast from "react-hot-toast";
 import ConfirmModal from "./menuItems/ConfirmModal";
 import AddNewItemModal from "./menuItems/AddNewItemModal";
 import EditOrViewItem from "./menuItems/EditOrViewItem";
@@ -28,6 +29,12 @@ const Restaurantmenu = () => {
   const { user } = useAuth();
   const [isLoding, setIsLoding] = useState(false);
 
+   const [isAddNewItemModalOpen, setIsAddNewItemModalOpen] = useState(false);
+  const [isEditViewItemModalOpen, setIsEditViewItemModalOpen] = useState(false);
+  const [isControlsModalOpen, setIsControlsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+
   const menu = async () => {
     try {
       setIsLoding(true);
@@ -43,13 +50,68 @@ const Restaurantmenu = () => {
   };
   useEffect(() => {
     menu();
-  }, []);
+  }, [isAddNewItemModalOpen || isEditViewItemModalOpen || isControlsModalOpen]);
 
-  const [isAddNewItemModalOpen, setIsAddNewItemModalOpen] = useState(false);
-  const [isEditViewItemModalOpen, setIsEditViewItemModalOpen] = useState(false);
-  const [isControlsModalOpen, setIsControlsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
+ 
+
+  const handleUpdateMenuItem = async (menuItemId, payload) => {
+    try {
+      const config = payload instanceof FormData
+        ? { headers: { "Content-Type": "multipart/form-data" } }
+        : {};
+
+      const { data } = await api.put(
+        `/restaurant/update-menu-item/${menuItemId}`,
+        payload,
+        config,
+      );
+
+      toast.success(data.message || "Menu item updated successfully");
+
+      setMenuItems((prevItems) => {
+        const updatedItems = prevItems.map((item) =>
+          item._id === menuItemId || item.id === menuItemId ? data.data : item,
+        );
+
+        return data.data.isDeleted
+          ? updatedItems.filter(
+              (item) => item._id !== menuItemId && item.id !== menuItemId,
+            )
+          : updatedItems;
+      });
+
+      return data.data;
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to update menu item. Please try again.",
+      );
+      throw error;
+    }
+  };
+
+  const handleConfirmControlAction = async () => {
+    if (!selectedItem) return;
+
+    const payload = {};
+
+    if (modalMode === "delete") {
+      payload.isDeleted = true;
+    } else if (modalMode === "topRated") {
+      payload.isTopRated = !selectedItem.isTopRated;
+    } else if (modalMode === "recommended") {
+      payload.isRecommended = !selectedItem.isRecommended;
+    } else if (modalMode === "new") {
+      payload.isNew = !selectedItem.isNew;
+    }
+
+    try {
+      await handleUpdateMenuItem(selectedItem._id || selectedItem.id, payload);
+      setIsControlsModalOpen(false);
+    } catch (error) {
+      console.error("Control action failed", error);
+    }
+  };
 
   return (
     <>
@@ -139,8 +201,15 @@ const Restaurantmenu = () => {
                           className={`appearance-none rounded-md pl-3 pr-8 py-1.5 text-xs font-semibold tracking-wide transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-(--color-primary) ${
                             statusChipStyles[item.status]
                           }`}
-                          onChange={(e) => {
-                            // Handle status change logic here
+                          onChange={async (e) => {
+                            const updatedStatus = e.target.value;
+                            try {
+                              await handleUpdateMenuItem(item._id || item.id, {
+                                status: updatedStatus,
+                              });
+                            } catch (error) {
+                              console.error("Status update failed", error);
+                            }
                           }}
                         >
                           <option value="available">
@@ -259,6 +328,7 @@ const Restaurantmenu = () => {
           modalMode={modalMode}
           isOpen={isControlsModalOpen}
           onClose={() => setIsControlsModalOpen(false)}
+          onConfirm={handleConfirmControlAction}
         />
       )}
       {isAddNewItemModalOpen && (
@@ -276,9 +346,7 @@ const Restaurantmenu = () => {
             onClose={() => setIsEditViewItemModalOpen(false)}
             item={selectedItem}
             mode={modalMode}
-            onSave={() => {
-              setIsEditViewItemModalOpen(false);
-            }}
+            onSave={handleUpdateMenuItem}
           />
         </>
       )}

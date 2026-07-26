@@ -1,7 +1,7 @@
 import React from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
-const ConfirmModal = ({ selectedItem, modalMode, isOpen, onClose }) => {
+const ConfirmModal = ({ selectedItem, modalMode, isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
   return (
     <>
@@ -18,13 +18,27 @@ const ConfirmModal = ({ selectedItem, modalMode, isOpen, onClose }) => {
             </button>
           </div>
           <div>
-            <h2 className="">
+            <h2 className="mb-6 text-lg font-semibold">
               {modalMode === "delete" && "Confirm Deletion"}
               {modalMode === "topRated" && "Confirm Top Rated Status Change"}
               {modalMode === "recommended" &&
                 "Confirm Recommended Status Change"}
               {modalMode === "new" && "Confirm New Status Change"}
             </h2>
+          </div>
+          <div className="flex justify-end gap-3">
+            <button
+              className="px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100"
+              onClick={onClose}
+            >
+              Cancel
+            </button>
+            <button
+              className="px-4 py-2 rounded bg-(--color-primary) text-white hover:bg-(--color-primary-dark)"
+              onClick={onConfirm}
+            >
+              Confirm
+            </button>
           </div>
         </div>
       </div>
