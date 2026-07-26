@@ -6,10 +6,10 @@ import { AiTwotoneLike } from "react-icons/ai";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import ConfirmModal from "./menuItems/ConfirmModal";
 import AddNewItemModal from "./menuItems/AddNewItemModal";
+import EditOrViewItem from "./menuItems/EditOrViewItem";
 import api from "../../config/api.config";
 import { useAuth } from "../../context/AuthContext";
 import RunningLodader from "../../assets/runningLoader.gif";
-
 
 const statusChipStyles = {
   available: "bg-green-100 text-green-700 border border-green-300",
@@ -266,6 +266,16 @@ const Restaurantmenu = () => {
           <AddNewItemModal
             isOpen={isAddNewItemModalOpen}
             onClose={() => setIsAddNewItemModalOpen(false)}
+          />
+        </>
+      )}
+      {isEditViewItemModalOpen && (
+        <>
+          <EditOrViewItem
+            isOpen={isEditViewItemModalOpen}
+            onClose={() => setIsEditViewItemModalOpen(false)}
+            item={selectedItem}
+            onSave={() => {setIsEditViewItemModalOpen(false)}}
           />
         </>
       )}
