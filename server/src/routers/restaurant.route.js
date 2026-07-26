@@ -8,6 +8,7 @@ import {
   RestaurantUpdateLegalInfo,
   RestaurantAddMenuItem,
   GetAllItems,
+  UpdateMenuItem,
 } from "../controllers/restaurant.controller.js";
 import { RestaurantAuthProtect } from "../middlewares/auth.middleware.js";
 
@@ -49,6 +50,13 @@ router.post(
   RestaurantAuthProtect,
   upload.single("itemImage"),
   RestaurantAddMenuItem,
+);
+
+router.put(
+  "/update-menu-item/:menuItemId",
+  RestaurantAuthProtect,
+  upload.single("itemImage"),
+  UpdateMenuItem,
 );
 
 router.get("/allmenu",RestaurantAuthProtect,GetAllItems)

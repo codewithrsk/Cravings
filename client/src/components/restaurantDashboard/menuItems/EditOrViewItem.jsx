@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineAddAPhoto } from "react-icons/md";
+import api from "../../../config/api.config";
 
-const EditOrViewItem = ({ isOpen, onClose, item = {}, onSave }) => {
-  const [formData, setFormData] = React.useState({
+const EditOrViewItem = ({ isOpen, onClose, item = {}, onSave, mode }) => {
+  const [formData, setFormData] = useState({
     itemName: "",
     description: "",
     price: "",
@@ -15,8 +16,8 @@ const EditOrViewItem = ({ isOpen, onClose, item = {}, onSave }) => {
     isDeleted: false,
   });
 
-  const [previewImage, setPreviewImage] = React.useState(null);
-  const [itemImageFile, setItemImageFile] = React.useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [itemImageFile, setItemImageFile] = useState(null);
 
   const itemCategories = [
     "Appetizer",
@@ -52,7 +53,7 @@ const EditOrViewItem = ({ isOpen, onClose, item = {}, onSave }) => {
     "Other",
   ];
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isOpen && item) {
       setFormData((prev) => ({
         ...prev,
@@ -89,7 +90,14 @@ const EditOrViewItem = ({ isOpen, onClose, item = {}, onSave }) => {
     setPreviewImage(URL.createObjectURL(file));
   };
 
+  const isViewMode = mode === "view";
+
   const handleSave = async () => {
+    if (isViewMode) {
+      onClose();
+      return;
+    }
+
     if (typeof onSave === "function") {
       // allow parent to handle FormData or plain object
       const payload = new FormData();
@@ -143,26 +151,35 @@ const EditOrViewItem = ({ isOpen, onClose, item = {}, onSave }) => {
                         />
                       </>
                     )}
-                    <label
-                      htmlFor="itemImage"
-                      className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-white rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer backdrop-blur-sm"
-                    >
-                      <MdOutlineAddAPhoto size={28} className="mb-2" />
-                      <span className="text-xs font-medium">Change Photo</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        name="itemImage"
-                        id="itemImage"
-                        className="hidden"
-                        onChange={(e) => {
-                          const file = e.target.files[0];
-                          if (!file) return;
-                          setItemImageFile(file);
-                          setPreviewImage(URL.createObjectURL(file));
-                        }}
-                      />
-                    </label>
+
+                    {isViewMode ? (
+                      <span className="text-xs font-medium ">View Photo</span>
+                    ) : (
+                      <>
+                        <label
+                          htmlFor="itemImage"
+                          className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-white rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer backdrop-blur-sm"
+                        >
+                          <MdOutlineAddAPhoto size={28} className="mb-2" />
+                          <span className="text-xs font-medium">
+                            Change Photo
+                          </span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            name="itemImage"
+                            id="itemImage"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (!file) return;
+                              setItemImageFile(file);
+                              setPreviewImage(URL.createObjectURL(file));
+                            }}
+                          />
+                        </label>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -177,6 +194,7 @@ const EditOrViewItem = ({ isOpen, onClose, item = {}, onSave }) => {
                     name="itemName"
                     value={formData.itemName}
                     onChange={handleInputChange}
+                    disabled={isViewMode}
                     className="w-full border border-gray-300 rounded px-3 py-2"
                   />
                 </div>
@@ -191,6 +209,7 @@ const EditOrViewItem = ({ isOpen, onClose, item = {}, onSave }) => {
                     type="number"
                     value={formData.price}
                     onChange={handleInputChange}
+                    disabled={isViewMode}
                     className="w-full border border-gray-300 rounded px-3 py-2"
                   />
                 </div>
@@ -208,6 +227,7 @@ const EditOrViewItem = ({ isOpen, onClose, item = {}, onSave }) => {
                       name="category"
                       value={formData.category}
                       onChange={handleInputChange}
+                      disabled={isViewMode}
                       className="w-full border border-gray-300 rounded px-3 py-2"
                     >
                       <option value="">Select Category</option>
@@ -230,6 +250,7 @@ const EditOrViewItem = ({ isOpen, onClose, item = {}, onSave }) => {
                       name="foodType"
                       value={formData.foodType}
                       onChange={handleInputChange}
+                      disabled={isViewMode}
                       className="w-full border border-gray-300 rounded px-3 py-2"
                     >
                       <option value="">Select Food Type</option>
@@ -252,8 +273,45 @@ const EditOrViewItem = ({ isOpen, onClose, item = {}, onSave }) => {
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
+                  disabled={isViewMode}
                   className="w-full border border-gray-300 rounded px-3 py-2"
                 />
+              </div>
+
+              <div className="col-span-4 grid grid-cols-3 gap-4 pt-2">
+                <label className="flex items-center gap-2 border border-gray-200 rounded px-3 py-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="isTopRated"
+                    checked={formData.isTopRated}
+                    onChange={handleInputChange}
+                    disabled={isViewMode}
+                    className="form-checkbox h-4 w-4 text-(--color-primary)"
+                  />
+                  <span className="text-sm">Top Rated</span>
+                </label>
+                <label className="flex items-center gap-2 border border-gray-200 rounded px-3 py-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="isRecommended"
+                    checked={formData.isRecommended}
+                    onChange={handleInputChange}
+                    disabled={isViewMode}
+                    className="form-checkbox h-4 w-4 text-(--color-primary)"
+                  />
+                  <span className="text-sm">Recommended</span>
+                </label>
+                <label className="flex items-center gap-2 border border-gray-200 rounded px-3 py-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="isNew"
+                    checked={formData.isNew}
+                    onChange={handleInputChange}
+                    disabled={isViewMode}
+                    className="form-checkbox h-4 w-4 text-(--color-primary)"
+                  />
+                  <span className="text-sm">New</span>
+                </label>
               </div>
             </div>
           </form>
@@ -264,14 +322,16 @@ const EditOrViewItem = ({ isOpen, onClose, item = {}, onSave }) => {
             className="bg-gray-200 text-gray-700 px-4 py-2 rounded mr-2"
             onClick={onClose}
           >
-            Cancel
+            {isViewMode ? "Close" : "Cancel"}
           </button>
-          <button
-            className="bg-(--color-primary) text-(--color-primary-content) px-4 py-2 rounded"
-            onClick={handleSave}
-          >
-            Save
-          </button>
+          {!isViewMode && (
+            <button
+              className="bg-(--color-primary) text-(--color-primary-content) px-4 py-2 rounded"
+              onClick={handleSave}
+            >
+              Save
+            </button>
+          )}
         </footer>
       </div>
     </div>

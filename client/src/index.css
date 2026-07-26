@@ -67,6 +67,14 @@ input[type="password"]::-ms-reveal {
   display: none;
 }
 
+input:disabled,
+textarea:disabled,
+select:disabled,
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
 .bg-imge{
   background-image: url("https://assets.cntraveller.in/photos/6a461b008c607531ecd6b2ea/master/w_1600%2Cc_limit/1%2520(1).png");
   width: 100%;

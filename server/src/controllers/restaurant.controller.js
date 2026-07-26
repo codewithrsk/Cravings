@@ -402,14 +402,16 @@ export const GetAllItems = async (req, res, next) => {
   try {
     const currentUser = req.user;
 
-    console.log("curent user = ",currentUser);
-    
-
+    console.log("curent user = ", currentUser);
 
     // Find the restaurant document for the current manager (user)
-    const existingRestaurant = await Restaurant.findOne({ managerId: currentUser._id });
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
     if (!existingRestaurant) {
-      return res.status(404).json({ message: "Restaurant not found", data: [] });
+      return res
+        .status(404)
+        .json({ message: "Restaurant not found", data: [] });
     }
 
     const items = await Menu.findOne({ restaurantId: existingRestaurant._id });
@@ -420,5 +422,93 @@ export const GetAllItems = async (req, res, next) => {
     }
 
     return res.status(200).json({ message: "All items", data: items });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
+};
+
+export const UpdateMenuItem = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const menuItemId = req.params.menuItemId;
+    const {
+      itemName,
+      description,
+      price,
+      category,
+      foodType,
+      status,
+      isTopRated,
+      isRecommended,
+      isNew,
+      isDeleted,
+    } = req.body;
+    const itemImageFromFE = req.file;
+
+    if (!menuItemId) {
+      const error = new Error("Menu item id is required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+    if (!existingRestaurant) {
+      const error = new Error("Restaurant not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    const existingMenu = await Menu.findOne({
+      restaurantId: existingRestaurant._id,
+    });
+    if (!existingMenu) {
+      const error = new Error("Menu not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    const itemIndex = existingMenu.menuItems.findIndex(
+      (menuItem) => menuItem._id.toString() === menuItemId,
+    );
+    if (itemIndex === -1) {
+      const error = new Error("Menu item not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    const menuItem = existingMenu.menuItems[itemIndex];
+
+    if (itemName !== undefined) menuItem.itemName = itemName;
+    if (description !== undefined) menuItem.description = description;
+    if (price !== undefined) menuItem.price = price;
+    if (category !== undefined) menuItem.category = category;
+    if (foodType !== undefined) menuItem.foodType = foodType;
+    if (status !== undefined) menuItem.status = status;
+    if (isTopRated !== undefined) menuItem.isTopRated = isTopRated;
+    if (isRecommended !== undefined) menuItem.isRecommended = isRecommended;
+    if (isNew !== undefined) menuItem.isNew = isNew;
+    if (isDeleted !== undefined) menuItem.isDeleted = isDeleted;
+
+    if (itemImageFromFE) {
+      const itemImage = await UploadSingleImage(
+        itemImageFromFE,
+        `restaurant/${currentUser.phone}/menuItems`,
+      );
+      menuItem.image = itemImage;
+    }
+
+    existingMenu.menuItems[itemIndex] = menuItem;
+    await existingMenu.save();
+
+    return res.status(200).json({
+      message: "Menu item updated successfully",
+      data: existingMenu.menuItems[itemIndex],
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
 };

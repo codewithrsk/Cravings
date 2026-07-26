@@ -275,7 +275,10 @@ const Restaurantmenu = () => {
             isOpen={isEditViewItemModalOpen}
             onClose={() => setIsEditViewItemModalOpen(false)}
             item={selectedItem}
-            onSave={() => {setIsEditViewItemModalOpen(false)}}
+            mode={modalMode}
+            onSave={() => {
+              setIsEditViewItemModalOpen(false);
+            }}
           />
         </>
       )}
