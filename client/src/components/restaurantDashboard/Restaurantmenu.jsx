@@ -261,7 +261,7 @@ const Restaurantmenu = () => {
   };
   useEffect(() => {
     menu();
-  }, [user]);
+  }, []);
 
   const [isAddNewItemModalOpen, setIsAddNewItemModalOpen] = useState(false);
   const [isEditViewItemModalOpen, setIsEditViewItemModalOpen] = useState(false);
@@ -284,8 +284,12 @@ const Restaurantmenu = () => {
           <>
             <div className="bg-gray-50 h-full flex justify-center items-center">
               <div className="h-100 w-100">
-              <img src={RunningLodader} alt="Loding..." className="w-full h-full mb-0 pb-0" />
-              <div className="flex justify-center">Loding...</div>
+                <img
+                  src={RunningLodader}
+                  alt="Loding..."
+                  className="w-full h-full mb-0 pb-0"
+                />
+                <div className="flex justify-center">Loding...</div>
               </div>
             </div>
           </>

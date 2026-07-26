@@ -3,11 +3,11 @@ import toast from "react-hot-toast";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import api from "../config/api.config";
 
-const Register = () => {
+const Register = ({usertype}) => {
   const userType = useParams().userType;
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    userType: userType || "customer",
+    userType: usertype || userType || "customer",
     fullName: "",
     email: "",
     phone: "",
