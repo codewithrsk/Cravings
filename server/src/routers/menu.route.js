@@ -6,7 +6,12 @@ import { RestaurantAuthProtect } from "../middlewares/auth.middleware.js";
 const router = express.Router();
 const upload = multer();
 
-  upload.single("coverImage"),
-router.put("/update-menu-info", RestaurantAuthProtect,upload.single("coverImage") ,MenuUpdateInfo);
+// (upload.single("coverImage"),
+//   router.put(
+//     "/update-menu-info",
+//     RestaurantAuthProtect,
+//     upload.single("coverImage"),
+//     MenuUpdateInfo,
+//   ));
 
 export default router;
