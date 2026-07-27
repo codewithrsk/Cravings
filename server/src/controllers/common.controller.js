@@ -15,21 +15,19 @@ export const updateUser = async (req, res, next) => {
       error.statusCode = 400;
       return next(error);
     }
-    
-    const existingUser = await User.findOne({ email });    
+
+    const existingUser = await User.findOne({ email });
     if (!existingUser) {
       const error = new Error("Email not registred");
       error.statusCode = 404;
       return next(error);
     }
-    
 
     if (newPhoto) {
       existingUser?.photo.publicId &&
         (await cloudinary.uploader.destroy(existingUser.photo));
       const b64 = Buffer.from(newPhoto.buffer).toString("base64");
       const dataURI = `data:${newPhoto.mimetype};base64,${b64}`;
-    
 
       const result = await cloudinary.uploader.upload(dataURI, {
         folder: "Cravings678/profile",
@@ -37,7 +35,6 @@ export const updateUser = async (req, res, next) => {
         height: 500,
         crop: "fill",
       });
-      
 
       console.log(result);
       existingUser.photo.url = result.secure_url;
@@ -57,7 +54,6 @@ export const updateUser = async (req, res, next) => {
     next();
   }
 };
-
 
 export const UpdateUserPassword = async (req, res, next) => {
   try {
