@@ -12,6 +12,7 @@ import UsearDashboard from "./pages/dashboard/UsearDashboard"
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import RiderDashboard from "./pages/dashboard/RiderDashboard";
 import RestauantDashboard from "./pages/dashboard/RestauantDashboard";
+import OrderNow from "./pages/OrderNow"
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
           <Route path={"/admin/dashboard"} element={<AdminDashboard />} />
           <Route path={"/restaurant/dashboard"} element={<RestauantDashboard />} />
           <Route path={"/rider/dashboard"} element={<RiderDashboard />} />
+          <Route path={"/order-now"} element={<OrderNow />} />
           
 
         </Routes>
