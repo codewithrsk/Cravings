@@ -127,8 +127,10 @@ const AddNewItemModal = ({ isOpen, onClose }) => {
               <div className="grid grid-cols-4 gap-4 ">
                 <div className="col-span-1 m-auto space-x-0 space-y-2">
                   <div className="col-span-1 flex flex-col justify-center">
-                    <span className="w-full flex justify-center">Item Image</span>
-                    
+                    <span className="w-full flex justify-center">
+                      Item Image
+                    </span>
+
                     <div>
                       <div className="relative group w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden shadow-inner border-4 border-(--color-base-200) bg-(--color-base-300)">
                         {itemImage && (

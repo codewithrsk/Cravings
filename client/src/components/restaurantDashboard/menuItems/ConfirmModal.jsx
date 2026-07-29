@@ -1,7 +1,13 @@
 import React from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
-const ConfirmModal = ({ selectedItem, modalMode, isOpen, onClose, onConfirm }) => {
+const ConfirmModal = ({
+  selectedItem,
+  modalMode,
+  isOpen,
+  onClose,
+  onConfirm,
+}) => {
   if (!isOpen) return null;
   return (
     <>
