@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../config/api.config";
 import toast from "react-hot-toast";
+import Loader from "../components/Loader";
 
 const RestaurantDetailsPage = () => {
   const { restaurantId } = useParams();
@@ -20,7 +21,7 @@ const RestaurantDetailsPage = () => {
           "Unknown error occurred while loading restaurant details. Please try again.",
       );
     } finally {
-      setIsLoading(false);
+      setIsLoading(true);
     }
   };
 
@@ -44,12 +45,16 @@ const RestaurantDetailsPage = () => {
 
   if (isLoading) {
     return (
+        <>
+        <Loader />
       <div className="min-h-screen flex items-center justify-center py-24">
         <div className="text-center">
+            <Loader />    
           <div className="inline-block h-16 w-16 animate-spin rounded-full border-4 border-(--color-primary) border-t-transparent"></div>
           <p className="mt-4 text-lg text-(--color-primary)">Loading restaurant menu...</p>
         </div>
       </div>
+      </>
     );
   }
 
