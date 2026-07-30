@@ -3,6 +3,7 @@ import RestaurantInformation from "./settings/RestaurantInformation";
 import ResturantCoreDetails from "./settings/ResturantCoreDetails";
 import RestaurantPhotos from "./settings/RestaurantPhotos";
 import { useAuth } from "../../context/AuthContext";
+import api from "../../config/api.config";
 import toast from "react-hot-toast";
 
 const RestaurantSetting = () => {
@@ -22,7 +23,7 @@ const RestaurantSetting = () => {
   };
 
   const [isRestaurantOpen, setIsRestaurantOpen] = useState(
-    sessionStorage.getItem("RestaurantOpen") || false,
+    sessionStorage.getItem("RestaurantOpen") === "true"
   );
 
   const [isLoadingResturantOpen, setIsLoadingResturantOpen] = useState(true);

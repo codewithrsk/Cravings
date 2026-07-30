@@ -31,6 +31,11 @@ router.put(
   RestaurantAuthProtect,
   RestaurantUpdateInfo,
 );
+// router.patch(
+//   "/change-open-status/:openStatus",
+//   RestaurantAuthProtect,
+//   OpenRestaurant,
+// );
 
 router.patch(
   "/change-open-status/:openStatus",

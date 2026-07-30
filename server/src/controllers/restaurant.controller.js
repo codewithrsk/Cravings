@@ -204,8 +204,12 @@ export const RestaurantUpdateInfo = async (req, res, next) => {
 export const OpenRestaurant = async (req, res, next) => {
   try {
     const currentUser = req.user;
+    console.log("currentUser :- ", currentUser);
+    
 
     const OpenStatus = req.params.openStatus;
+    console.log("openStatus :- ", OpenStatus);
+    
 
     console.log("Open Status is", OpenStatus);
 
