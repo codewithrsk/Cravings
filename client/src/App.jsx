@@ -1,18 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Header from "./components/Header";
-import Footer from "./components/Footer"
+import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import About from "./pages/About";
 import Contactus from "./pages/ContactUs";
 import Terms_and_conditions from "./pages/Terms_and_conditions";
 import { Toaster } from "react-hot-toast";
-import UsearDashboard from "./pages/dashboard/UsearDashboard"
+import UsearDashboard from "./pages/dashboard/UsearDashboard";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import RiderDashboard from "./pages/dashboard/RiderDashboard";
 import RestauantDashboard from "./pages/dashboard/RestauantDashboard";
-import OrderNow from "./pages/OrderNow"
+import RestaurantDetailsPage from "./pages/RestaurantDetailsPage";
+import OrderNow from "./pages/OrderNow";
 
 const App = () => {
   return (
@@ -33,13 +34,18 @@ const App = () => {
           />
           <Route path={"/user/dashboard"} element={<UsearDashboard />} />
           <Route path={"/admin/dashboard"} element={<AdminDashboard />} />
-          <Route path={"/restaurant/dashboard"} element={<RestauantDashboard />} />
+          <Route
+            path={"/restaurant/dashboard"}
+            element={<RestauantDashboard />}
+          />
           <Route path={"/rider/dashboard"} element={<RiderDashboard />} />
           <Route path={"/order-now"} element={<OrderNow />} />
-          
-
+          <Route
+            path="/restaurant-menu/:restaurantId"
+            element={<RestaurantDetailsPage />}
+          />
         </Routes>
-        <Footer/>
+        <Footer />
       </BrowserRouter>
     </>
   );

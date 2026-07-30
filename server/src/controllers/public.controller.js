@@ -1,5 +1,6 @@
 import Contact from "../models/contact.model.js";
 import Restaurant from "../models/restaurant.model.js";
+import Menu from "../models/menu.model.js"
 
 export const ContactUsForm = async (req, res, next) => {
   try {
@@ -33,6 +34,31 @@ export const AllRestaurants = async (req, res, next) => {
     res.status(200).json({ message: "all resturent", data: allrestaurants });
   } catch (error) {
     console.log(error);
+    next();
+  }
+};
+
+export const GetRestaurantDetails = async (req, res, next) => {
+  try {
+    const { restaurantId } = req.params;
+
+    const restaurantDetails = await Menu.findOne({ restaurantId }).populate({
+      path: "restaurantId",
+      populate: {
+        path: "managerId",
+      },
+    })
+   console.log("restaurantDetails :- ",restaurantDetails);
+   
+    if (!restaurantDetails) {
+      const error = new Error("Restaurant not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    res.status(200).json({ data: restaurantDetails });
+  } catch (error) {
+    console.log(error.message);
     next();
   }
 };
