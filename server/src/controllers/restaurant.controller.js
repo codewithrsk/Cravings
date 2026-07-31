@@ -159,20 +159,81 @@ export const RestaurantUpdateImages = async (req, res, next) => {
     }
 
     if (restaurantImageFromFE.length > 0) {
-      if (existingRestaurant.restaurantImage?.length > 0) {
-        await deleteMultipleImages(existingRestaurant.restaurantImage);
-      }
       const restaurantImage = await uploadMultipleImages(
         restaurantImageFromFE,
         `restaurant/${currentUser.phone}/restaurantPhotos`,
       );
-      existingRestaurant.restaurantImage = restaurantImage;
+      existingRestaurant.restaurantImage = [
+        ...(existingRestaurant.restaurantImage || []),
+        ...restaurantImage,
+      ];
     }
 
     await existingRestaurant.save();
 
     return res.status(200).json({
       message: "Restaurant images updated successfully",
+      data: existingRestaurant,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
+};
+
+export const RestaurantDeleteImage = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const { imageType, publicId } = req.body;
+
+    if (!imageType || !publicId) {
+      const error = new Error("imageType and publicId are required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+
+    if (!existingRestaurant) {
+      const error = new Error("Restaurant not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    if (imageType === "cover") {
+      if (!existingRestaurant.coverImage?.publicId) {
+        const error = new Error("Cover image not found");
+        error.statusCode = 404;
+        return next(error);
+      }
+      await deleteSingleImage(existingRestaurant.coverImage);
+      existingRestaurant.coverImage = null;
+    } else if (imageType === "gallery") {
+      const galleryIndex = existingRestaurant.restaurantImage.findIndex(
+        (image) => image.publicId === publicId,
+      );
+      if (galleryIndex === -1) {
+        const error = new Error("Gallery image not found");
+        error.statusCode = 404;
+        return next(error);
+      }
+      const [deletedImage] = existingRestaurant.restaurantImage.splice(
+        galleryIndex,
+        1,
+      );
+      await deleteSingleImage(deletedImage);
+    } else {
+      const error = new Error("Invalid imageType. Use 'cover' or 'gallery'.");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    await existingRestaurant.save();
+
+    return res.status(200).json({
+      message: "Restaurant image deleted successfully",
       data: existingRestaurant,
     });
   } catch (error) {

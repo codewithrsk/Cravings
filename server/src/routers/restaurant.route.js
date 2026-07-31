@@ -8,6 +8,7 @@ import {
   RestaurantUpdateLegalInfo,
   RestaurantUpdateCoreDetails,
   RestaurantUpdateImages,
+  RestaurantDeleteImage,
   RestaurantAddMenuItem,
   GetAllItems,
   UpdateMenuItem,
@@ -48,6 +49,12 @@ router.put(
     { name: "restaurantImage", maxCount: 10 },
   ]),
   RestaurantUpdateImages,
+);
+
+router.patch(
+  "/delete-restaurant-image",
+  RestaurantAuthProtect,
+  RestaurantDeleteImage,
 );
 
 // router.patch(
