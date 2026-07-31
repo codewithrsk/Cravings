@@ -6,6 +6,8 @@ import {
   RestaurantUpdateInfo,
   OpenRestaurant,
   RestaurantUpdateLegalInfo,
+  RestaurantUpdateCoreDetails,
+  RestaurantUpdateImages,
   RestaurantAddMenuItem,
   GetAllItems,
   UpdateMenuItem,
@@ -31,6 +33,23 @@ router.put(
   RestaurantAuthProtect,
   RestaurantUpdateInfo,
 );
+
+router.put(
+  "/update-core-details",
+  RestaurantAuthProtect,
+  RestaurantUpdateCoreDetails,
+);
+
+router.put(
+  "/update-restaurant-images",
+  RestaurantAuthProtect,
+  upload.fields([
+    { name: "coverImage", maxCount: 1 },
+    { name: "restaurantImage", maxCount: 10 },
+  ]),
+  RestaurantUpdateImages,
+);
+
 // router.patch(
 //   "/change-open-status/:openStatus",
 //   RestaurantAuthProtect,

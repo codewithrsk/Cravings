@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
+import api from "../../../config/api.config";
+import toast from "react-hot-toast";
 
 const RestaurantPhotos = () => {
   const MAX_FILE_SIZE = 1024 * 1024; // 1MB
@@ -9,6 +11,7 @@ const RestaurantPhotos = () => {
   const [coverImage, setCoverImage] = useState(null);
   const [galleryImages, setGalleryImages] = useState([]);
   const [errors, setErrors] = useState({ cover: "", gallery: "" });
+  const [isSaving, setIsSaving] = useState(false);
 
   const coverPreview = useMemo(() => {
     return coverImage ? URL.createObjectURL(coverImage) : "";
@@ -93,6 +96,38 @@ const RestaurantPhotos = () => {
     });
 
     event.target.value = "";
+  };
+
+  const handleSaveImages = async () => {
+    if (!coverImage && galleryImages.length === 0) {
+      toast.error("Select at least one image to upload.");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const formData = new FormData();
+      if (coverImage) {
+        formData.append("coverImage", coverImage);
+      }
+      galleryImages.forEach((image) => {
+        formData.append("restaurantImage", image);
+      });
+
+      await api.put("/restaurant/update-restaurant-images", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      toast.success("Restaurant images uploaded successfully!");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to upload restaurant images",
+      );
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const removeGalleryImage = (indexToRemove) => {
@@ -270,6 +305,15 @@ const RestaurantPhotos = () => {
             </div>
           )}
         </div>
+      </div>
+      <div className="flex justify-end mt-4">
+        <button
+          onClick={handleSaveImages}
+          disabled={isSaving}
+          className="inline-flex items-center justify-center rounded-lg bg-(--color-primary) px-5 py-2.5 text-sm font-medium text-(--color-primary-content) shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {isSaving ? "Saving..." : "Save Images"}
+        </button>
       </div>
     </div>
   );

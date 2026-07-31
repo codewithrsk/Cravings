@@ -125,6 +125,62 @@ export const RestaurantUpdateProfile = async (req, res, next) => {
   }
 };
 
+export const RestaurantUpdateImages = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const coverImageFromFE = req.files?.coverImage?.[0];
+    const restaurantImageFromFE = req.files?.restaurantImage || [];
+
+    if (!coverImageFromFE && restaurantImageFromFE.length === 0) {
+      const error = new Error("At least one restaurant image is required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+
+    if (!existingRestaurant) {
+      const error = new Error("Restaurant not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    if (coverImageFromFE) {
+      if (existingRestaurant.coverImage?.publicId) {
+        await deleteSingleImage(existingRestaurant.coverImage);
+      }
+      const coverImage = await UploadSingleImage(
+        coverImageFromFE,
+        `restaurant/${currentUser.phone}/coverPhoto`,
+      );
+      existingRestaurant.coverImage = coverImage;
+    }
+
+    if (restaurantImageFromFE.length > 0) {
+      if (existingRestaurant.restaurantImage?.length > 0) {
+        await deleteMultipleImages(existingRestaurant.restaurantImage);
+      }
+      const restaurantImage = await uploadMultipleImages(
+        restaurantImageFromFE,
+        `restaurant/${currentUser.phone}/restaurantPhotos`,
+      );
+      existingRestaurant.restaurantImage = restaurantImage;
+    }
+
+    await existingRestaurant.save();
+
+    return res.status(200).json({
+      message: "Restaurant images updated successfully",
+      data: existingRestaurant,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
+};
+
 export const RestaurantUpdateInfo = async (req, res, next) => {
   try {
     const currentUser = req.user;
@@ -272,6 +328,113 @@ export const RestaurantUpdateLegalInfo = async (req, res, next) => {
   } catch (error) {
     console.log(error.message);
     next();
+  }
+};
+
+export const RestaurantUpdateCoreDetails = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const {
+      address,
+      city,
+      state,
+      pinCode,
+      country,
+      geoLat,
+      geoLon,
+      bankName,
+      accountNumber,
+      ifscCode,
+      panCard,
+      gst,
+      fssai,
+      socialMediaLinks,
+    } = req.body;
+
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+
+    if (!existingRestaurant) {
+      const error = new Error("Restaurant Not Found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    if (address !== undefined) existingRestaurant.address = address;
+    if (city !== undefined) existingRestaurant.city = city;
+    if (state !== undefined) existingRestaurant.state = state;
+    if (pinCode !== undefined) existingRestaurant.pinCode = pinCode;
+    if (country !== undefined) existingRestaurant.country = country;
+
+    existingRestaurant.geoLocation = {
+      lat:
+        geoLat !== undefined
+          ? String(geoLat)
+          : existingRestaurant.geoLocation?.lat || "",
+      lon:
+        geoLon !== undefined
+          ? String(geoLon)
+          : existingRestaurant.geoLocation?.lon || "",
+    };
+
+    existingRestaurant.financialDetails = {
+      bankName:
+        bankName !== undefined
+          ? bankName
+          : existingRestaurant.financialDetails?.bankName || "",
+      accountNumber:
+        accountNumber !== undefined
+          ? accountNumber
+          : existingRestaurant.financialDetails?.accountNumber || "",
+      ifscCode:
+        ifscCode !== undefined
+          ? ifscCode
+          : existingRestaurant.financialDetails?.ifscCode || "",
+    };
+
+    const existingDocuments = existingRestaurant.documents || {};
+    existingRestaurant.documents = {
+      ...existingDocuments,
+      panCard:
+        panCard !== undefined
+          ? panCard
+          : existingDocuments.panCard || "",
+      gstCertificate:
+        gst !== undefined
+          ? gst
+          : existingDocuments.gstCertificate || "",
+      fssaiCertificate:
+        fssai !== undefined
+          ? fssai
+          : existingDocuments.fssaiCertificate || "",
+      legalName: existingDocuments.legalName || "",
+      companyType: existingDocuments.companyType || "",
+    };
+
+    if (socialMediaLinks !== undefined) {
+      let parsedLinks = socialMediaLinks;
+      if (typeof socialMediaLinks === "string") {
+        try {
+          parsedLinks = JSON.parse(socialMediaLinks);
+        } catch (_err) {
+          parsedLinks = existingRestaurant.socialMediaLinks || [];
+        }
+      }
+      if (Array.isArray(parsedLinks)) {
+        existingRestaurant.socialMediaLinks = parsedLinks;
+      }
+    }
+
+    await existingRestaurant.save();
+
+    return res.status(200).json({
+      message: "Restaurant core details updated successfully",
+      data: existingRestaurant,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
   }
 };
 

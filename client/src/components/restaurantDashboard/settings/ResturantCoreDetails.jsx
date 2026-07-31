@@ -45,12 +45,12 @@ const ResturantCoreDetails = () => {
         country: restaurantData.country || "",
         geoLat: restaurantData.geoLocation?.lat || "",
         geoLon: restaurantData.geoLocation?.lon || "",
-        bankName: restaurantData.bankingDetails?.bankName || "",
-        accountNumber: restaurantData.bankingDetails?.accountNumber || "",
-        ifscCode: restaurantData.bankingDetails?.ifscCode || "",
+        bankName: restaurantData.financialDetails?.bankName || "",
+        accountNumber: restaurantData.financialDetails?.accountNumber || "",
+        ifscCode: restaurantData.financialDetails?.ifscCode || "",
         panCard: restaurantData.documents?.panCard || "",
-        gst: restaurantData.documents?.gst || "",
-        fssai: restaurantData.documents?.fssai || "",
+        gst: restaurantData.documents?.gstCertificate || "",
+        fssai: restaurantData.documents?.fssaiCertificate || "",
         socialMediaLinks: restaurantData.socialMediaLinks || [],
       });
     }
@@ -88,15 +88,17 @@ const ResturantCoreDetails = () => {
   const handleSaveRestaurant = async () => {
     try {
       setIsLoading(true);
-      // Prepare payload for restaurant update
       console.log("restaurantFormData payload:", restaurantFormData);
 
-      // Simulate API call
-      // await api.put(`/restaurant/update-core-data?id=${user._id}`, restaurantFormData);
+      const response = await api.put(
+        `/restaurant/update-core-details`,
+        restaurantFormData,
+      );
 
       toast.success("Restaurant core details updated successfully!");
+      setRestaurantData(response.data.data);
       setEditingRestaurant(false);
-      // fetchRestaurantData(); // Re-fetch to confirm sync
+      fetchRestaurantData();
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to update restaurant",
@@ -130,12 +132,12 @@ const ResturantCoreDetails = () => {
         country: restaurantData.country || "",
         geoLat: restaurantData.geoLocation?.lat || "",
         geoLon: restaurantData.geoLocation?.lon || "",
-        bankName: restaurantData.bankingDetails?.bankName || "",
-        accountNumber: restaurantData.bankingDetails?.accountNumber || "",
-        ifscCode: restaurantData.bankingDetails?.ifscCode || "",
+        bankName: restaurantData.financialDetails?.bankName || "",
+        accountNumber: restaurantData.financialDetails?.accountNumber || "",
+        ifscCode: restaurantData.financialDetails?.ifscCode || "",
         panCard: restaurantData.documents?.panCard || "",
-        gst: restaurantData.documents?.gst || "",
-        fssai: restaurantData.documents?.fssai || "",
+        gst: restaurantData.documents?.gstCertificate || "",
+        fssai: restaurantData.documents?.fssaiCertificate || "",
         socialMediaLinks: restaurantData.socialMediaLinks || [],
       });
     }
@@ -147,8 +149,8 @@ const ResturantCoreDetails = () => {
     try {
       setIsLoadingRestaurant(true);
       setLoadingRestaurantError(null);
-      // const res = await api.get(`/restaurant/get-resturant-data?id=${user._id}`);
-      // setRestaurantData(res.data.data);
+      const res = await api.get(`/restaurant/get-resturant-data?id=${user._id}`);
+      setRestaurantData(res.data.data);
     } catch (error) {
       const errMsg =
         error.response?.data?.message ||
