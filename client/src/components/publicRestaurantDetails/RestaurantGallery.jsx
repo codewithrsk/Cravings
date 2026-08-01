@@ -22,4 +22,4 @@ const RestaurantGallery = ({ images }) => {
   );
 };
 
-export default RestaurantGallery; 
+export default RestaurantGallery;

@@ -14,9 +14,11 @@ const RestaurantHero = ({ restaurant, onBack }) => {
           className="w-full h-full object-cover"
         />
       ) : (
-        <div className="w-full h-full bg-gradient-to-br from-orange-700/80 to-neutral-700" />
+        // bg-gradient-to-br
+        <div className="w-full h-full  from-orange-700/80 to-neutral-700" />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+      {/* bg-gradient-to-t */}
+      <div className="absolute inset-0  from-black/80 via-black/30 to-transparent" />
 
       {/* Back button */}
       <button
