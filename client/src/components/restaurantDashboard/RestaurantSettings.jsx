@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import RestaurantInformation from "./settings/RestaurantInformation";
-import ResturantCoreDetails from "./settings/ResturantCoreDetails";
-import RestaurantPhotos from "./settings/RestaurantPhotos";
-import { useAuth } from "../../context/AuthContext";
-import api from "../../config/api.config";
+import React, { useState, useEffect } from "react";
+import api from "../../config/api.config.js";
 import toast from "react-hot-toast";
+import { RiLoader4Fill } from "react-icons/ri";
+import { useAuth } from "../../context/AuthContext";
+import CoreDetails from "./settings/coreDetails/Index";
+import Information from "./settings/restaurantInformation/Index";
+import RestaurantPhotos from "./settings/RestaurantPhotos";
+import Loader from "../../components/Loader";
+import { IoMdHammer } from "react-icons/io";
 
 const RestaurantSetting = () => {
   const { user } = useAuth();
-  // useEffect(async () => {
-  //   const req = await api.get("/resturent/isOpen");
-  // }, [user]);
   const Tabs = [
     { id: "information", label: "Information" },
     { id: "coreDetails", label: "Core Details" },
@@ -18,28 +18,54 @@ const RestaurantSetting = () => {
   ];
   const [activeTab, setActiveTab] = useState("information");
 
-  const handalChangeOpen = () => {
-    setIsRestaurantOpen(!isRestaurantOpen);
-  };
-
+  const [isLoadingResturantOpen, setIsLoadingResturantOpen] = useState(true);
   const [isRestaurantOpen, setIsRestaurantOpen] = useState(
-    sessionStorage.getItem("RestaurantOpen") === "true"
+    () => sessionStorage.getItem("RestaurantOpen") === "true",
   );
 
-  const [isLoadingResturantOpen, setIsLoadingResturantOpen] = useState(true);
+  //Load Restaurant Data
+  const [isLoadingRestaurant, setIsLoadingRestaurant] = useState(false);
   const [loadingRestaurantError, setLoadingRestaurantError] = useState(null);
   const [restaurantData, setRestaurantData] = useState();
+
+  const fetchRestaurantData = async () => {
+    try {
+      setIsLoadingRestaurant(true);
+      setIsLoadingResturantOpen(true);
+
+      const res = await api.get(
+        `/restaurant/get-resturant-data?id=${user._id}`,
+      );
+      setRestaurantData(res.data.data);
+      sessionStorage.setItem(
+        "cravingRestaurant",
+        JSON.stringify(res.data.data),
+      );
+      sessionStorage.setItem("RestaurantOpen", res.data.data.isOpen);
+
+      setIsRestaurantOpen(res.data.data.isOpen);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Unknown error occurred fetching restaurant. Please try again.",
+      );
+      setLoadingRestaurantError(
+        error.response?.data?.message ||
+          "Unknown error occurred fetching restaurant. Please try again.",
+      );
+    } finally {
+      setIsLoadingRestaurant(false);
+      setIsLoadingResturantOpen(false);
+    }
+  };
 
   const handleRestaurantOpen = async () => {
     try {
       setIsLoadingResturantOpen(true);
-      console.log("enter in api");
 
       const res = await api.patch(
         `/restaurant/change-open-status/${!isRestaurantOpen}?id=${user._id}`,
       );
-      console.log("api hit");
-
       setIsRestaurantOpen(res.data.data.isOpen);
       setRestaurantData(res.data.data);
       sessionStorage.setItem(
@@ -50,8 +76,6 @@ const RestaurantSetting = () => {
 
       toast.success(res.data.message);
     } catch (error) {
-      console.log("get error");
-
       toast.error(
         error.response?.data?.message ||
           "Unknown error occurred while Opening the Restaurant. Please try again.",
@@ -61,47 +85,106 @@ const RestaurantSetting = () => {
     }
   };
 
+  useEffect(() => {
+    if (user?._id) {
+      fetchRestaurantData();
+    }
+  }, [user]);
+
   return (
-    <>
-      <div className=" h-full  flex flex-col p-4 ">
-        <div className="border-b border-(--color-secondary)/50 flex justify-between mb-2 w-full">
-          <div className="flex gap-3 ">
-            {Tabs.map((tab, idx) => (
-              <>
-                <div
-                  key={idx}
-                  className={`p-2 uppercase cursor-pointer ${activeTab === tab.id ? "text-(--color-primary) border-b-3 border-(--color-primary)" : ""}`}
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  {tab.label}
+    <div className="h-full flex flex-col gap-4">
+      {isLoadingRestaurant ? (
+        <Loader height="100%" width="100%" />
+      ) : (
+        <>
+          <div className="rounded-3xl border border-(--color-base-300) bg-(--color-base-100) p-6 shadow-sm">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 rounded-full bg-(--color-primary)/10 px-3 py-1 text-sm uppercase font-semibold tracking-[0.2em] text-(--color-primary)">
+                  <IoMdHammer className="text-lg" /> Restaurant Settings
                 </div>
-              </>
-            ))}
+                <div>
+                  <h1 className="text-2xl font-semibold text-(--color-primary)">
+                    {restaurantData?.restaurantName || "Restaurant settings"}
+                  </h1>
+                  <p className="text-sm text-(--color-secondary) max-w-2xl">
+                    Manage restaurant info, core business details, and photo galleries from one dashboard.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                <div className="rounded-2xl border border-(--color-secondary)/20 bg-(--color-base-200) p-4">
+                  <div className="text-xs uppercase tracking-[0.2em] text-(--color-secondary)">Current status</div>
+                  <div className="mt-3 flex items-center justify-between gap-4">
+                    <span className="text-base font-semibold text-(--color-primary)">{isRestaurantOpen ? "Open for orders" : "Closed"}</span>
+                    <button
+                      onClick={handleRestaurantOpen}
+                      className={`relative inline-flex h-9 w-20 items-center rounded-full transition-colors duration-300 ${
+                        isRestaurantOpen ? "bg-(--color-primary)" : "bg-gray-300"
+                      }`}
+                    >
+                      <span
+                        className={`absolute left-1 top-1 h-7 w-7 rounded-full bg-white transition-transform duration-300 ${
+                          isRestaurantOpen ? "translate-x-11" : ""
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <label className="w-22 text-xs font-semibold">Currently Open</label>
-            <button
-              onClick={handleRestaurantOpen}
-              className={`relative w-14 h-7 rounded-full transition-colors duration-300 ${
-                isRestaurantOpen ? "bg-(--color-primary)" : "bg-gray-300"
-              }`}
-            >
-              <span
-                className={`absolute top-1 left-1 h-5 w-5 rounded-full bg-white transition-transform duration-300 ${
-                  isRestaurantOpen ? "translate-x-7" : ""
-                }`}
-              />
-            </button>
+          <div className="grid gap-5 lg:grid-cols-[280px_1fr] lg:items-start">
+            <aside className="space-y-4">
+              <div className="rounded-3xl border border-(--color-base-300) bg-(--color-base-100) p-4 shadow-sm">
+                <h2 className="text-sm font-semibold text-(--color-primary) mb-4">Quick Settings</h2>
+                <nav className="space-y-2">
+                  {Tabs.map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`w-full rounded-2xl px-4 py-3 text-left transition ${
+                        activeTab === tab.id
+                          ? "bg-(--color-primary) text-(--color-primary-content) shadow-sm"
+                          : "bg-(--color-base-200) text-(--color-base-content) hover:bg-(--color-base-300)"
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </nav>
+              </div>
+
+              <div className="rounded-3xl border border-(--color-base-300) bg-(--color-base-100) p-4 shadow-sm">
+                <h2 className="text-sm font-semibold text-(--color-primary) mb-3">Restaurant summary</h2>
+                <div className="space-y-3 text-sm text-(--color-secondary)">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-medium text-(--color-base-content)">Cuisine</span>
+                    <span>{restaurantData?.cuisineTypes?.join(", ") || "Not set"}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-medium text-(--color-base-content)">Type</span>
+                    <span>{restaurantData?.restaurantType || "Not set"}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-medium text-(--color-base-content)">Contact</span>
+                    <span>{restaurantData?.contactDetails?.phone || "-"}</span>
+                  </div>
+                </div>
+              </div>
+            </aside>
+
+            <section className="rounded-3xl border border-(--color-base-300) bg-(--color-base-200) p-4 shadow-sm min-h-[70vh]">
+              {activeTab === "information" && <Information />}
+              {activeTab === "coreDetails" && <CoreDetails />}
+              {activeTab === "photos" && <RestaurantPhotos />}
+            </section>
           </div>
-        </div>
-        <div className="h-full rounded-lg bg-(--color-base-200) p-2">
-          {activeTab === "information" && <RestaurantInformation />}
-          {activeTab === "coreDetails" && <ResturantCoreDetails />}
-          {activeTab === "photos" && <RestaurantPhotos />}
-        </div>
-      </div>
-    </>
+        </>
+      )}
+    </div>
   );
 };
 

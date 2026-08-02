@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MdEdit } from "react-icons/md";
-import api from "../../../../config/ApiConfig";
+import api from "../../../../config/api.config.js";
 import toast from "react-hot-toast";
 
 const RestaurantBankingDocument = () => {
