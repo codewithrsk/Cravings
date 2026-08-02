@@ -47,7 +47,7 @@ export const deleteSingleImage = async (image) => {
   }
 };
 
-export const UploadSingleImage = async (image, storageLocation) => {
+export const uploadSingleImage = async (image, storageLocation) => {
   try {
     const b64 = Buffer.from(image.buffer).toString("base64");
     const dataURI = `data:${image.mimetype};base64,${b64}`;
