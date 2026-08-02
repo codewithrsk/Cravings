@@ -1,32 +1,137 @@
-import React from "react";
+// import React from "react";
+// import { Link, useNavigate } from "react-router-dom";
+// import logoLight from "../assets/transparentLogoLight.png";
+// import { useAuth } from "../context/AuthContext";
+// import { FaPowerOff } from "react-icons/fa";
+// import toast from "react-hot-toast";
+// import api from "../config/api.config";
+
+// const Header = () => {
+//   const { user, isLogin, setUser, setIsLogin, role } = useAuth();
+//   const navigate = useNavigate();
+
+//   const handleNavigate = () => {
+//     if (role === "customer") {
+//       navigate("/user/dashboard");
+//     }
+//     if (role === "admin") {
+//       navigate("/admin/dashboard");
+//     }
+//     if (role === "rider") {
+//       navigate("/rider/dashboard");
+//     }
+//     if (role === "restaurant") {
+//       navigate("/restaurant/dashboard");
+//     }
+
+    
+//     //console.log("Handle Navigate", role);
+//   };
+//   const handleLogout = async () => {
+//     try {
+//       const res = await api.get("/auth/logout");
+//       toast.success(res.data.message);
+
+//       sessionStorage.removeItem("cravingUser");
+//       setUser(null);
+//       setIsLogin(false);
+//       navigate("/");
+//     } catch (error) {
+//       toast.error(
+//         error.response?.data?.message ||
+//           "Unknown error occurred during LogOut. Please try again.",
+//       );
+//     }
+//   };
+
+//   return (
+//     <>
+//       <div className="sticky top-0 z-99 flex items-center justify-between px-12 py-1 bg-(--color-primary) text-white w-full h-[8vh] shadow-md">
+//         <div className="h-full">
+//           <Link to="/">
+//             <img src={logoLight} alt="Logo" className="w-fit h-full" />{" "}
+//           </Link>
+//         </div>
+
+//         {isLogin ? (
+//           <div className="flex items-center gap-2">
+//             <button
+//               className="flex gap-2 items-center text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content)  px-3 py-1 rounded"
+//               title="Go to Dashboard"
+//               onClick={handleNavigate}
+//             >
+//               <img
+//                 src={user?.photo.url}
+//                 alt={user?.fullName}
+//                 className="w-12 h-12 rounded-full object-cover object-top"
+//               />
+//               <div className="flex flex-col items-start">
+//                 <span className="text-base">{user?.fullName}</span>
+//                 <span className="text-xs text-(--color-primary-content)/80">
+//                   {user?.userType}
+//                 </span>
+//               </div>
+//             </button>
+//             <button
+//               onClick={handleLogout}
+//               className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) hover:bg-(--color-error) px-3 py-3 rounded"
+//               title="Logout"
+//             >
+//               <FaPowerOff />
+//             </button>
+//           </div>
+//         ) : (
+//           <div className="flex items-center gap-2">
+//             <Link
+//               to="/login"
+//               className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) px-3 py-1 rounded"
+//             >
+//               Login
+//             </Link>
+//             <Link
+//               to="/register"
+//               className="bg-(--color-primary-content) text-(--color-primary) hover:bg-(--color-primary) hover:text-(--color-primary-content) border px-3 py-1 rounded"
+//             >
+//               Register
+//             </Link>
+//           </div>
+//         )}
+//       </div>
+//     </>
+//   );
+// };
+
+// export default Header;
+
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logoLight from "../assets/transparentLogoLight.png";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 import { FaPowerOff } from "react-icons/fa";
+import { IoCartOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import api from "../config/api.config";
 
 const Header = () => {
-  const { user, isLogin, setUser, setIsLogin, role } = useAuth();
+  const { user, isLogin, role, setUser, setIsLogin, setRole } = useAuth();
+  const { totalItems } = useCart();
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    if (role === "customer") {
-      navigate("/user/dashboard");
-    }
-    if (role === "admin") {
-      navigate("/admin/dashboard");
-    }
-    if (role === "rider") {
-      navigate("/rider/dashboard");
-    }
-    if (role === "restaurant") {
-      navigate("/restaurant/dashboard");
-    }
-
-    
     //console.log("Handle Navigate", role);
+
+    if (role === "restaurant") {
+      navigate("/restaurant-dashboard");
+    } else if (role === "rider") {
+      navigate("/rider-dashboard");
+    } else if (role === "admin") {
+      navigate("/admin-dashboard");
+    } else {
+      navigate("/customer-dashboard");
+    }
   };
+
   const handleLogout = async () => {
     try {
       const res = await api.get("/auth/logout");
@@ -35,18 +140,19 @@ const Header = () => {
       sessionStorage.removeItem("cravingUser");
       setUser(null);
       setIsLogin(false);
+      setRole(null);
       navigate("/");
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
-          "Unknown error occurred during LogOut. Please try again.",
+          "Unknown error occurred during registration. Please try again.",
       );
     }
   };
 
   return (
     <>
-      <div className="sticky top-0 z-99 flex items-center justify-between px-12 py-1 bg-(--color-primary) text-white w-full h-[8vh] shadow-md">
+      <div className="sticky top-0 z-99 flex items-center justify-between px-12 py-1 bg-(--color-primary) text-white w-full h-16 shadow-md">
         <div className="h-full">
           <Link to="/">
             <img src={logoLight} alt="Logo" className="w-fit h-full" />{" "}
@@ -55,6 +161,20 @@ const Header = () => {
 
         {isLogin ? (
           <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 relative">
+              <button
+                onClick={() => navigate("/cart")}
+                className="hover:scale-110 transition-transform duration-200"
+                title="Go to Cart"
+              >
+                <IoCartOutline className="text-(--color-primary-content) text-3xl" />
+              </button>
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-(--color-error) text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </div>
             <button
               className="flex gap-2 items-center text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content)  px-3 py-1 rounded"
               title="Go to Dashboard"
@@ -67,8 +187,8 @@ const Header = () => {
               />
               <div className="flex flex-col items-start">
                 <span className="text-base">{user?.fullName}</span>
-                <span className="text-xs text-(--color-primary-content)/80">
-                  {user?.userType}
+                <span className="text-xs text-(--color-primary-content)/80 uppercase">
+                  {role}
                 </span>
               </div>
             </button>
@@ -89,7 +209,7 @@ const Header = () => {
               Login
             </Link>
             <Link
-              to="/register"
+              to="/register/customer"
               className="bg-(--color-primary-content) text-(--color-primary) hover:bg-(--color-primary) hover:text-(--color-primary-content) border px-3 py-1 rounded"
             >
               Register
