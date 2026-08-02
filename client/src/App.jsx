@@ -14,6 +14,7 @@ import RiderDashboard from "./pages/dashboard/RiderDashboard";
 import RestauantDashboard from "./pages/dashboard/RestauantDashboard";
 import RestaurantDetailsPage from "./pages/RestaurantDetailsPage";
 import OrderNow from "./pages/OrderNow";
+import Cart from "./components/Cart";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
             path="/restaurant-menu/:restaurantId"
             element={<RestaurantDetailsPage />}
           />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
         <Footer />
       </BrowserRouter>

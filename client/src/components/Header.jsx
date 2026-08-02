@@ -122,13 +122,13 @@ const Header = () => {
     //console.log("Handle Navigate", role);
 
     if (role === "restaurant") {
-      navigate("/restaurant-dashboard");
+      navigate("/restaurant/dashboard");
     } else if (role === "rider") {
-      navigate("/rider-dashboard");
+      navigate("/rider/dashboard");
     } else if (role === "admin") {
-      navigate("/admin-dashboard");
+      navigate("/admin/dashboard");
     } else {
-      navigate("/customer-dashboard");
+      navigate("/customer/dashboard");
     }
   };
 
