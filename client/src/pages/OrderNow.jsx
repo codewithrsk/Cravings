@@ -65,7 +65,7 @@ const TYPE_FILTER_MAP = {
   "non-veg": ["non-veg", "both"],
   vegan: ["vegan"],
   jain: ["jain"],
-  both: ["both"],
+  both: ["both", "veg", "non-veg"],
 };
 
 const OrderNow = () => {
