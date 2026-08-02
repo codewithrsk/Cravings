@@ -42,7 +42,7 @@ const App = () => {
           <Route path={"/rider/dashboard"} element={<RiderDashboard />} />
           <Route path={"/order-now"} element={<OrderNow />} />
           <Route
-            path="/restaurant-menu/:restaurantId"
+            path="/restaurant-details/:restaurantId"
             element={<RestaurantDetailsPage />}
           />
           <Route path="/cart" element={<Cart />} />

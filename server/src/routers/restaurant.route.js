@@ -17,6 +17,7 @@ import {
   RestaurantUpdateSocialMediaLinks,
   RestaurantUpdateCoverPhoto,
   RestaurantUpdateRestaurantImages,
+  RestaurantDeleteImage,
 } from "../controllers/restaurant.controller.js";
 import { RestaurantAuthProtect } from "../middlewares/auth.middleware.js";
 
@@ -119,6 +120,12 @@ router.put(
   RestaurantAuthProtect,
   upload.array("restaurantImages", 8),
   RestaurantUpdateRestaurantImages,
+);
+
+router.patch(
+  "/delete-restaurant-image",
+  RestaurantAuthProtect,
+  RestaurantDeleteImage,
 );
 
 export default router;

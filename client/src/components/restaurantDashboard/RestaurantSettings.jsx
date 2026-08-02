@@ -92,11 +92,12 @@ const RestaurantSetting = () => {
   }, [user]);
 
   return (
-    <div className="h-full flex flex-col gap-4">
-      {isLoadingRestaurant ? (
-        <Loader height="100%" width="100%" />
-      ) : (
-        <>
+    <>
+      <div className=" h-full flex flex-col">
+        {isLoadingRestaurant ? (
+          <Loader height="100%" width="100%" />
+        ) : (
+          <>
           <div className="rounded-3xl border border-(--color-base-300) bg-(--color-base-100) p-6 shadow-sm">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-2">
@@ -132,59 +133,39 @@ const RestaurantSetting = () => {
                     </button>
                   </div>
                 </div>
+                
+                
               </div>
+              
             </div>
+            <div className="flex flex-wrap gap-2 mt-4">
+              {Tabs.map((tab, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`rounded-full px-4 py-2 text-xs font-semibold uppercase transition-all duration-200 ${
+                    activeTab === tab.id
+                      ? "bg-(--color-primary) text-(--color-primary-content) shadow-sm"
+                      : "bg-(--color-base-200) text-(--color-secondary) hover:bg-(--color-base-300)"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
           </div>
-
-          <div className="grid gap-5 lg:grid-cols-[280px_1fr] lg:items-start">
-            <aside className="space-y-4">
-              <div className="rounded-3xl border border-(--color-base-300) bg-(--color-base-100) p-4 shadow-sm">
-                <h2 className="text-sm font-semibold text-(--color-primary) mb-4">Quick Settings</h2>
-                <nav className="space-y-2">
-                  {Tabs.map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`w-full rounded-2xl px-4 py-3 text-left transition ${
-                        activeTab === tab.id
-                          ? "bg-(--color-primary) text-(--color-primary-content) shadow-sm"
-                          : "bg-(--color-base-200) text-(--color-base-content) hover:bg-(--color-base-300)"
-                      }`}
-                    >
-                      {tab.label}
-                    </button>
-                  ))}
-                </nav>
-              </div>
-
-              <div className="rounded-3xl border border-(--color-base-300) bg-(--color-base-100) p-4 shadow-sm">
-                <h2 className="text-sm font-semibold text-(--color-primary) mb-3">Restaurant summary</h2>
-                <div className="space-y-3 text-sm text-(--color-secondary)">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-medium text-(--color-base-content)">Cuisine</span>
-                    <span>{restaurantData?.cuisineTypes?.join(", ") || "Not set"}</span>
-                  </div>
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-medium text-(--color-base-content)">Type</span>
-                    <span>{restaurantData?.restaurantType || "Not set"}</span>
-                  </div>
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-medium text-(--color-base-content)">Contact</span>
-                    <span>{restaurantData?.contactDetails?.phone || "-"}</span>
-                  </div>
-                </div>
-              </div>
-            </aside>
-
-            <section className="rounded-3xl border border-(--color-base-300) bg-(--color-base-200) p-4 shadow-sm min-h-[70vh]">
+            
+            <div className="h-full rounded-lg bg-(--color-base-200) p-2 overflow-y-auto">
               {activeTab === "information" && <Information />}
               {activeTab === "coreDetails" && <CoreDetails />}
               {activeTab === "photos" && <RestaurantPhotos />}
-            </section>
-          </div>
-        </>
-      )}
-    </div>
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

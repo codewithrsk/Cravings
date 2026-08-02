@@ -95,12 +95,14 @@ const RestaurantPhotos = () => {
 
     setGalleryImages((prevImages) => {
       const merged = [...prevImages, ...files];
-      if (merged.length > MAX_GALLERY_IMAGES) {
+      const totalImages = currentGalleryImages.length + merged.length;
+
+      if (totalImages > MAX_GALLERY_IMAGES) {
         setErrors((prev) => ({
           ...prev,
-          gallery: `You can upload up to ${MAX_GALLERY_IMAGES} restaurant images only.`,
+          gallery: `You can upload up to ${MAX_GALLERY_IMAGES} restaurant images in total.`,
         }));
-        return merged.slice(0, MAX_GALLERY_IMAGES);
+        return prevImages;
       }
 
       setErrors((prev) => ({ ...prev, gallery: "" }));
@@ -170,7 +172,7 @@ const RestaurantPhotos = () => {
         formData.append("coverImage", coverImage);
       }
       galleryImages.forEach((image) => {
-        formData.append("restaurantImage", image);
+        formData.append("restaurantImages", image);
       });
 
       await api.put("/restaurant/update-restaurant-images", formData, {
@@ -311,7 +313,7 @@ const RestaurantPhotos = () => {
                   Other Restaurant Images
                 </h3>
                 <span className="text-[11px] px-2 py-1 rounded-full bg-(--color-primary)/10 text-(--color-primary) font-medium">
-                  {galleryImages.length}/{MAX_GALLERY_IMAGES}
+                  {currentGalleryImages.length + galleryImages.length}/{MAX_GALLERY_IMAGES}
                 </span>
               </div>
               <p className="text-xs text-(--color-secondary-content) mt-0.5">
@@ -322,7 +324,11 @@ const RestaurantPhotos = () => {
             <div className="shrink-0">
               <label
                 htmlFor="galleryImages"
-                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-xs shadow-sm transition ${galleryImages.length >= MAX_GALLERY_IMAGES ? "bg-(--color-secondary) text-(--color-secondary-content) cursor-not-allowed" : "bg-(--color-primary) text-(--color-primary-content) cursor-pointer hover:opacity-95"}`}
+                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-xs shadow-sm transition ${
+                  currentGalleryImages.length + galleryImages.length >= MAX_GALLERY_IMAGES
+                    ? "bg-(--color-secondary) text-(--color-secondary-content) cursor-not-allowed"
+                    : "bg-(--color-primary) text-(--color-primary-content) cursor-pointer hover:opacity-95"
+                }`}
               >
                 <MdOutlineAddAPhoto className="text-sm" />
                 Upload Restaurant Images

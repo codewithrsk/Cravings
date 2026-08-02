@@ -778,6 +778,75 @@ export const RestaurantUpdateCoverPhoto = async (req, res, next) => {
   }
 };
 
+export const RestaurantDeleteImage = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const { imageType, publicId } = req.body;
+
+    if (!imageType || !publicId) {
+      const error = new Error("Image type and publicId are required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+
+    if (!existingRestaurant) {
+      const error = new Error("Restaurant Not Found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    if (imageType === "cover") {
+      if (!existingRestaurant.coverImage?.publicId) {
+        const error = new Error("Cover image not found");
+        error.statusCode = 404;
+        return next(error);
+      }
+
+      if (existingRestaurant.coverImage.publicId !== publicId) {
+        const error = new Error("Cover image mismatch");
+        error.statusCode = 400;
+        return next(error);
+      }
+
+      await deleteSingleImage(existingRestaurant.coverImage);
+      existingRestaurant.coverImage = undefined;
+    } else if (imageType === "gallery") {
+      const gallery = existingRestaurant.restaurantImage || [];
+      const imageIndex = gallery.findIndex(
+        (img) => img.publicId === publicId || img.public_id === publicId,
+      );
+
+      if (imageIndex === -1) {
+        const error = new Error("Gallery image not found");
+        error.statusCode = 404;
+        return next(error);
+      }
+
+      const [deletedImage] = gallery.splice(imageIndex, 1);
+      await deleteSingleImage(deletedImage);
+      existingRestaurant.restaurantImage = gallery;
+    } else {
+      const error = new Error("Invalid image type");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    await existingRestaurant.save();
+
+    return res.status(200).json({
+      message: "Restaurant image deleted successfully",
+      data: existingRestaurant,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
+};
+
 export const RestaurantUpdateRestaurantImages = async (req, res, next) => {
   try {
     const currentUser = req.user;
@@ -799,15 +868,26 @@ export const RestaurantUpdateRestaurantImages = async (req, res, next) => {
       return next(error);
     }
 
-    if (existingRestaurant.restaurantImage?.length > 0) {
-      await deleteMultipleImages(existingRestaurant.restaurantImage);
+    const existingRestaurantImages = existingRestaurant.restaurantImage || [];
+    const currentImageCount = existingRestaurantImages.length;
+    const newImageCount = restaurantImagesFromFE.length;
+
+    if (currentImageCount + newImageCount > 8) {
+      const error = new Error(
+        `You can upload up to 8 restaurant images in total. Remove some existing images and try again.`,
+      );
+      error.statusCode = 400;
+      return next(error);
     }
 
     const restaurantImages = await uploadMultipleImages(
       restaurantImagesFromFE,
       `restaurant/${currentUser.phone}/restaurantPhotos`,
     );
-    existingRestaurant.restaurantImage = restaurantImages;
+    existingRestaurant.restaurantImage = [
+      ...existingRestaurantImages,
+      ...restaurantImages,
+    ];
 
     await existingRestaurant.save();
     return res.status(200).json({
