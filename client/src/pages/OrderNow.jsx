@@ -59,6 +59,15 @@ const typeLabels = {
   both: "Veg & Non-Veg",
 };
 
+const TYPE_FILTER_MAP = {
+  all: ["veg", "non-veg", "vegan", "jain", "both"],
+  veg: ["veg", "both"],
+  "non-veg": ["non-veg", "both"],
+  vegan: ["vegan"],
+  jain: ["jain"],
+  both: ["both"],
+};
+
 const OrderNow = () => {
   const navigate = useNavigate();
   const [restaurants, setRestaurants] = useState([]);
@@ -95,8 +104,8 @@ const OrderNow = () => {
         r.description?.toLowerCase().includes(q) ||
         r.city?.toLowerCase().includes(q) ||
         r.cuisineTypes?.some((c) => c.toLowerCase().includes(q));
-      const matchType =
-        selectedType === "all" || r.restaurantType === selectedType;
+      const allowedTypes = TYPE_FILTER_MAP[selectedType] || TYPE_FILTER_MAP.all;
+      const matchType = allowedTypes.includes(r.restaurantType);
       const matchOpen = !showOpenOnly || r.isOpen;
       return matchSearch && matchType && matchOpen;
     });

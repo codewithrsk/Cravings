@@ -63,7 +63,7 @@ const Restaurantmenu = () => {
           : {};
 
       const { data } = await api.put(
-        `/restaurant/update-menu-item/${menuItemId}`,
+        `/restaurant/menu-item/${menuItemId}`,
         payload,
         config,
       );
