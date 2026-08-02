@@ -50,7 +50,7 @@ app.listen(port, async () => {
     console.log("Cloudinary Connected :");
     console.log(result);
   } catch (error) {
-    console.log(error.message);
-    process.exit(1);
+    console.log("Cloudinary ping failed:", error.message);
+    console.log("Continuing without Cloudinary connection so APIs remain available.");
   }
 });

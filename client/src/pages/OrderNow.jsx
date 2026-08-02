@@ -129,7 +129,8 @@ const OrderNow = () => {
             Cravings — Order Now
           </span>
           <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight drop-shadow-lg mb-3">
-            Hungry? <span className="text-(--color-warning)">We've got you.</span>
+            Hungry?{" "}
+            <span className="text-(--color-warning)">We've got you.</span>
           </h1>
           <p className="text-sm md:text-base text-white/75 mb-8 leading-relaxed">
             Discover the best restaurants around you and get your favourite meal

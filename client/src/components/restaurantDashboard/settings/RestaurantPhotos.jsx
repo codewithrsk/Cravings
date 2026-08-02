@@ -175,11 +175,7 @@ const RestaurantPhotos = () => {
         formData.append("restaurantImages", image);
       });
 
-      await api.put("/restaurant/update-restaurant-images", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await api.put("/restaurant/update-restaurant-images", formData);
 
       toast.success("Restaurant images uploaded successfully!");
       setCoverImage(null);

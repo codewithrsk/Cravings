@@ -10,7 +10,7 @@ import AddNewItemModal from "./menuItems/AddNewItemModal";
 import EditOrViewItem from "./menuItems/EditOrViewItem";
 import api from "../../config/api.config";
 import { useAuth } from "../../context/AuthContext";
-import RunningLodader from "../../assets/runningLoader.gif";
+import RunningLoader from "../../assets/runningLoader.gif";
 
 const statusChipStyles = {
   available: "bg-green-100 text-green-700 border border-green-300",
@@ -27,7 +27,7 @@ const statusLabels = {
 const Restaurantmenu = () => {
   const [menuItems, setMenuItems] = useState([]);
   const { user } = useAuth();
-  const [isLoding, setIsLoding] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isAddNewItemModalOpen, setIsAddNewItemModalOpen] = useState(false);
   const [isEditViewItemModalOpen, setIsEditViewItemModalOpen] = useState(false);
@@ -37,22 +37,23 @@ const Restaurantmenu = () => {
 
   const menu = async () => {
     try {
-      setIsLoding(true);
-      const req = await api.get("/restaurant/allmenu");
-      setMenuItems(req.data.data?.menuItems);
-      setIsLoding(false);
+      setIsLoading(true);
+      const response = await api.get("/restaurant/menu-items", {
+        params: { t: Date.now() },
+      });
+      setMenuItems(response.data.data || []);
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
           "Unknown error occurred during registration. Please try again.",
       );
     } finally {
-      setIsLoding(false);
+      setIsLoading(false);
     }
   };
   useEffect(() => {
     menu();
-  }, [isAddNewItemModalOpen || isEditViewItemModalOpen || isControlsModalOpen]);
+  }, [isAddNewItemModalOpen, isEditViewItemModalOpen, isControlsModalOpen ]);
 
   const handleUpdateMenuItem = async (menuItemId, payload) => {
     try {
@@ -148,16 +149,12 @@ const Restaurantmenu = () => {
       )} */}
 
       <div className="overflow-y-auto h-full p-3">
-        {isLoding ? (
+        {isLoading ? (
           <>
             <div className="bg-gray-50 h-full flex justify-center items-center">
               <div className="h-100 w-100">
-                <img
-                  src={RunningLodader}
-                  alt="Loding..."
-                  className="w-full h-full mb-0 pb-0"
-                />
-                <div className="flex justify-center">Loding...</div>
+                <img src={RunningLoader} alt="Loading..." className="w-full h-full mb-0 pb-0" />
+                <div className="flex justify-center">Loading...</div>
               </div>
             </div>
           </>
@@ -193,15 +190,15 @@ const Restaurantmenu = () => {
                 <div>Actions</div>
               </div>
               <div className="overflow-y-auto max-h-[65vh]">
-                {menuItems.map((item, index) => (
+                {menuItems.map((item) => (
                   <div
-                    key={index}
+                    key={item._id}
                     className="grid grid-cols-7 gap-4 border-b border-(--color-secondary) py-2 items-center"
                   >
                     <div className="col-span-2 flex items-center gap-4">
                       <div>
                         <img
-                          src={item.image.url}
+                          src={item.image?.url || ""}
                           alt={item.itemName}
                           className="w-16 h-16 object-cover rounded"
                         />
@@ -213,7 +210,7 @@ const Restaurantmenu = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="text-center">₹ {item.price.toFixed(2)}</div>
+                    <div className="text-center">{typeof item.price === 'number' ? `₹ ${item.price.toFixed(2)}` : "-"}</div>
                     <div className="">
                       <div>{item.category}</div>
                       <div className="text-sm">
