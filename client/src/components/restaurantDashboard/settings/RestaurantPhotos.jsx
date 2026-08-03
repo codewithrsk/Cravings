@@ -169,15 +169,19 @@ const RestaurantPhotos = () => {
 
     setIsSaving(true);
     try {
-      const formData = new FormData();
       if (coverImage) {
-        formData.append("coverImage", coverImage);
+        const coverFormData = new FormData();
+        coverFormData.append("coverImage", coverImage);
+        await api.put("/restaurant/update-cover-photo", coverFormData);
       }
-      galleryImages.forEach((image) => {
-        formData.append("restaurantImages", image);
-      });
 
-      await api.put("/restaurant/update-restaurant-images", formData);
+      if (galleryImages.length > 0) {
+        const galleryFormData = new FormData();
+        galleryImages.forEach((image) => {
+          galleryFormData.append("restaurantImages", image);
+        });
+        await api.put("/restaurant/update-restaurant-images", galleryFormData);
+      }
 
       toast.success("Restaurant images uploaded successfully!");
       setCoverImage(null);

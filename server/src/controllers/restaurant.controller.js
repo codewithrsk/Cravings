@@ -799,19 +799,25 @@ export const RestaurantUpdateRestaurantImages = async (req, res, next) => {
       return next(error);
     }
 
-    if (existingRestaurant.restaurantImage?.length > 0) {
-      await deleteMultipleImages(existingRestaurant.restaurantImage);
+    const existingImages = existingRestaurant.restaurantImage || [];
+    const totalImagesCount = existingImages.length + restaurantImagesFromFE.length;
+    if (totalImagesCount > 8) {
+      const error = new Error(
+        "You can upload up to 8 restaurant images in total.",
+      );
+      error.statusCode = 400;
+      return next(error);
     }
 
     const restaurantImages = await uploadMultipleImages(
       restaurantImagesFromFE,
       `restaurant/${currentUser.phone}/restaurantPhotos`,
     );
-    existingRestaurant.restaurantImage = restaurantImages;
+    existingRestaurant.restaurantImage = [...existingImages, ...restaurantImages];
 
     await existingRestaurant.save();
     return res.status(200).json({
-      message: "Restaurant images updated successfully",
+      message: "Restaurant images uploaded successfully",
       data: existingRestaurant,
     });
   } catch (error) {
