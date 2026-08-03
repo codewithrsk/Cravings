@@ -31,16 +31,30 @@ const RestaurantAddress = () => {
     }));
   };
 
-  const handleGetLocation = () => {
+  const handleGetLocation = async () => {
     if (navigator.geolocation) {
       setIsFetchingLocation(true);
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        async (position) => {
           const { latitude, longitude } = position.coords;
+          const payload = {
+            latitude,
+            longitude,
+          };
+          const req = await api.post(
+            "/restaurant/get-restaurant-location",
+            payload,
+          );
+          const data = req.data.data;
+
           setRestaurantAddressFormData((prevData) => ({
             ...prevData,
             geoLat: latitude,
             geoLon: longitude,
+            city: data.address.city,
+            state: data.address.state,
+            country: data.address.country,
+            pinCode: data.address.postcode,
           }));
           setIsFetchingLocation(false);
         },

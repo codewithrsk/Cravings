@@ -819,3 +819,34 @@ export const RestaurantUpdateRestaurantImages = async (req, res, next) => {
     next(error);
   }
 };
+
+
+
+export const userlocatiom = async(req, res, next)=>{
+  try {
+    console.log("req.body", req.body);
+
+  const {latitude,longitude} = req.body;
+
+  if(!latitude || !longitude){
+    const error = new Error("Latitude and Longitude are required");
+    error.statusCode = 400;
+    return next(error);
+  }
+
+  const request = await fetch(`https://us1.locationiq.com/v1/reverse?key=${process.env.API_Access_Token}&lat=${latitude}&lon=${longitude}&format=json&accept-language=en`);
+  const data = await request.json();
+  console.log("data =" , data);
+  
+
+  return res.status(200).json({
+    message: "Location fetched successfully",
+    data: data,
+  
+  });
+}catch (error) {
+  console.log(error.message);
+  next(error);
+}
+
+}
