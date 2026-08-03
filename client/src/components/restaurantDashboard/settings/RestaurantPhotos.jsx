@@ -116,7 +116,9 @@ const RestaurantPhotos = () => {
     if (!user?._id) return;
 
     try {
-      const response = await api.get(`/restaurant/get-resturant-data?id=${user._id}`);
+      const response = await api.get(
+        `/restaurant/get-resturant-data?id=${user._id}`,
+      );
       const restaurantData = response.data.data;
       setCurrentCoverImage(restaurantData.coverImage || null);
       setCurrentGalleryImages(restaurantData.restaurantImage || []);
@@ -271,7 +273,8 @@ const RestaurantPhotos = () => {
                     onClick={() =>
                       openDeleteConfirm(
                         "cover",
-                        currentCoverImage.publicId || currentCoverImage.public_id,
+                        currentCoverImage.publicId ||
+                          currentCoverImage.public_id,
                       )
                     }
                     disabled={isDeleting}
@@ -309,7 +312,8 @@ const RestaurantPhotos = () => {
                   Other Restaurant Images
                 </h3>
                 <span className="text-[11px] px-2 py-1 rounded-full bg-(--color-primary)/10 text-(--color-primary) font-medium">
-                  {currentGalleryImages.length + galleryImages.length}/{MAX_GALLERY_IMAGES}
+                  {currentGalleryImages.length + galleryImages.length}/
+                  {MAX_GALLERY_IMAGES}
                 </span>
               </div>
               <p className="text-xs text-(--color-secondary-content) mt-0.5">
@@ -321,7 +325,8 @@ const RestaurantPhotos = () => {
               <label
                 htmlFor="galleryImages"
                 className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-xs shadow-sm transition ${
-                  currentGalleryImages.length + galleryImages.length >= MAX_GALLERY_IMAGES
+                  currentGalleryImages.length + galleryImages.length >=
+                  MAX_GALLERY_IMAGES
                     ? "bg-(--color-secondary) text-(--color-secondary-content) cursor-not-allowed"
                     : "bg-(--color-primary) text-(--color-primary-content) cursor-pointer hover:opacity-95"
                 }`}

@@ -53,7 +53,7 @@ const Restaurantmenu = () => {
   };
   useEffect(() => {
     menu();
-  }, [isAddNewItemModalOpen, isEditViewItemModalOpen, isControlsModalOpen ]);
+  }, [isAddNewItemModalOpen, isEditViewItemModalOpen, isControlsModalOpen]);
 
   const handleUpdateMenuItem = async (menuItemId, payload) => {
     try {
@@ -153,7 +153,11 @@ const Restaurantmenu = () => {
           <>
             <div className="bg-gray-50 h-full flex justify-center items-center">
               <div className="h-100 w-100">
-                <img src={RunningLoader} alt="Loading..." className="w-full h-full mb-0 pb-0" />
+                <img
+                  src={RunningLoader}
+                  alt="Loading..."
+                  className="w-full h-full mb-0 pb-0"
+                />
                 <div className="flex justify-center">Loading...</div>
               </div>
             </div>
@@ -210,7 +214,11 @@ const Restaurantmenu = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="text-center">{typeof item.price === 'number' ? `₹ ${item.price.toFixed(2)}` : "-"}</div>
+                    <div className="text-center">
+                      {typeof item.price === "number"
+                        ? `₹ ${item.price.toFixed(2)}`
+                        : "-"}
+                    </div>
                     <div className="">
                       <div>{item.category}</div>
                       <div className="text-sm">

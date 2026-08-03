@@ -42,7 +42,10 @@ const RestaurantSocialMediaLinks = () => {
         socialMediaLinks: socialMediaLinksFormData.socialMediaLinks,
       });
       setRestaurantData(res.data.data);
-      sessionStorage.setItem("cravingRestaurant", JSON.stringify(res.data.data));
+      sessionStorage.setItem(
+        "cravingRestaurant",
+        JSON.stringify(res.data.data),
+      );
       toast.success(res.data.message);
       setEditingSocialMediaLinks(false);
     } catch (error) {
