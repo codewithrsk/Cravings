@@ -55,14 +55,21 @@ const RestaurantAddress = () => {
   const handleSaveRestaurantAddress = async () => {
     try {
       setIsLoading(true);
-      const res = await api.put("/restaurant/update-address", restaurantAddressFormData);
+      const res = await api.put(
+        "/restaurant/update-address",
+        restaurantAddressFormData,
+      );
       setRestaurantData(res.data.data);
-      sessionStorage.setItem("cravingRestaurant", JSON.stringify(res.data.data));
+      sessionStorage.setItem(
+        "cravingRestaurant",
+        JSON.stringify(res.data.data),
+      );
       toast.success(res.data.message);
       setEditingRestaurantAddress(false);
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Failed to update address. Please try again.",
+        error.response?.data?.message ||
+          "Failed to update address. Please try again.",
       );
     } finally {
       setIsLoading(false);

@@ -24,14 +24,21 @@ const RestaurantBankingDocument = () => {
   const handleSaveBankingDocument = async () => {
     try {
       setIsLoading(true);
-      const res = await api.put("/restaurant/update-banking-documents", bankingDocumentFormData);
+      const res = await api.put(
+        "/restaurant/update-banking-documents",
+        bankingDocumentFormData,
+      );
       setRestaurantData(res.data.data);
-      sessionStorage.setItem("cravingRestaurant", JSON.stringify(res.data.data));
+      sessionStorage.setItem(
+        "cravingRestaurant",
+        JSON.stringify(res.data.data),
+      );
       toast.success(res.data.message);
       setEditingBankingDocument(false);
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Failed to update banking details. Please try again.",
+        error.response?.data?.message ||
+          "Failed to update banking details. Please try again.",
       );
     } finally {
       setIsLoading(false);
