@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import api from "../../../config/api.config";
 import toast from "react-hot-toast";
@@ -58,9 +58,10 @@ const AddNewItemModal = ({ isOpen, onClose }) => {
     isDeleted: false,
   });
 
-  const [previewImage, setPreviewImage] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [itemImage, setItemImage] = React.useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [itemImage, setItemImage] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -68,9 +69,40 @@ const AddNewItemModal = ({ isOpen, onClose }) => {
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
     }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!newItemFormData.itemName.trim()) {
+      newErrors.itemName = "Item name is required.";
+    }
+    if (!newItemFormData.price || Number(newItemFormData.price) <= 0) {
+      newErrors.price = "Valid item price is required.";
+    }
+    if (!newItemFormData.category) {
+      newErrors.category = "Category is required.";
+    }
+    if (!newItemFormData.foodType) {
+      newErrors.foodType = "Food type is required.";
+    }
+    if (!newItemFormData.description.trim()) {
+      newErrors.description = "Description is required.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleAddNewItem = async () => {
+    if (!validateForm()) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
     try {
       setIsLoading(true);
       console.log(newItemFormData);
@@ -100,7 +132,6 @@ const AddNewItemModal = ({ isOpen, onClose }) => {
       );
     } finally {
       setIsLoading(false);
-      onClose();
     }
   };
   const handleOnClose = () => {
@@ -181,8 +212,15 @@ const AddNewItemModal = ({ isOpen, onClose }) => {
                       name="itemName"
                       value={newItemFormData.itemName}
                       onChange={handleInputChange}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
+                      className={`w-full rounded px-3 py-2 border ${
+                        errors.itemName ? "border-red-500" : "border-gray-300"
+                      }`}
                     />
+                    {errors.itemName && (
+                      <p className="mt-1 text-xs text-red-500">
+                        {errors.itemName}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label
@@ -197,8 +235,15 @@ const AddNewItemModal = ({ isOpen, onClose }) => {
                       name="price"
                       value={newItemFormData.price}
                       onChange={handleInputChange}
-                      className="w-full border border-gray-300 rounded px-3 py-2"
+                      className={`w-full rounded px-3 py-2 border ${
+                        errors.price ? "border-red-500" : "border-gray-300"
+                      }`}
                     />
+                    {errors.price && (
+                      <p className="mt-1 text-xs text-red-500">
+                        {errors.price}
+                      </p>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
@@ -214,7 +259,9 @@ const AddNewItemModal = ({ isOpen, onClose }) => {
                         name="category"
                         value={newItemFormData.category}
                         onChange={handleInputChange}
-                        className="w-full border border-gray-300 rounded px-3 py-2"
+                        className={`w-full rounded px-3 py-2 border ${
+                          errors.category ? "border-red-500" : "border-gray-300"
+                        }`}
                       >
                         <option value="" className="capitalize">
                           Select Category
@@ -229,6 +276,11 @@ const AddNewItemModal = ({ isOpen, onClose }) => {
                           </option>
                         ))}
                       </select>
+                      {errors.category && (
+                        <p className="mt-1 text-xs text-red-500">
+                          {errors.category}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label
@@ -242,7 +294,9 @@ const AddNewItemModal = ({ isOpen, onClose }) => {
                         name="foodType"
                         value={newItemFormData.foodType}
                         onChange={handleInputChange}
-                        className="w-full border border-gray-300 rounded px-3 py-2"
+                        className={`w-full rounded px-3 py-2 border ${
+                          errors.foodType ? "border-red-500" : "border-gray-300"
+                        }`}
                       >
                         <option value="" className="capitalize">
                           Select Food Type
@@ -253,6 +307,11 @@ const AddNewItemModal = ({ isOpen, onClose }) => {
                           </option>
                         ))}
                       </select>
+                      {errors.foodType && (
+                        <p className="mt-1 text-xs text-red-500">
+                          {errors.foodType}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -268,8 +327,15 @@ const AddNewItemModal = ({ isOpen, onClose }) => {
                     name="description"
                     value={newItemFormData.description}
                     onChange={handleInputChange}
-                    className=" w-full border border-gray-300 rounded px-3 py-2"
+                    className={`w-full rounded px-3 py-2 border ${
+                      errors.description ? "border-red-500" : "border-gray-300"
+                    }`}
                   />
+                  {errors.description && (
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.description}
+                    </p>
+                  )}
                 </div>
               </div>
             </form>
@@ -285,8 +351,9 @@ const AddNewItemModal = ({ isOpen, onClose }) => {
             <button
               className="bg-(--color-primary) text-(--color-primary-content) px-4 py-2 rounded"
               onClick={handleAddNewItem}
+              disabled={isLoading}
             >
-              Add Item
+              {isLoading ? "Adding..." : "Add Item"}
             </button>
           </footer>
         </div>
