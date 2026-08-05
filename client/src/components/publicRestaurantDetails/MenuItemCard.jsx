@@ -12,12 +12,17 @@ import toast from "react-hot-toast";
 
 const MenuItemCard = ({ item, restaurant }) => {
   const isUnavailable = item.status === "unavailable";
-  const { getItemQuantity, addItem, increaseItem, decreaseItem, replaceCart } = useCart();
+  const { getItemQuantity, addItem, increaseItem, decreaseItem, replaceCart } =
+    useCart();
   const itemCount = getItemQuantity(item._id);
 
   const handleAdd = () => {
     if (isUnavailable) return;
-    const res = addItem(item, restaurant?._id || restaurant?._id, restaurant?.restaurantName || restaurant?.name || "");
+    const res = addItem(
+      item,
+      restaurant?._id || restaurant?._id,
+      restaurant?.restaurantName || restaurant?.name || "",
+    );
     if (res === "added") {
       toast.success("Added to cart");
     } else if (res === "different_restaurant") {
@@ -25,7 +30,11 @@ const MenuItemCard = ({ item, restaurant }) => {
         "Your cart contains items from another restaurant. Replace and add this item?",
       );
       if (ok) {
-        replaceCart(item, restaurant?._id || restaurant?._id, restaurant?.restaurantName || restaurant?.name || "");
+        replaceCart(
+          item,
+          restaurant?._id || restaurant?._id,
+          restaurant?.restaurantName || restaurant?.name || "",
+        );
         toast.success("Replaced cart with this restaurant's item");
       }
     }
@@ -121,18 +130,28 @@ const MenuItemCard = ({ item, restaurant }) => {
 
           {itemCount > 0 ? (
             <div className="flex items-center border border-(--color-base-300) rounded-full divide-(--color-base-300) divide-x">
-              <button onClick={handleDecrease} className="px-1.5 py-0.5  text-(--color-primary) rounded-l-full hover:bg-(--color-primary) hover:text-(--color-primary-content) transition">
+              <button
+                onClick={handleDecrease}
+                className="px-1.5 py-0.5  text-(--color-primary) rounded-l-full hover:bg-(--color-primary) hover:text-(--color-primary-content) transition"
+              >
                 <IoIosRemoveCircleOutline className="text-lg" />
               </button>
               <div className="text-(--color-primary) flex justify-center items-center text-sm font-semibold px-1.5 py-0.5">
                 {itemCount}
               </div>
-              <button onClick={handleIncrease} className="px-1.5 py-0.5  text-(--color-primary) rounded-r-full hover:bg-(--color-primary) hover:text-(--color-primary-content) transition">
+              <button
+                onClick={handleIncrease}
+                className="px-1.5 py-0.5  text-(--color-primary) rounded-r-full hover:bg-(--color-primary) hover:text-(--color-primary-content) transition"
+              >
                 <IoIosAddCircleOutline className="text-lg" />
               </button>
             </div>
           ) : (
-            <button onClick={handleAdd} disabled={isUnavailable} className="text-sm font-bold px-2 py-1 rounded-full border border-(--color-primary) text-(--color-primary) flex items-center gap-1 hover:bg-(--color-primary) hover:text-(--color-primary-content) transition disabled:opacity-60 disabled:cursor-not-allowed">
+            <button
+              onClick={handleAdd}
+              disabled={isUnavailable}
+              className="text-sm font-bold px-2 py-1 rounded-full border border-(--color-primary) text-(--color-primary) flex items-center gap-1 hover:bg-(--color-primary) hover:text-(--color-primary-content) transition disabled:opacity-60 disabled:cursor-not-allowed"
+            >
               <IoCartOutline className="text-lg" />
               Add to cart
             </button>

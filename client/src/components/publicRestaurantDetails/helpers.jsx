@@ -1,4 +1,11 @@
-import { FaLeaf, FaDrumstickBite, FaInstagram, FaFacebookSquare, FaWhatsapp, FaYoutube } from "react-icons/fa";
+import {
+  FaLeaf,
+  FaDrumstickBite,
+  FaInstagram,
+  FaFacebookSquare,
+  FaWhatsapp,
+  FaYoutube,
+} from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { IoGlobeOutline } from "react-icons/io5";
@@ -51,8 +58,10 @@ export const restaurantTypeLabel = (type) => {
 export const platformIcon = (platform) => {
   const p = platform?.toLowerCase() || "";
   if (p.includes("instagram")) return <FaInstagram className="text-pink-500" />;
-  if (p.includes("facebook")) return <FaFacebookSquare className="text-blue-500" />;
-  if (p.includes("twitter") || p.includes("x")) return <FaXTwitter className="text-black" />;
+  if (p.includes("facebook"))
+    return <FaFacebookSquare className="text-blue-500" />;
+  if (p.includes("twitter") || p.includes("x"))
+    return <FaXTwitter className="text-black" />;
   if (p.includes("youtube")) return <FaYoutube className="text-red-500" />;
   if (p.includes("whatsapp")) return <FaWhatsapp className="text-green-500" />;
   return <IoGlobeOutline className="text-gray-500" />;
