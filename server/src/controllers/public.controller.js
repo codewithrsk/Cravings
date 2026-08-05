@@ -1,6 +1,6 @@
 import Contact from "../models/contact.model.js";
 import Restaurant from "../models/restaurant.model.js";
-import Menu from "../models/menu.model.js"
+import Menu from "../models/menu.model.js";
 
 export const ContactUsForm = async (req, res, next) => {
   try {
@@ -47,9 +47,9 @@ export const GetRestaurantDetails = async (req, res, next) => {
       populate: {
         path: "managerId",
       },
-    })
-   console.log("restaurantDetails :- ",restaurantDetails);
-   
+    });
+    console.log("restaurantDetails :- ", restaurantDetails);
+
     if (!restaurantDetails) {
       const error = new Error("Restaurant not found");
       error.statusCode = 404;
