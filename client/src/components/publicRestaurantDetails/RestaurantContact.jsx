@@ -33,7 +33,9 @@ const RestaurantContact = ({ restaurant }) => {
         <div className="flex items-start gap-2 text-sm text-(--color-base-content)">
           <IoLocationOutline className="text-(--color-primary) shrink-0 mt-0.5" />
           <span>
-            {[address, city, state, pinCode, country].filter(Boolean).join(", ")}
+            {[address, city, state, pinCode, country]
+              .filter(Boolean)
+              .join(", ")}
           </span>
         </div>
       )}
