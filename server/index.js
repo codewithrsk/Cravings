@@ -5,6 +5,7 @@ import AuthRouter from "./src/routers/auth.route.js";
 import PublicRouter from "./src/routers/public.route.js";
 import CommonRouter from "./src/routers/common.route.js";
 import RestaurentRouter from "./src/routers/restaurant.route.js";
+import RiderRouter from "./src/routers/rider.route.js";
 import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -23,6 +24,7 @@ app.use("/public", PublicRouter);
 app.use("/common", CommonRouter);
 app.use("/admin", AdminRouter);
 app.use("/restaurant", RestaurentRouter);
+app.use("/rider", RiderRouter);
 // /restaurant/update-restaurant-info
 
 //Default API

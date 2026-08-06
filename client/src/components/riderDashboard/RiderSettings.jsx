@@ -1,177 +1,156 @@
 import React, { useState, useEffect } from "react";
-import { MdEdit } from "react-icons/md";
-import { useAuth } from "../../context/AuthContext";
-import api from "../../config/api.config";
+import api from "../../config/api.config.js";
 import toast from "react-hot-toast";
-import { MdOutlineAddAPhoto } from "react-icons/md";
+import { RiLoader4Fill } from "react-icons/ri";
+import { useAuth } from "../../context/AuthContext";
+// import CoreDetails from "./settings/coreDetails/Index";
+// import Information from "./settings/restaurantInformation/Index";
+// import RestaurantPhotos from "./settings/RestaurantPhotos";
+import Loader from "../../components/Loader";
+import { IoMdHammer } from "react-icons/io";
 
-const RiderSettings = () => {
-  const { user, setUser } = useAuth();
-  const [editingProfile, setEditingProfile] = useState(false);
-  const [profilePic, setProfilePic] = useState(null);
-  const [profilePicPreview, setProfilePicPreview] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+const RiderSetting = () => {
+  const { user } = useAuth();
+  const Tabs = [
+    { id: "information", label: "Information" },
+    { id: "coreDetails", label: "Core Details" },
+    { id: "photos", label: "Photos" },
+  ];
+  const [activeTab, setActiveTab] = useState("information");
 
-  const [formData, setFormData] = useState({
-    fullName: user?.fullName || "",
-    email: user?.email || "",
-    phone: user?.phone || "",
-  });
+  const [isLoadingResturantOpen, setIsLoadingResturantOpen] = useState(true);
+  const [isRiderAvailable, setIsRiderAvailable] = useState(
+    () => sessionStorage.getItem("RiderAvailable") === "true",
+  );
 
-  // Profile handlers
-  const handleProfileChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const [isLoadingRider, setIsLoadingRider] = useState(false);
+  const [loadingRiderError, setLoadingRiderError] = useState(null);
+  const [riderData, setRiderData] = useState();
 
-  const handleSaveProfile = async () => {
+  const fetchRiderData = async () => {
     try {
-      setIsLoading(true);
+      setIsLoadingRider(true);
+      setIsLoadingResturantOpen(true);
 
-      const payload = new FormData();
-      payload.append("fullName", formData.fullName);
-      payload.append("email", formData.email.toLowerCase());
-      payload.append("phone", formData.phone);
+      const res = await api.get(`/rider/profile?id=${user._id}`);
+      setRiderData(res.data.data);
+      sessionStorage.setItem("cravingRider", JSON.stringify(res.data.data));
+      sessionStorage.setItem("RiderAvailable", res.data.data.isAvailable);
 
-      payload.append("displayPic", profilePic);
-
-      const response = await api.put(`/user/edit-profile`, payload);
-
-      setUser(response.data.data);
-      sessionStorage.setItem("cravingUser", JSON.stringify(response.data.data));
-
-      setEditingProfile(false);
-      toast.success("Profile updated successfully!");
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to update profile");
+      setIsRiderAvailable(res.data.data.isAvailable);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Unknown error occurred fetching rider details. Please try again.",
+      );
+      setLoadingRiderError(
+        error.response?.data?.message ||
+          "Unknown error occurred fetching rider details. Please try again.",
+      );
     } finally {
-      setIsLoading(false);
+      setIsLoadingRider(false);
+      setIsLoadingResturantOpen(false);
     }
   };
 
-  const handleCancelProfile = () => {
-    setFormData({
-      fullName: user.fullName,
-      email: user.email,
-      phone: user.phone,
-    });
-    setProfilePicPreview(null);
-    setEditingProfile(false);
+  const handleRiderAvailability = async () => {
+    try {
+      setIsLoadingResturantOpen(true);
+
+      const res = await api.patch(`/rider/availability/${!isRiderAvailable}?id=${user._id}`);
+      setIsRiderAvailable(res.data.data.isAvailable);
+      setRiderData(res.data.data);
+      sessionStorage.setItem("cravingRider", JSON.stringify(res.data.data));
+      sessionStorage.setItem("RiderAvailable", res.data.data.isAvailable);
+
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Unknown error occurred while updating rider availability. Please try again.",
+      );
+    } finally {
+      setIsLoadingResturantOpen(false);
+    }
   };
 
-  const handleProfilePicChange = (e) => {
-    const file = e.target.files[0];
-    setProfilePicPreview(URL.createObjectURL(file));
-    setProfilePic(file);
-  };
+  useEffect(() => {
+    if (user?._id) {
+      fetchRiderData();
+    }
+  }, [user]);
 
   return (
-    <div className="overflow-y-auto h-full p-6 space-y-6">
-      {/* User Profile Section */}
-      <div className="bg-(--color-base-200) rounded-lg p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Profile Information</h3>
-          {!editingProfile ? (
-            <button
-              onClick={() => setEditingProfile(true)}
-              className="flex items-center gap-2 bg-(--color-primary) text-(--color-primary-content) px-3 py-1 rounded text-sm"
-            >
-              <MdEdit /> Edit
-            </button>
-          ) : (
-            <div className="flex gap-2 justify-end">
-              <button
-                onClick={handleSaveProfile}
-                className="flex items-center gap-2 bg-(--color-primary) text-(--color-primary-content) px-3 py-1 rounded text-sm"
-                disabled={isLoading}
-              >
-                {isLoading ? "Saving..." : "Save Changes"}
-              </button>
-              <button
-                onClick={handleCancelProfile}
-                className="flex items-center gap-2 bg-(--color-secondary) text-(--color-secondary-content) px-3 py-1 rounded text-sm"
-                disabled={isLoading}
-              >
-                Cancel
-              </button>
-            </div>
-          )}
-        </div>
-
-        <div>
-          <div className="flex items-center gap-6">
-            <div className="relative">
-              <div className="w-36 h-36">
-                <img
-                  src={profilePicPreview || user.photo.url}
-                  alt="Profile"
-                  className="w-full h-full rounded-full object-cover border-2 border-(--color-primary)"
-                />
-              </div>
-
-              {editingProfile && (
-                <div
-                  className="absolute cursor-pointer bottom-1 right-1 border p-2 rounded-full w-fit bg-(--color-base-200)"
-                  title="Change Photo"
-                >
-                  <label htmlFor="profilePic" className="cursor-pointer">
-                    <MdOutlineAddAPhoto className="text-xl" />
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    name="profilePic"
-                    id="profilePic"
-                    className="hidden"
-                    onChange={handleProfilePicChange}
-                  />
+    <>
+      <div className="h-full flex flex-col">
+        {isLoadingRider ? (
+          <Loader height="100%" width="100%" />
+        ) : (
+          <>
+            <div className="rounded-3xl border border-(--color-base-300) bg-(--color-base-100) p-6 shadow-sm">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div className="space-y-2">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-(--color-primary)/10 px-3 py-1 text-sm uppercase font-semibold tracking-[0.2em] text-(--color-primary)">
+                    <IoMdHammer className="text-lg" /> Rider Settings
+                  </div>
+                  <div>
+                    <h1 className="text-2xl font-semibold text-(--color-primary)">
+                      {riderData?.fullName || "Rider settings"}
+                    </h1>
+                    <p className="text-sm text-(--color-secondary) max-w-2xl">
+                      Manage rider information, vehicle details, and current address from one dashboard.
+                    </p>
+                  </div>
                 </div>
-              )}
-            </div>
 
-            <div className="space-y-4 w-full">
-              <div className="grid grid-cols-5 gap-2 justify-center items-center">
-                <label className="block text-sm font-semibold mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleProfileChange}
-                  className={`w-full px-3 py-2 border ${editingProfile ? "border-(--color-secondary)" : "border-transparent"} rounded col-span-4`}
-                  disabled={!editingProfile}
-                />
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                  <div className="rounded-2xl border border-(--color-secondary)/20 bg-(--color-base-200) p-4">
+                    <div className="text-xs uppercase tracking-[0.2em] text-(--color-secondary)">
+                      Current status
+                    </div>
+                    <div className="mt-3 flex items-center justify-between gap-4">
+                      <span className="text-base font-semibold text-(--color-primary)">
+                        {isRiderAvailable ? "Available for rides" : "Offline"}
+                      </span>
+                      <button
+                        onClick={handleRiderAvailability}
+                        className={`relative inline-flex h-9 w-20 items-center rounded-full transition-colors duration-300 ${
+                          isRiderAvailable ? "bg-(--color-primary)" : "bg-gray-300"
+                        }`}
+                      >
+                        <span
+                          className={`absolute left-1 top-1 h-7 w-7 rounded-full bg-white transition-transform duration-300 ${
+                            isRiderAvailable ? "translate-x-11" : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                <label className="block text-sm font-semibold mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  className={`w-full px-3 py-2 border ${editingProfile ? "border-(--color-secondary) text-(--color-secondary) disabled:bg-(--color-secondary)/20 cursor-not-allowed font-extrabold" : "border-transparent"} rounded col-span-4 `}
-                  disabled
-                />
-
-                <label className="block text-sm font-semibold mb-2">
-                  Phone
-                </label>
-                <input
-                  type="number"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleProfileChange}
-                  className={`w-full px-3 py-2 border ${editingProfile ? "border-(--color-secondary)" : "border-transparent"} rounded col-span-4`}
-                  disabled={!editingProfile}
-                />
+              <div className="mt-4 flex flex-wrap gap-2">
+                {Tabs.map((tab, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`rounded-full px-4 py-2 text-xs font-semibold uppercase transition-all duration-200 ${
+                      activeTab === tab.id
+                        ? "bg-(--color-primary) text-(--color-primary-content) shadow-sm"
+                        : "bg-(--color-base-200) text-(--color-secondary) hover:bg-(--color-base-300)"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
               </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 
-export default RiderSettings;
+export default RiderSetting;
