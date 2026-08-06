@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useAuth } from "../../../../context/AuthContext";
-import PasswordChangeModal from "../../../commonModals/PasswordChangeModal";
+import { useAuth } from "../../../context/AuthContext.jsx";
+import PasswordChangeModal from "../../commonModals/PasswordChangeModal.jsx";
 import { MdEdit, MdOutlineAddAPhoto, MdOutlineLockReset } from "react-icons/md";
-import api from "../../../../config/api.config.js";
+import api from "../../../config/api.config.js";
 import toast from "react-hot-toast";
 
 const PresonalInformation = () => {

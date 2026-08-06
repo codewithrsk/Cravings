@@ -2,12 +2,70 @@ import cloudinary from "../config/cloudinary.config.js";
 import User from "../models/user.model.js";
 import Rider from "../models/rider.model.js";
 
+export const getRiderProfile = async (req, res, next) => {
+  try {
+    const currentUser = req.user?._id
+      ? await User.findById(req.user._id)
+      : await User.findOne({ email: req.query.email });
+
+    if (!currentUser) {
+      const error = new Error("User not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    const riderDetails = await Rider.findOne({ riderId: currentUser._id });
+    const responseData = currentUser.toObject();
+    responseData.riderDetails = riderDetails ? riderDetails.toObject() : {};
+
+    res.status(200).json({ message: "Rider profile fetched successfully", data: responseData });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const toggleRiderAvailability = async (req, res, next) => {
+  try {
+    const currentUser = req.user?._id
+      ? await User.findById(req.user._id)
+      : null;
+
+    if (!currentUser) {
+      const error = new Error("User not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    let riderDetails = await Rider.findOne({ riderId: currentUser._id });
+    const isAvailable = req.params.status === "true";
+
+    if (!riderDetails) {
+      riderDetails = await Rider.create({ riderId: currentUser._id, isAvailable });
+    } else {
+      riderDetails.isAvailable = isAvailable;
+      await riderDetails.save();
+    }
+
+    const responseData = currentUser.toObject();
+    responseData.riderDetails = riderDetails.toObject();
+
+    res.status(200).json({ message: "Availability updated successfully", data: responseData });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updateRiderProfile = async (req, res, next) => {
   try {
     const {
       email,
       fullName,
       phone,
+      dateOfBirth,
+      gender,
+      nationality,
+      emergencyContactName,
+      emergencyContactPhone,
       vehicleType,
       vehicleNumber,
       vehicleModel,
@@ -66,6 +124,11 @@ export const updateRiderProfile = async (req, res, next) => {
 
     const riderPayload = {
       riderId: existingUser._id,
+      dateOfBirth: dateOfBirth || "",
+      gender: gender || "",
+      nationality: nationality || "",
+      emergencyContactName: emergencyContactName || "",
+      emergencyContactPhone: emergencyContactPhone || "",
       vehicleDetails: {
         vehicleType: vehicleType || "",
         vehicleNumber: vehicleNumber || "",
