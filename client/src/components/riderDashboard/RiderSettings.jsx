@@ -67,11 +67,16 @@ const RiderSetting = () => {
       setRiderData(riderUser);
       setUser(riderUser);
       sessionStorage.setItem("cravingRider", JSON.stringify(riderUser));
-      sessionStorage.setItem("RiderAvailable", String(riderUser.riderDetails?.isAvailable ?? false));
+      sessionStorage.setItem(
+        "RiderAvailable",
+        String(riderUser.riderDetails?.isAvailable ?? false),
+      );
       setIsRiderAvailable(riderUser.riderDetails?.isAvailable ?? false);
       setFormData(getInitialFormData(riderUser));
     } catch (error) {
-      toast.error(error.response?.data?.message || "Unable to load rider details.");
+      toast.error(
+        error.response?.data?.message || "Unable to load rider details.",
+      );
     } finally {
       setIsLoadingRider(false);
     }
@@ -83,7 +88,8 @@ const RiderSetting = () => {
     try {
       const res = await api.patch(`/rider/availability/${nextAvailability}`);
       const updatedRider = res.data.data;
-      const availability = updatedRider?.riderDetails?.isAvailable ?? nextAvailability;
+      const availability =
+        updatedRider?.riderDetails?.isAvailable ?? nextAvailability;
 
       setIsRiderAvailable(availability);
       setRiderData(updatedRider);
@@ -92,7 +98,9 @@ const RiderSetting = () => {
       sessionStorage.setItem("RiderAvailable", String(availability));
       toast.success(res.data.message);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Unable to update availability.");
+      toast.error(
+        error.response?.data?.message || "Unable to update availability.",
+      );
     }
   };
 
@@ -117,14 +125,23 @@ const RiderSetting = () => {
       payload.append("dateOfBirth", formData.dateOfBirth || "");
       payload.append("gender", formData.gender || "");
       payload.append("nationality", formData.nationality || "");
-      payload.append("emergencyContactName", formData.emergencyContactName || "");
-      payload.append("emergencyContactPhone", formData.emergencyContactPhone || "");
+      payload.append(
+        "emergencyContactName",
+        formData.emergencyContactName || "",
+      );
+      payload.append(
+        "emergencyContactPhone",
+        formData.emergencyContactPhone || "",
+      );
       payload.append("vehicleType", formData.vehicleType || "");
       payload.append("vehicleNumber", formData.vehicleNumber || "");
       payload.append("vehicleModel", formData.vehicleModel || "");
       payload.append("vehicleColor", formData.vehicleColor || "");
       payload.append("drivingLicense", formData.drivingLicense || "");
-      payload.append("insuranceCertificate", formData.insuranceCertificate || "");
+      payload.append(
+        "insuranceCertificate",
+        formData.insuranceCertificate || "",
+      );
       payload.append("aadharCard", formData.aadharCard || "");
       payload.append("panCard", formData.panCard || "");
       payload.append("address", formData.address || "");
@@ -187,7 +204,8 @@ const RiderSetting = () => {
                     {riderData?.fullName || user?.fullName || "Rider settings"}
                   </h1>
                   <p className="text-sm text-(--color-secondary) max-w-2xl">
-                    Manage rider information, vehicle details, and current address from one dashboard.
+                    Manage rider information, vehicle details, and current
+                    address from one dashboard.
                   </p>
                 </div>
               </div>
@@ -204,7 +222,9 @@ const RiderSetting = () => {
                     <button
                       onClick={handleRiderAvailability}
                       className={`relative inline-flex h-9 w-20 items-center rounded-full transition-colors duration-300 ${
-                        isRiderAvailable ? "bg-(--color-primary)" : "bg-gray-300"
+                        isRiderAvailable
+                          ? "bg-(--color-primary)"
+                          : "bg-gray-300"
                       }`}
                     >
                       <span
@@ -236,92 +256,11 @@ const RiderSetting = () => {
             </div>
           </div>
 
-          <div className="mt-6 rounded-3xl border border-(--color-base-300) bg-(--color-base-100) p-6 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-semibold">{Tabs.find((tab) => tab.id === activeTab)?.label}</h3>
-              {!editingProfile ? (
-                <button
-                  onClick={() => setEditingProfile(true)}
-                  className="flex items-center gap-2 rounded bg-(--color-primary) px-3 py-1 text-sm text-(--color-primary-content)"
-                >
-                  <MdEdit /> Edit
-                </button>
-              ) : (
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleSaveProfile}
-                    className="rounded bg-(--color-primary) px-3 py-1 text-sm text-(--color-primary-content)"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? "Saving..." : "Save Changes"}
-                  </button>
-                  <button
-                    onClick={handleCancelProfile}
-                    className="rounded bg-(--color-secondary) px-3 py-1 text-sm text-(--color-secondary-content)"
-                    disabled={isLoading}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div className="flex flex-col gap-6 lg:flex-row">
-              <div className="relative lg:w-48">
-                <div className="h-36 w-36 lg:h-48 lg:w-full">
-                  <img
-                    src={profilePicPreview || riderData?.photo?.url || user?.photo?.url || "https://placehold.co/600x400?text=R"}
-                    alt="Profile"
-                    className="h-full w-full rounded-full border-2 border-(--color-primary) object-cover lg:rounded-2xl"
-                  />
-                </div>
-
-                {editingProfile && (
-                  <div className="absolute bottom-1 right-1 rounded-full border border-(--color-base-300) bg-(--color-base-100) p-2">
-                    <label htmlFor="profilePic" className="cursor-pointer">
-                      <MdOutlineAddAPhoto className="text-xl" />
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="profilePic"
-                      id="profilePic"
-                      className="hidden"
-                      onChange={handleProfilePicChange}
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div className="w-full space-y-4">
-                {activeTab === "personal" && (
-                  <RiderPersonalInfo
-                    formData={formData}
-                    handleProfileChange={handleProfileChange}
-                    editingProfile={editingProfile}
-                  />
-                )}
-
-                {activeTab === "vehicle" && (
-                  <RidervehicleDetails
-                    formData={formData}
-                    handleProfileChange={handleProfileChange}
-                    editingProfile={editingProfile}
-                  />
-                )}
-
-                {activeTab === "address" && (
-                  <RiderCurrentAddress
-                    formData={formData}
-                    handleProfileChange={handleProfileChange}
-                    editingProfile={editingProfile}
-                  />
-                )}
-              </div>
-            </div>
+          <div className="h-full rounded-lg bg-(--color-base-200) p-2 overflow-y-auto">
+            {activeTab === "personal" && <PersonalInfo />}
+            {activeTab === "vehicle" && <VehicleDetails />}
+            {activeTab === "address" && <CurrentAddress />}
           </div>
-
-          <RiderPersonalInfo/>
         </>
       )}
     </div>
