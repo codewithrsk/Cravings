@@ -8,7 +8,7 @@ import ForgotPasswordModal from "../components/commonModals/ForgotPasswordModal"
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUser, setIsLogin, setRole } = useAuth();
+  const { setUser, setIsLogin, setRole, isLogin } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -80,6 +80,23 @@ const Login = () => {
       setLoading(false);
     }
   };
+  if (isLogin) {
+    return (
+        <div className="bg-white p-8 rounded shadow-md text-center">
+          <div className="flex items-center justify-center h-screen">
+            <div className="bg-white p-8 rounded shadow-md text-center">
+              <h2 className="text-2xl font-bold text-(--color-primary) mb-4">
+                Login Successful
+              </h2>
+              <p className="text-(--color-secondary)">
+                You have been logged in successfully.
+              </p>
+            </div>
+          </div>
+        </div>
+      
+    );
+  }
 
   return (
     <>
