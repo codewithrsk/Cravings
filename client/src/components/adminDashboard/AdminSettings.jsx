@@ -185,7 +185,10 @@ const AdminSettings = () => {
       </div>
       {isPasswordChange && (
         <div>
-          <PasswordChangeModal open={isPasswordChange} onClose={() => setIsPassworddChange(false)} />
+          <PasswordChangeModal
+            open={isPasswordChange}
+            onClose={() => setIsPassworddChange(false)}
+          />
         </div>
       )}
     </>
