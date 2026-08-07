@@ -1,9 +1,15 @@
 import React from "react";
 
-const RidervehicleDetails = ({ formData, handleProfileChange, editingProfile }) => {
+const RidervehicleDetails = ({
+  formData,
+  handleProfileChange,
+  editingProfile,
+}) => {
   const inputClassName = (isDisabled) =>
     `w-full rounded border px-3 py-2 ${
-      isDisabled ? "border-transparent bg-transparent" : "border-(--color-secondary)"
+      isDisabled
+        ? "border-transparent bg-transparent"
+        : "border-(--color-secondary)"
     }`;
 
   return (
@@ -21,7 +27,9 @@ const RidervehicleDetails = ({ formData, handleProfileChange, editingProfile }) 
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-semibold">Vehicle Number</label>
+        <label className="mb-2 block text-sm font-semibold">
+          Vehicle Number
+        </label>
         <input
           type="text"
           name="vehicleNumber"
@@ -33,7 +41,9 @@ const RidervehicleDetails = ({ formData, handleProfileChange, editingProfile }) 
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-semibold">Vehicle Model</label>
+        <label className="mb-2 block text-sm font-semibold">
+          Vehicle Model
+        </label>
         <input
           type="text"
           name="vehicleModel"
@@ -45,7 +55,9 @@ const RidervehicleDetails = ({ formData, handleProfileChange, editingProfile }) 
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-semibold">Vehicle Color</label>
+        <label className="mb-2 block text-sm font-semibold">
+          Vehicle Color
+        </label>
         <input
           type="text"
           name="vehicleColor"
@@ -57,7 +69,9 @@ const RidervehicleDetails = ({ formData, handleProfileChange, editingProfile }) 
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-semibold">Driving License</label>
+        <label className="mb-2 block text-sm font-semibold">
+          Driving License
+        </label>
         <input
           type="text"
           name="drivingLicense"
@@ -69,7 +83,9 @@ const RidervehicleDetails = ({ formData, handleProfileChange, editingProfile }) 
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-semibold">Insurance Certificate</label>
+        <label className="mb-2 block text-sm font-semibold">
+          Insurance Certificate
+        </label>
         <input
           type="text"
           name="insuranceCertificate"
