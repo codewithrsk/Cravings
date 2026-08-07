@@ -32,18 +32,27 @@ const StorySection = () => {
               Built for busy days and great cravings.
             </h2>
             <p className="text-lg leading-8 text-(--color-secondary)">
-              Cravings started with a simple idea: make ordering food fast, personal, and dependable. Today, we connect customers with their favorite meals while helping restaurants and riders grow.
+              Cravings started with a simple idea: make ordering food fast,
+              personal, and dependable. Today, we connect customers with their
+              favorite meals while helping restaurants and riders grow.
             </p>
           </div>
 
           <div className="grid gap-5 md:grid-cols-3">
             {stats.map((item, index) => (
-              <div key={index} className="rounded-2xl border border-(--color-base-300) bg-white p-5 shadow-sm">
+              <div
+                key={index}
+                className="rounded-2xl border border-(--color-base-300) bg-white p-5 shadow-sm"
+              >
                 <div className="mb-3 inline-flex rounded-xl bg-(--color-primary)/10 p-2 text-(--color-primary)">
                   {item.icon}
                 </div>
-                <h3 className="mb-2 font-semibold text-(--color-base-content)">{item.title}</h3>
-                <p className="text-sm leading-6 text-(--color-secondary)">{item.text}</p>
+                <h3 className="mb-2 font-semibold text-(--color-base-content)">
+                  {item.title}
+                </h3>
+                <p className="text-sm leading-6 text-(--color-secondary)">
+                  {item.text}
+                </p>
               </div>
             ))}
           </div>

@@ -20,15 +20,22 @@ const TeamSection = () => {
               A platform built around convenience and trust.
             </h2>
             <p className="text-lg leading-8 text-(--color-secondary)">
-              From the first order to every repeat visit, we focus on making the experience feel easy, transparent, and rewarding for everyone involved.
+              From the first order to every repeat visit, we focus on making the
+              experience feel easy, transparent, and rewarding for everyone
+              involved.
             </p>
           </div>
 
           <div className="rounded-2xl bg-linear-to-br from-(--color-primary)/10 to-orange-100 p-6">
             <ul className="space-y-3">
               {values.map((value, index) => (
-                <li key={index} className="flex items-center gap-3 rounded-xl bg-white px-4 py-3 shadow-sm">
-                  <span className="text-lg font-semibold text-(--color-primary)">{index + 1}</span>
+                <li
+                  key={index}
+                  className="flex items-center gap-3 rounded-xl bg-white px-4 py-3 shadow-sm"
+                >
+                  <span className="text-lg font-semibold text-(--color-primary)">
+                    {index + 1}
+                  </span>
                   <span className="text-(--color-base-content)">{value}</span>
                 </li>
               ))}

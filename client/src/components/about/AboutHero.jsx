@@ -33,22 +33,32 @@ const AboutHero = () => {
               Food made easy, delivered with care.
             </h1>
             <p className="text-lg leading-8 text-orange-50/90">
-              Cravings brings together restaurants, riders, and hungry customers into one seamless food experience. Whether you are ordering lunch, planning dinner, or discovering a new favorite spot, we make it simple.
+              Cravings brings together restaurants, riders, and hungry customers
+              into one seamless food experience. Whether you are ordering lunch,
+              planning dinner, or discovering a new favorite spot, we make it
+              simple.
             </p>
           </div>
 
           <div className="rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-md">
             <div className="rounded-2xl bg-(--color-base-100) p-6 text-(--color-base-content)">
-              <h2 className="mb-4 text-2xl font-semibold">Why people choose Cravings</h2>
+              <h2 className="mb-4 text-2xl font-semibold">
+                Why people choose Cravings
+              </h2>
               <div className="space-y-4">
                 {highlights.map((item, index) => (
-                  <div key={index} className="flex gap-3 rounded-xl border border-(--color-base-300) p-3">
+                  <div
+                    key={index}
+                    className="flex gap-3 rounded-xl border border-(--color-base-300) p-3"
+                  >
                     <div className="mt-1 rounded-lg bg-(--color-primary)/10 p-2 text-(--color-primary)">
                       {item.icon}
                     </div>
                     <div>
                       <h3 className="font-semibold">{item.title}</h3>
-                      <p className="text-sm text-(--color-secondary)">{item.text}</p>
+                      <p className="text-sm text-(--color-secondary)">
+                        {item.text}
+                      </p>
                     </div>
                   </div>
                 ))}
