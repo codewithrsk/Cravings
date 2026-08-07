@@ -7,8 +7,6 @@ import RiderOrders from "../../components/riderDashboard/RiderOrders";
 import RiderSettings from "../../components/riderDashboard/RiderSettings";
 import RiderWishList from "../../components/riderDashboard/RiderWishList";
 
-
-
 const RiderDashboard = () => {
   const [active, setActive] = useState("Overview");
   const { isLogin, role } = useAuth();

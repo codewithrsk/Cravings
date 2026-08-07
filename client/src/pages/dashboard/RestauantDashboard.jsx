@@ -5,7 +5,6 @@ import RestaurantOrders from "../../components/restaurantDashboard/RestaurantOrd
 import RestaurantSettings from "../../components/restaurantDashboard/RestaurantSettings";
 import Restaurantmenu from "../../components/restaurantDashboard/Restaurantmenu";
 
-
 import { useAuth } from "../../context/AuthContext";
 
 const RestauantDashboard = () => {
@@ -25,7 +24,7 @@ const RestauantDashboard = () => {
       </>
     );
   }
-  
+
   return (
     <>
       <div className="flex h-[92vh] overflow-hidden">

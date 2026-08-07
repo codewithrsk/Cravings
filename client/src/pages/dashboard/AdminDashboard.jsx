@@ -36,9 +36,7 @@ const AdminDashboard = () => {
         <div className=" border border-red-500 h-full shadow shadow-gray-500">
           <AdminSidebar active={active} setActive={setActive} />
         </div>
-        <div
-          className="w-5/6 border border-green-500 h-full"
-        >
+        <div className="w-5/6 border border-green-500 h-full">
           {active === "Overview" && <AdminOverview />}
           {active === "All Users" && <AdminUser />}
           {active === "WishList" && <AdminWishList />}
