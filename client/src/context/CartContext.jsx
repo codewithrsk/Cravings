@@ -19,7 +19,10 @@ export const CartProvider = ({ children }) => {
   }, [cart]);
 
   const totalItems = cart.items.reduce((sum, i) => sum + i.quantity, 0);
-  const totalPrice = cart.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const totalPrice = cart.items.reduce(
+    (sum, i) => sum + i.price * i.quantity,
+    0,
+  );
 
   const getItemQuantity = (itemId) => {
     const found = cart.items.find((i) => i._id === itemId);
