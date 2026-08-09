@@ -5,18 +5,26 @@ import {
   IoIosAddCircleOutline,
   IoIosRemoveCircleOutline,
 } from "react-icons/io";
-
 import { foodTypeDot } from "./helpers";
 import { useCart } from "../../context/CartContext";
 import toast from "react-hot-toast";
+import { useAuth } from "../../context/AuthContext";
 
 const MenuItemCard = ({ item, restaurant }) => {
+  const { isLogin, user } = useAuth();
+
   const isUnavailable = item.status === "unavailable";
   const { getItemQuantity, addItem, increaseItem, decreaseItem, replaceCart } =
     useCart();
   const itemCount = getItemQuantity(item._id);
 
   const handleAdd = () => {
+    if (!isLogin) {
+      toast.error("Please log in to add items to the cart", {
+        duration: 3000,
+      });
+      return;
+    }
     if (isUnavailable) return;
     const res = addItem(
       item,
