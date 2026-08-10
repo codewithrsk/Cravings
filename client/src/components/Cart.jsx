@@ -1,6 +1,9 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import api from "../config/api.config";
+import toast from "react-hot-toast";
 import { foodTypeDot } from "./publicRestaurantDetails/helpers";
 import {
   IoCartOutline,
@@ -13,11 +16,57 @@ import {
   IoIosRemoveCircleOutline,
 } from "react-icons/io";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
+import { useState } from "react";
 
 const Cart = () => {
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const { cart, totalItems, totalPrice, increaseItem, decreaseItem, removeItem, clearCart } =
     useCart();
+  const { isLogin, role } = useAuth();
   const navigate = useNavigate();
+
+  const handlePlaceOrder = async () => {
+    if (!isLogin) {
+      toast.error("Please login first");
+      navigate("/login");
+      return;
+    }
+
+    if (role !== "customer") {
+      toast.error("Only customer can place order");
+      return;
+    }
+
+    if (!cart?.items?.length) {
+      toast.error("Cart is empty");
+      return;
+    }
+
+    try {
+      setIsPlacingOrder(true);
+
+      const orderPayload = {
+        restaurantId: cart.restaurantId,
+        paymentMethod: "upi",
+        orderItems: cart.items.map((item) => ({
+          itemId: item._id,
+          quantity: item.quantity,
+        })),
+      };
+
+      await api.post("/order/create", orderPayload);
+
+      toast.success("Order placed successfully!");
+      clearCart();
+      navigate("/customer-dashboard");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Something went wrong while placing order",
+      );
+    } finally {
+      setIsPlacingOrder(false);
+    }
+  };
 
   if (!cart.items.length) {
     return (
@@ -179,12 +228,11 @@ const Cart = () => {
             </div>
 
             <button
+              disabled={isPlacingOrder}
               className="w-full py-3 bg-(--color-primary) text-(--color-primary-content) rounded-xl font-semibold text-sm hover:opacity-90 transition"
-              onClick={() => {
-                // TODO: wire up to checkout / order placement
-              }}
+              onClick={handlePlaceOrder}
             >
-              Place Order
+              {isPlacingOrder ? "Processing..." : "Place Order"}
             </button>
 
             <Link

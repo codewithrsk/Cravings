@@ -33,7 +33,7 @@ const App = () => {
             path={"/terms_and_conditions"}
             element={<Terms_and_conditions />}
           />
-          <Route path={"/user/dashboard"} element={<UsearDashboard />} />
+          <Route path={"/customer/dashboard"} element={<UsearDashboard />} />
           <Route path={"/admin/dashboard"} element={<AdminDashboard />} />
           <Route
             path={"/restaurant/dashboard"}
