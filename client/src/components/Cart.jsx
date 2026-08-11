@@ -121,7 +121,7 @@ const Cart = () => {
 
             toast.success("Payment successful!");
             clearCart();
-            navigate("/customer-dashboard");
+            navigate("/customer/dashboard");
           } catch (err) {
             toast.error(
               err.response?.data?.message || "Payment verification failed",
