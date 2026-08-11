@@ -31,6 +31,8 @@ app.use("/rider", RiderRouter);
 app.use("/order", OrderRouter);
 // /restaurant/update-restaurant-info
 app.use("/payment", PaymentRouter);
+app.use("/customer", CustomerRouter);
+
 
 //Default API
 app.get("/", (req, res) => {
