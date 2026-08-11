@@ -10,6 +10,9 @@ import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import AdminRouter from "./src/routers/admin.route.js";
+import PaymentRouter from "./src/routers/payment.route.js";
+import OrderRouter from "./src/routers/order.route.js";
+
 
 const app = express();
 
@@ -25,7 +28,9 @@ app.use("/common", CommonRouter);
 app.use("/admin", AdminRouter);
 app.use("/restaurant", RestaurentRouter);
 app.use("/rider", RiderRouter);
+app.use("/order", OrderRouter);
 // /restaurant/update-restaurant-info
+app.use("/payment", PaymentRouter);
 
 //Default API
 app.get("/", (req, res) => {
