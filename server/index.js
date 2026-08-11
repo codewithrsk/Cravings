@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 import AdminRouter from "./src/routers/admin.route.js";
 import PaymentRouter from "./src/routers/payment.route.js";
 import OrderRouter from "./src/routers/order.route.js";
+import CustomerRouter from "./src/routers/customer.route.js";
 
 
 const app = express();

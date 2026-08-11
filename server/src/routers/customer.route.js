@@ -1,12 +1,12 @@
 import express from "express";
-import { AuthProtect } from "../middleware/auth.middelware.js";
+import { AuthProtect } from "../middlewares/auth.middleware.js";
 import {
   GetAddressBook,
   AddAddress,
   UpdateAddress,
   DeleteAddress,
   GetAllOrders
-} from "../controller/customer.controller.js";
+} from "../controllers/customer.controller.js";
 
 const router = express.Router();
 
