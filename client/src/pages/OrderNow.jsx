@@ -80,7 +80,11 @@ const OrderNow = () => {
     try {
       setIsLoading(true);
       const response = await api.get("/public/restaurants");
+
+      console.log("response",response);
+
       setRestaurants(response.data.data);
+      console.log("restaurants",restaurants);
     } catch (error) {
       toast.error(
         error.response?.data?.message ||

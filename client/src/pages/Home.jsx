@@ -132,19 +132,21 @@ const Home = () => {
             {!user && (
               <div className="flex gap-4 justify-center">
                 <button
-                  onClick={() => navigate("/register/customer")}
+                  onClick={() => navigate("/register")}
                   className="bg-(--color-primary) text-(--color-primary-content) px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition"
                 >
                   Sign Up
                 </button>
-                <button
-                  onClick={() => navigate("/order-now")}
-                  className="bg-(--color-base-100) text-(--color-base-content) px-8 py-3 rounded-lg font-semibold hover:bg-(--color-base-200) transition"
-                >
-                  Order Now
-                </button>
               </div>
             )}
+            <div>
+              <button
+                onClick={() => navigate("/order-now")}
+                className="bg-(--color-base-100) text-(--color-base-content) px-8 py-3 rounded-lg font-semibold hover:bg-(--color-base-200) transition"
+              >
+                Order Now
+              </button>
+            </div>
           </div>
 
           {/* Search and Location Bar */}
