@@ -202,7 +202,7 @@ export const GetAllOrders = async (req, res, next) => {
 
     // console.log("Customer found:", customer); // Log the customer object for debugging
 
-    const allOrder = await Order.find({ customerId: customer._id });
+    const allOrder = await Order.find({ customerId: customer._id }).populate({ path: "restaurantId" }).populate({ path: "customerId" }).populate({ path: "riderId" }).populate({ path: "orderItems.itemId" });
 
     // console.log("Orders", allOrder);
 

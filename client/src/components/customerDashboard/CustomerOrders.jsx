@@ -4,7 +4,7 @@ import api from "../../config/api.config";
 import toast from "react-hot-toast";
 
 const CustomerOrders = () => {
-  const [orders, setOrders] = useState();
+  const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchAllOrders = async () => {
@@ -14,16 +14,14 @@ const CustomerOrders = () => {
       console.log("Fetched orders:", res.data); // Log the fetched orders for debugging
       setOrders(res.data.data);
       console.log(orders);
-      
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
           "Unknown error occurred during fetching orders. Please try again.",
       );
+    } finally {
+      setIsLoading(false);
     }
-    //  finally {
-    //   setIsLoading(false);
-    // }
   };
 
   useEffect(() => {
@@ -51,19 +49,37 @@ const CustomerOrders = () => {
             </tr>
           </thead>
           <tbody>
-            {/* {orders.length > 0 && (
+            {orders.length > 0 ? (
+              orders.map((order) => (
+                <tr
+                  className="border-b border-(--color-secondary)"
+                  key={order.id}
+                >
+                  <td className="text-left py-2">{order._id}</td>
+                  <td className="text-left py-2">
+                    {order.restaurantId.restaurantName}
+                  </td>
+                  <td className="text-left py-2">
+                    ${order.billDetails.totalAmount.toFixed(2)}
+                  </td>
+                  <td className="text-left py-2">{order.orderStatus}</td>
+                  <td className="text-left py-2">
+                    {new Date(order.createdAt).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))
+            ) : (
               <>
-            <tr className="border-b border-(--color-secondary)">
-              <td
-                colSpan="5"
-                className="text-center py-4 text-(--color-neutral)"
-              >
-                No orders yet
-              </td>
-              
-            </tr>
-            </>
-)} */}
+                <tr className="border-b border-(--color-secondary)">
+                  <td
+                    colSpan="5"
+                    className="text-center py-4 text-(--color-neutral)"
+                  >
+                    No orders yet
+                  </td>
+                </tr>
+              </>
+            )}
           </tbody>
         </table>
       </div>
