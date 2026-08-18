@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import api from "../../config/api.config";
 
 const RestaurantOrders = () => {
   // Mock data
@@ -56,6 +57,9 @@ const RestaurantOrders = () => {
       time: "7:15 PM",
     },
   ];
+  const [orders, setOrders] = useState();
+
+  
 
   const TABS = [
     { label: "New Orders", value: "new" },
@@ -64,7 +68,6 @@ const RestaurantOrders = () => {
     { label: "Completed", value: "completed" },
   ];
 
-  const [orders, setOrders] = useState(initialOrders);
   const [activeTab, setActiveTab] = useState("new");
 
   // Filter orders

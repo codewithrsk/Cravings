@@ -19,6 +19,7 @@ import {
   RestaurantUpdateCoverPhoto,
   RestaurantUpdateRestaurantImages,
   userlocatiom,
+  RestaurantGetOrders
 } from "../controllers/restaurant.controller.js";
 import { RestaurantAuthProtect } from "../middlewares/auth.middleware.js";
 
@@ -124,4 +125,5 @@ router.put(
 );
 
 router.post("/get-restaurant-location", RestaurantAuthProtect, userlocatiom);
+router.get("/orders", RestaurantAuthProtect, RestaurantGetOrders);
 export default router;

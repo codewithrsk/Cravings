@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import crypto from "crypto";
 
 const OrderSchema = mongoose.Schema(
   {
@@ -16,6 +17,15 @@ const OrderSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "rider",
       required: false,
+    },
+    orderId: {
+      type: String,
+      unique: true,
+      required: true,
+      default: () => {
+        const random = crypto.randomBytes(4).toString("hex").toUpperCase();
+        return `ORD-${Date.now()}-${random}`;
+      },
     },
     orderItems: {
       type: [

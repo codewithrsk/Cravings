@@ -55,12 +55,12 @@ const CustomerOrders = () => {
                   className="border-b border-(--color-secondary)"
                   key={order.id}
                 >
-                  <td className="text-left py-2">{order._id}</td>
+                  <td className="text-left py-2">{order.orderId}</td>
                   <td className="text-left py-2">
                     {order.restaurantId.restaurantName}
                   </td>
                   <td className="text-left py-2">
-                    ${order.billDetails.totalAmount.toFixed(2)}
+                    {order.billDetails.totalAmount.toFixed(2)}
                   </td>
                   <td className="text-left py-2">{order.orderStatus}</td>
                   <td className="text-left py-2">
