@@ -873,45 +873,45 @@ export const RestaurantGetOrders = async (req, res, next) => {
     }
 
     const orders = await Order.aggregate([
-  { $unwind: "$orderItems" },
-  {
-    $lookup: {
-      from: "menus",
-      localField: "orderItems.itemId",
-      foreignField: "menuItems._id",
-      as: "menuDoc"
-    }
-  },
-  { $unwind: { path: "$menuDoc", preserveNullAndEmptyArrays: true } },
-  {
-    $addFields: {
-      "orderItems.itemDetails": {
-        $first: {
-          $filter: {
-            input: "$menuDoc.menuItems",
-            as: "item",
-            cond: { $eq: ["$$item._id", "$orderItems.itemId"] }
-          }
-        }
-      }
-    }
-  },
-  {
-    $group: {
-      _id: "$_id",
-      orderId: { $first: "$orderId" },
-      customerId: { $first: "$customerId" },
-      orderStatus: { $first: "$orderStatus" },
-      billDetails: { $first: "$billDetails" },
-      deliveryAddress: { $first: "$deliveryAddress" },
-      paymentDetails: { $first: "$paymentDetails" },
-      restaurantId: { $first: "$restaurantId" },
-      createdAt: { $first: "$createdAt" },
-      updatedAt: { $first: "$updatedAt" },
-      orderItems: { $push: "$orderItems" }
-    }
-  }
-]);
+      { $unwind: "$orderItems" },
+      {
+        $lookup: {
+          from: "menus",
+          localField: "orderItems.itemId",
+          foreignField: "menuItems._id",
+          as: "menuDoc",
+        },
+      },
+      { $unwind: { path: "$menuDoc", preserveNullAndEmptyArrays: true } },
+      {
+        $addFields: {
+          "orderItems.itemDetails": {
+            $first: {
+              $filter: {
+                input: "$menuDoc.menuItems",
+                as: "item",
+                cond: { $eq: ["$$item._id", "$orderItems.itemId"] },
+              },
+            },
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          orderId: { $first: "$orderId" },
+          customerId: { $first: "$customerId" },
+          orderStatus: { $first: "$orderStatus" },
+          billDetails: { $first: "$billDetails" },
+          deliveryAddress: { $first: "$deliveryAddress" },
+          paymentDetails: { $first: "$paymentDetails" },
+          restaurantId: { $first: "$restaurantId" },
+          createdAt: { $first: "$createdAt" },
+          updatedAt: { $first: "$updatedAt" },
+          orderItems: { $push: "$orderItems" },
+        },
+      },
+    ]);
     console.log(orders);
 
     return res.status(200).json({

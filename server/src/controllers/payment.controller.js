@@ -26,7 +26,7 @@ export const CreateRazorpayOrder = async (req, res, next) => {
   try {
     const { orderId } = req.body;
     console.log(orderId);
-    
+
     if (!orderId) {
       const err = new Error("orderId is required");
       err.statusCode = 400;
@@ -35,7 +35,7 @@ export const CreateRazorpayOrder = async (req, res, next) => {
 
     const order = await getCustomerOrder(req.user._id, orderId);
     console.log(order);
-    
+
     if (!order) {
       const err = new Error("Address not found");
       err.statusCode = 404;

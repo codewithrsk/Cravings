@@ -100,7 +100,6 @@ export const UpdateUserPassword = async (req, res, next) => {
   }
 };
 
-
 export const userlocatiom = async (req, res, next) => {
   try {
     console.log("req.body", req.body);

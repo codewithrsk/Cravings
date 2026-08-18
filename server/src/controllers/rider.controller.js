@@ -18,7 +18,12 @@ export const getRiderProfile = async (req, res, next) => {
     const responseData = currentUser.toObject();
     responseData.riderDetails = riderDetails ? riderDetails.toObject() : {};
 
-    res.status(200).json({ message: "Rider profile fetched successfully", data: responseData });
+    res
+      .status(200)
+      .json({
+        message: "Rider profile fetched successfully",
+        data: responseData,
+      });
   } catch (error) {
     next(error);
   }
@@ -40,7 +45,10 @@ export const toggleRiderAvailability = async (req, res, next) => {
     const isAvailable = req.params.status === "true";
 
     if (!riderDetails) {
-      riderDetails = await Rider.create({ riderId: currentUser._id, isAvailable });
+      riderDetails = await Rider.create({
+        riderId: currentUser._id,
+        isAvailable,
+      });
     } else {
       riderDetails.isAvailable = isAvailable;
       await riderDetails.save();
@@ -49,7 +57,12 @@ export const toggleRiderAvailability = async (req, res, next) => {
     const responseData = currentUser.toObject();
     responseData.riderDetails = riderDetails.toObject();
 
-    res.status(200).json({ message: "Availability updated successfully", data: responseData });
+    res
+      .status(200)
+      .json({
+        message: "Availability updated successfully",
+        data: responseData,
+      });
   } catch (error) {
     next(error);
   }
